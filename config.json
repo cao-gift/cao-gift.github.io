@@ -2,13 +2,17 @@
     "title":"诗愿笔记",
     "subTitle":"CJW个人笔记记录",
     "avatarUrl":"https://bu.dusays.com/2024/04/15/661d2848e143a.jpg",
-    "GMEEK_VERSION":"last"
+    "GMEEK_VERSION":"last",
+    "startsite":"06/21/2020",
     "displayTitle":"CJW",
+    "singlePage":["link","about"],
     "email":"3514088137@qq.com",
     "filingNum":"沪ICP备2023029031号-1",
+    "homeUrl":"cao-gift.github.io",
     "showPostSource":0,
     "themeMode":"fix",
     "dayTheme":"dark",
     "nightTheme":"dark-blue",
+    "indexStyle":"<style>#header{flex-direction:column;align-items:center;}.title-right{margin:unset;}h1{display:flex;flex-direction:column;align-items:center;user-select:none;}.avatar{width:30vh;height:30vh;min-width:200px;min-height:200px;margin:5vh;max-height:360px;max-width:360px;}</style>",
     "bottomText":"转载请注明出处"
 }
