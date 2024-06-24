@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark-blue" data-light-theme="dark" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="//cdn.staticfile.net/Primer/21.0.7/primer.css" rel="stylesheet" />
+    <link rel="icon" href="https://bu.dusays.com/2024/04/15/661d2848e143a.jpg">
+<!-- 定义页面头部区块，包含元数据和页面特定的样式链接 -->
+<meta name="description" content="<html>
+<body>
+<!--StartFragment--><p style='margin: 0px 0px 16px; padding: 0px; box-sizing: border-box; color: rgb(36, 41, 46); font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Monaco, &quot;Source Han Sans CN&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: 0.1px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; text-shadow: rgb(36, 41, 46) 0px 0px 0px !important;'>ipv6访问纯ipv4站点基本是一些纯ipv4小鸡需要，主要方法和ipv4访问ipv6差不多</p><h2 id='法一：' style='margin: 24px 0px 16px; padding: 0px 0px 0.3em; box-sizing: border-box; font-size: 1.5em; font-weight: 600; line-height: 1.25; color: rgb(36, 41, 46); font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Monaco, &quot;Source Han Sans CN&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: 0.1px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; text-shadow: rgb(36, 41, 46) 0px 0px 0px !important;'><a href='https://blog.tanglu.me/ipv6-access-to-ipv4/#%E6%B3%95%E4%B8%80%EF%BC%9A' class='headerlink' title='法一：' style='margin: 0px; padding: 0px; color: var(--color-text-a); text-decoration: none; background-color: transparent; transition: color 0.3s ease 0s; box-sizing: border-box; border-bottom: 1px solid var(--color-text-a); font-size: 1em; position: relative;'></a>法一：</h2><p style='margin: 0px 0px 16px; padding: 0px; box-sizing: border-box; color: rgb(36, 41, 46); font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Monaco, &quot;Source Han Sans CN&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: 0.1px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; text-shadow: rgb(36, 41, 46) 0px 0px 0px !important;'>最简单好用的是使用WARP，推荐<span> </span><a target='_blank' rel='noopener' href='https://gitlab.com/fscarmen/warp' style='margin: 0px; padding: 0px; color: var(--color-text-a); text-decoration: none; background-color: transparent; transition: color 0.3s ease 0s; box-sizing: border-box; border-bottom: 1px solid var(--color-text-a); font-size: 1em;'>fscarmen大佬的一键脚本</a></p><figure class='highlight shell' id='' data-clipboard-text='' style='margin: 0px 0px 16px; padding: 32px 2px 2px; position: relative; box-sizing: border-box; color: rgb(204, 204, 204); background-color: rgb(45, 45, 45); border-radius: 5px; font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Monaco, &quot;Source Han Sans CN&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: 0.1px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;'>
+1 | wget -N https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh && bash menu.sh
+-- | --
+
+
+<span class='pin-copy' data-text='copy' style='margin: 0px; padding: 0px; box-sizing: border-box; position: absolute; top: 0px; right: 1rem; cursor: pointer;'><i class='iconfont icon-copy' style='margin: 0px; padding: 0px; box-sizing: border-box; font-size: 16px; font-style: normal; -webkit-font-smoothing: antialiased; font-family: iconfont !important;'></i></span></figure><h2 id='杂谈：' style='margin: 24px 0px 16px; padding: 0px 0px 0.3em; box-sizing: border-box; font-size: 1.5em; font-weight: 600; line-height: 1.25; color: rgb(36, 41, 46); font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Monaco, &quot;Source Han Sans CN&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: 0.1px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; text-shadow: rgb(36, 41, 46) 0px 0px 0px !important;'><a href='https://blog.tanglu.me/ipv6-access-to-ipv4/#%E6%9D%82%E8%B0%88%EF%BC%9A' class='headerlink' title='杂谈：' style='margin: 0px; padding: 0px; color: var(--color-text-a); text-decoration: none; background-color: transparent; transition: color 0.3s ease 0s; box-sizing: border-box; border-bottom: 1px solid var(--color-text-a); font-size: 1em; position: relative;'></a>杂谈：</h2><p style='margin: 0px 0px 16px; padding: 0px; box-sizing: border-box; color: rgb(36, 41, 46); font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Monaco, &quot;Source Han Sans CN&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: 0.1px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; text-shadow: rgb(36, 41, 46) 0px 0px 0px !important;'>DNS64 NAT64原理可以看看这两篇文章：</p><p style='margin: 0px 0px 16px; padding: 0px; box-sizing: border-box; color: rgb(36, 41, 46); font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Monaco, &quot;Source Han Sans CN&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: 0.1px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;'><a target='_blank' rel='noopener' href='https://blog.51cto.com/u_15060531/4174902?articleABtest=0' style='margin: 0px; padding: 0px; color: var(--color-text-a); text-decoration: none; background-color: transparent; transition: color 0.3s ease 0s; box-sizing: border-box; border-bottom: 1px solid var(--color-text-a); font-size: 1em; text-shadow: rgb(102, 102, 102) 0px 0px 0px !important;'>NAT64与DNS64基本原理概述_mb5fdb1266ce6df的技术博客_51CTO博客</a></p><p style='margin-top: 0px; margin-right: 0px; margin-bottom: 0px !important; margin-left: 0px; padding: 0px; box-sizing: border-box; color: rgb(36, 41, 46); font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Monaco, &quot;Source Han Sans CN&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: 0.1px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;'><a target='_blank' rel='noopener' href='https://xnow.me/ops/dnsv6-and-dns64.html' style='margin: 0px; padding: 0px; color: var(--color-text-a); text-decoration: none; background-color: transparent; transition: color 0.3s ease 0s; box-sizing: border-box; border-bottom: 1px solid var(--color-text-a); font-size: 1em; text-shadow: rgb(102, 102, 102) 0px 0px 0px !important;'>昔我往矣 » DNSv6和DNS64简单配置 杨柳依依 (xnow.me)</a></p><!--EndFragment-->
+</body>
+</html>ipv6访问纯ipv4站点基本是一些纯ipv4小鸡需要，主要方法和ipv4访问ipv6差不多
+
+法一：
+最简单好用的是使用WARP，推荐 [fscarmen大佬的一键脚本](https://gitlab.com/fscarmen/warp)
+
+wget -N https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh && bash menu.sh
+法二：
+DNS64+NAT64
+
+nat64服务器参考的：https://nat64.net/ 和 https://nat64.xyz/
+
+直接修改DNS服务器即可，以Debian为例
+
+临时更改dns服务器：
+
+编辑 vim /etc/resolv.conf ，改成DNS64地址即可（此方法重启会失效）
+
+nameserver 2a00:1098:2b::1
+nameserver 2001:67c:2b0::4
+永久更改dns服务器：
+
+修改 /etc/resolvconf/resolv.conf.d 文件夹的 base 文件，添加以下内容后保存重启
+
+不同linux系统永久修改DNS的文件不一样，可以自己搜索看看
+
+nameserver 2a00:1098:2b::1
+nameserver 2001:67c:2b0::4
+测试是否可以连接github(纯ipv4网络)：
+
+wget https://github.com/icret/EasyImages2.0/archive/refs/tags/2.8.3.zip
+杂谈：
+DNS64 NAT64原理可以看看这两篇文章：
+
+[NAT64与DNS64基本原理概述_mb5fdb1266ce6df的技术博客_51CTO博客](https://blog.51cto.com/u_15060531/4174902?articleABtest=0)
+
+[昔我往矣 » DNSv6和DNS64简单配置 杨柳依依 (xnow.me)](https://xnow.me/ops/dnsv6-and-dns64.html)。">
+<!-- 页面描述 -->
+<meta property="og:title" content="ipv6访问ipv4">
+<!-- 社交媒体分享标题 -->
+<meta property="og:description" content="<html>
+<body>
+<!--StartFragment--><p style='margin: 0px 0px 16px; padding: 0px; box-sizing: border-box; color: rgb(36, 41, 46); font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Monaco, &quot;Source Han Sans CN&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: 0.1px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; text-shadow: rgb(36, 41, 46) 0px 0px 0px !important;'>ipv6访问纯ipv4站点基本是一些纯ipv4小鸡需要，主要方法和ipv4访问ipv6差不多</p><h2 id='法一：' style='margin: 24px 0px 16px; padding: 0px 0px 0.3em; box-sizing: border-box; font-size: 1.5em; font-weight: 600; line-height: 1.25; color: rgb(36, 41, 46); font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Monaco, &quot;Source Han Sans CN&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: 0.1px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; text-shadow: rgb(36, 41, 46) 0px 0px 0px !important;'><a href='https://blog.tanglu.me/ipv6-access-to-ipv4/#%E6%B3%95%E4%B8%80%EF%BC%9A' class='headerlink' title='法一：' style='margin: 0px; padding: 0px; color: var(--color-text-a); text-decoration: none; background-color: transparent; transition: color 0.3s ease 0s; box-sizing: border-box; border-bottom: 1px solid var(--color-text-a); font-size: 1em; position: relative;'></a>法一：</h2><p style='margin: 0px 0px 16px; padding: 0px; box-sizing: border-box; color: rgb(36, 41, 46); font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Monaco, &quot;Source Han Sans CN&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: 0.1px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; text-shadow: rgb(36, 41, 46) 0px 0px 0px !important;'>最简单好用的是使用WARP，推荐<span> </span><a target='_blank' rel='noopener' href='https://gitlab.com/fscarmen/warp' style='margin: 0px; padding: 0px; color: var(--color-text-a); text-decoration: none; background-color: transparent; transition: color 0.3s ease 0s; box-sizing: border-box; border-bottom: 1px solid var(--color-text-a); font-size: 1em;'>fscarmen大佬的一键脚本</a></p><figure class='highlight shell' id='' data-clipboard-text='' style='margin: 0px 0px 16px; padding: 32px 2px 2px; position: relative; box-sizing: border-box; color: rgb(204, 204, 204); background-color: rgb(45, 45, 45); border-radius: 5px; font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Monaco, &quot;Source Han Sans CN&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: 0.1px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;'>
+1 | wget -N https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh && bash menu.sh
+-- | --
+
+
+<span class='pin-copy' data-text='copy' style='margin: 0px; padding: 0px; box-sizing: border-box; position: absolute; top: 0px; right: 1rem; cursor: pointer;'><i class='iconfont icon-copy' style='margin: 0px; padding: 0px; box-sizing: border-box; font-size: 16px; font-style: normal; -webkit-font-smoothing: antialiased; font-family: iconfont !important;'></i></span></figure><h2 id='杂谈：' style='margin: 24px 0px 16px; padding: 0px 0px 0.3em; box-sizing: border-box; font-size: 1.5em; font-weight: 600; line-height: 1.25; color: rgb(36, 41, 46); font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Monaco, &quot;Source Han Sans CN&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: 0.1px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; text-shadow: rgb(36, 41, 46) 0px 0px 0px !important;'><a href='https://blog.tanglu.me/ipv6-access-to-ipv4/#%E6%9D%82%E8%B0%88%EF%BC%9A' class='headerlink' title='杂谈：' style='margin: 0px; padding: 0px; color: var(--color-text-a); text-decoration: none; background-color: transparent; transition: color 0.3s ease 0s; box-sizing: border-box; border-bottom: 1px solid var(--color-text-a); font-size: 1em; position: relative;'></a>杂谈：</h2><p style='margin: 0px 0px 16px; padding: 0px; box-sizing: border-box; color: rgb(36, 41, 46); font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Monaco, &quot;Source Han Sans CN&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: 0.1px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; text-shadow: rgb(36, 41, 46) 0px 0px 0px !important;'>DNS64 NAT64原理可以看看这两篇文章：</p><p style='margin: 0px 0px 16px; padding: 0px; box-sizing: border-box; color: rgb(36, 41, 46); font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Monaco, &quot;Source Han Sans CN&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: 0.1px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;'><a target='_blank' rel='noopener' href='https://blog.51cto.com/u_15060531/4174902?articleABtest=0' style='margin: 0px; padding: 0px; color: var(--color-text-a); text-decoration: none; background-color: transparent; transition: color 0.3s ease 0s; box-sizing: border-box; border-bottom: 1px solid var(--color-text-a); font-size: 1em; text-shadow: rgb(102, 102, 102) 0px 0px 0px !important;'>NAT64与DNS64基本原理概述_mb5fdb1266ce6df的技术博客_51CTO博客</a></p><p style='margin-top: 0px; margin-right: 0px; margin-bottom: 0px !important; margin-left: 0px; padding: 0px; box-sizing: border-box; color: rgb(36, 41, 46); font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Monaco, &quot;Source Han Sans CN&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: 0.1px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;'><a target='_blank' rel='noopener' href='https://xnow.me/ops/dnsv6-and-dns64.html' style='margin: 0px; padding: 0px; color: var(--color-text-a); text-decoration: none; background-color: transparent; transition: color 0.3s ease 0s; box-sizing: border-box; border-bottom: 1px solid var(--color-text-a); font-size: 1em; text-shadow: rgb(102, 102, 102) 0px 0px 0px !important;'>昔我往矣 » DNSv6和DNS64简单配置 杨柳依依 (xnow.me)</a></p><!--EndFragment-->
+</body>
+</html>ipv6访问纯ipv4站点基本是一些纯ipv4小鸡需要，主要方法和ipv4访问ipv6差不多
+
+法一：
+最简单好用的是使用WARP，推荐 [fscarmen大佬的一键脚本](https://gitlab.com/fscarmen/warp)
+
+wget -N https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh && bash menu.sh
+法二：
+DNS64+NAT64
+
+nat64服务器参考的：https://nat64.net/ 和 https://nat64.xyz/
+
+直接修改DNS服务器即可，以Debian为例
+
+临时更改dns服务器：
+
+编辑 vim /etc/resolv.conf ，改成DNS64地址即可（此方法重启会失效）
+
+nameserver 2a00:1098:2b::1
+nameserver 2001:67c:2b0::4
+永久更改dns服务器：
+
+修改 /etc/resolvconf/resolv.conf.d 文件夹的 base 文件，添加以下内容后保存重启
+
+不同linux系统永久修改DNS的文件不一样，可以自己搜索看看
+
+nameserver 2a00:1098:2b::1
+nameserver 2001:67c:2b0::4
+测试是否可以连接github(纯ipv4网络)：
+
+wget https://github.com/icret/EasyImages2.0/archive/refs/tags/2.8.3.zip
+杂谈：
+DNS64 NAT64原理可以看看这两篇文章：
+
+[NAT64与DNS64基本原理概述_mb5fdb1266ce6df的技术博客_51CTO博客](https://blog.51cto.com/u_15060531/4174902?articleABtest=0)
+
+[昔我往矣 » DNSv6和DNS64简单配置 杨柳依依 (xnow.me)](https://xnow.me/ops/dnsv6-and-dns64.html)。">
+<!-- 社交媒体分享描述 -->
+<meta property="og:type" content="article">
+<!-- 社交媒体分享类型 -->
+<meta property="og:url" content="https://blog.freeblock.cn/post/6.html">
+<!-- 社交媒体分享URL -->
+<meta property="og:image" content="https://bu.dusays.com/2024/04/15/661d2848e143a.jpg">
+<!-- 社交媒体分享图像 -->
+<title>ipv6访问ipv4</title>
+<!-- 页面标题 -->
+
+<!-- 根据配置决定是否引入代码高亮样式 -->
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<!-- 定义页面特定的样式区块 -->
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+<!-- 文章标题样式 -->
+.title-right{display:flex;margin:auto 0 0 auto;}
+<!-- 标题右侧操作按钮布局 -->
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+<!-- 文章主体内容样式 -->
+#postBody hr{height:2px;}
+<!-- 分隔线样式 -->
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+<!-- 文章标题样式 -->
+.title-right{display:flex;margin:auto 0 0 auto;}
+<!-- 标题右侧操作按钮布局 -->
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+<!-- 文章主体内容样式 -->
+#postBody hr{height:2px;}
+<!-- 分隔线样式 -->
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+<!-- 响应式样式，针对小于600px的屏幕 -->
+</style>
+
+<!-- 引入页面额外样式 -->
+
+
+<body>
+    <div id="header">
+<!-- 页面头部内容 -->
+<h1 class="postTitle">ipv6访问ipv4</h1>
+<!-- 显示文章标题 -->
+<div class="title-right">
+    <!-- 标题右侧操作按钮区域 -->
+    <a href="https://blog.freeblock.cn" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <!-- 首页链接按钮 -->
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题"style="display:none;">
+        <!-- 主题切换按钮 -->
+        <svg class="octicon" width="16" height="16">
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+</div>
+<!-- 结束标题右侧操作按钮区域 -->
+</div>
+    <div id="content">
+<!-- 页面主体内容 -->
+<div class="markdown-body" id="postBody">
+
+<p>ipv6访问纯ipv4站点基本是一些纯ipv4小鸡需要，主要方法和ipv4访问ipv6差不多</p><h2 id="user-content-法一："><a href="https://blog.tanglu.me/ipv6-access-to-ipv4/#%E6%B3%95%E4%B8%80%EF%BC%9A" title="法一：" rel="nofollow"></a>法一：</h2><p>最简单好用的是使用WARP，推荐<span> </span><a href="https://gitlab.com/fscarmen/warp" rel="nofollow">fscarmen大佬的一键脚本</a></p>
+1 | wget -N https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh &amp;&amp; bash menu.sh
+-- | --
+<p><span><i></i></span></p><h2 id="user-content-杂谈："><a href="https://blog.tanglu.me/ipv6-access-to-ipv4/#%E6%9D%82%E8%B0%88%EF%BC%9A" title="杂谈：" rel="nofollow"></a>杂谈：</h2><p>DNS64 NAT64原理可以看看这两篇文章：</p><p><a href="https://blog.51cto.com/u_15060531/4174902?articleABtest=0" rel="nofollow">NAT64与DNS64基本原理概述_mb5fdb1266ce6df的技术博客_51CTO博客</a></p><p><a href="https://xnow.me/ops/dnsv6-and-dns64.html" rel="nofollow">昔我往矣 » DNSv6和DNS64简单配置 杨柳依依 (xnow.me)</a></p><p></p>
+
+ipv6访问纯ipv4站点基本是一些纯ipv4小鸡需要，主要方法和ipv4访问ipv6差不多
+<p>法一：<br>
+最简单好用的是使用WARP，推荐 <a href="https://gitlab.com/fscarmen/warp" rel="nofollow">fscarmen大佬的一键脚本</a></p>
+<p>wget -N <a href="https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh" rel="nofollow">https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh</a> &amp;&amp; bash menu.sh<br>
+法二：<br>
+DNS64+NAT64</p>
+<p>nat64服务器参考的：<a href="https://nat64.net/" rel="nofollow">https://nat64.net/</a> 和 <a href="https://nat64.xyz/" rel="nofollow">https://nat64.xyz/</a></p>
+<p>直接修改DNS服务器即可，以Debian为例</p>
+<p>临时更改dns服务器：</p>
+<p>编辑 vim /etc/resolv.conf ，改成DNS64地址即可（此方法重启会失效）</p>
+<p>nameserver 2a00:1098:2b::1<br>
+nameserver 2001:67c:2b0::4<br>
+永久更改dns服务器：</p>
+<p>修改 /etc/resolvconf/resolv.conf.d 文件夹的 base 文件，添加以下内容后保存重启</p>
+<p>不同linux系统永久修改DNS的文件不一样，可以自己搜索看看</p>
+<p>nameserver 2a00:1098:2b::1<br>
+nameserver 2001:67c:2b0::4<br>
+测试是否可以连接github(纯ipv4网络)：</p>
+<p>wget <a href="https://github.com/icret/EasyImages2.0/archive/refs/tags/2.8.3.zip">https://github.com/icret/EasyImages2.0/archive/refs/tags/2.8.3.zip</a><br>
+杂谈：<br>
+DNS64 NAT64原理可以看看这两篇文章：</p>
+<p><a href="https://blog.51cto.com/u_15060531/4174902?articleABtest=0" rel="nofollow">NAT64与DNS64基本原理概述_mb5fdb1266ce6df的技术博客_51CTO博客</a></p>
+<p><a href="https://xnow.me/ops/dnsv6-and-dns64.html" rel="nofollow">昔我往矣 » DNSv6和DNS64简单配置 杨柳依依 (xnow.me)</a></p></div>
+<!-- 显示文章正文 -->
+<div style="font-size:small;margin-top:8px;float:right;">❤️ 转载文章请注明出处，谢谢！❤️</div>
+<!-- 底部提示信息 -->
+</div>
+    <div id="footer">Copyright © <span id="year"></span><a href="https://blog.freeblock.cn"> 诗源笔记 </a>
+<p><a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备2023029031号-1</a>
+</p>
+
+<script>
+if(""!=""){
+    var now=new Date();
+    var startSite=new Date("");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("year").innerHTML=now.getFullYear();
+    if("沪ICP备2023029031号-1"!=""){document.getElementById("runday").innerHTML=" • "+"网站运行"+diffDay+"天"+" • ";}
+    else{document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";}
+}
+</script>
+</div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n\n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<!-- 页面脚本部分 -->
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+<!-- 设置首页图标路径 -->
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+<!-- 设置源码图标路径 -->
+</script>
+
+<!-- 引入页面特定脚本 -->
+
+</html>
