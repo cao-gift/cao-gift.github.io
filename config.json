@@ -16,5 +16,6 @@
     "dayTheme":"dark",
     "nightTheme":"dark-blue",
     "indexStyle":"<style>#header{flex-direction:column;align-items:center;}.title-right{margin:unset;}h1{display:flex;flex-direction:column;align-items:center;user-select:none;}.avatar{width:30vh;height:30vh;min-width:200px;min-height:200px;margin:5vh;max-height:360px;max-width:360px;}</style>",
-    "bottomText":"❤️ 转载文章请注明出处，谢谢！❤️"
+    "bottomText":"❤️ 转载文章请注明出处，谢谢！❤️",
+    "script":"<script src='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js'></script><script>var imgLinks = document.querySelectorAll('a > img');imgLinks.forEach(function(imgLink){var parentLink = imgLink.parentElement;parentLink.parentNode.insertBefore(parentLink.removeChild(imgLink), parentLink);parentLink.parentNode.removeChild(parentLink);});mediumZoom('img');</script>"
 }
