@@ -92,6 +92,9 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <!-- 显示文章正文 -->
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 <!-- 底部提示信息 -->
+
+<!-- 添加cusdis评论框 -->
+<div id="cusdis_thread" data-thread-key="https://blog.freeblock.cn/about.html" data-client-id="2bf84400-f30a-4bfd-92f1-4f9e6f7730ea" data-category-id="YOUR_CUSDIS_CATEGORY_ID" data-page-id="YOUR_CUSDIS_PAGE_ID" data-page-url="https://blog.freeblock.cn/about.html"></div>
 </div>
     <div id="footer">Copyright © <span id="year"></span><a href="https://blog.freeblock.cn"> 诗源笔记 </a>
 <p><a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备2023029031号-1</a>
@@ -125,6 +128,6 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 <!-- 设置源码图标路径 -->
 </script>
 <script src='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js'></script><script>var imgLinks = document.querySelectorAll('a > img');imgLinks.forEach(function(imgLink){var parentLink = imgLink.parentElement;parentLink.parentNode.insertBefore(parentLink.removeChild(imgLink), parentLink);parentLink.parentNode.removeChild(parentLink);});mediumZoom('img');</script>
-<!-- 引入页面特定脚本 -->
+<script src="https://cdn.jsdelivr.net/npm/cusdis@latest/dist/cusdis.min.js" crossorigin="anonymous" async></script>
 
 </html>
