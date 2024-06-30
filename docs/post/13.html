@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark-blue" data-light-theme="dark" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="//mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css" rel="stylesheet" />
+    <link rel="icon" href="https://bu.dusays.com/2024/04/15/661d2848e143a.jpg">
+<!-- 定义页面头部区块，包含元数据和页面特定的样式链接 -->
+<meta name="description" content="这是给正常付费并且跑业务的看的
+
+虽然打一折，该用不起的人还是用不起，流量费原价照收
+
+你需要做好每月0-1次的每次大约五分钟强制中断服务器的准备，必须接受，不能避免
+
+三种计费开机方式：
+1，原价，不打折
+2，承诺X年，按月付款，类似于包月，大约6折
+3，现成(抢占,SPOT)，1折(AWS,GCP和阿里云开SPOT都没他便宜)
+什么是SPOT？看阿里云的介绍：https://help.aliyun.com/document_detail/52088.html
+
+
+原价150刀一个月的F4S现在打1折只需15刀，简直屌爆了
+
+被关后IP会变的问题，请自己设置DDNS或者用Azure自带的DDNS
+
+
+Azure的SPOT的国际三大厂里实打实最便宜的，而且性能给的够，而且还有100G免费流量
+
+开机方面都一样，就是要多打一个勾，这样大部分配置就会是一折(90%OFF)，可用性区域一定要选择“无需基础结构冗余”
+逐出策略必须选择“停止/解除分配”(只关机，不删数据)，选“删除”关机的时候什么都不留，直接给你删了
+
+![1.png](https://bu.dusays.com/2024/06/30/66814ff8a297c.png)
+![2.png](https://bu.dusays.com/2024/06/30/66814ff8970f8.png)
+
+这些都是很正常的，但是难题是如何被系统中断后让它自动重新启动
+在搜索栏搜索“自动化帐户”并创建，必须保证和虚拟机在一个订阅里，地区不敏感，其他的下一步一直到创建
+![3.png](https://bu.dusays.com/2024/06/30/668150d34b8dc.png)
+
+然后打开创建的自动化账户，打开标识栏目，这个时候“系统分配”应该已经打开了，并且显示了对象ID。">
+<!-- 页面描述 -->
+<meta property="og:title" content="稳定1折使用Azure的服务器">
+<!-- 社交媒体分享标题 -->
+<meta property="og:description" content="这是给正常付费并且跑业务的看的
+
+虽然打一折，该用不起的人还是用不起，流量费原价照收
+
+你需要做好每月0-1次的每次大约五分钟强制中断服务器的准备，必须接受，不能避免
+
+三种计费开机方式：
+1，原价，不打折
+2，承诺X年，按月付款，类似于包月，大约6折
+3，现成(抢占,SPOT)，1折(AWS,GCP和阿里云开SPOT都没他便宜)
+什么是SPOT？看阿里云的介绍：https://help.aliyun.com/document_detail/52088.html
+
+
+原价150刀一个月的F4S现在打1折只需15刀，简直屌爆了
+
+被关后IP会变的问题，请自己设置DDNS或者用Azure自带的DDNS
+
+
+Azure的SPOT的国际三大厂里实打实最便宜的，而且性能给的够，而且还有100G免费流量
+
+开机方面都一样，就是要多打一个勾，这样大部分配置就会是一折(90%OFF)，可用性区域一定要选择“无需基础结构冗余”
+逐出策略必须选择“停止/解除分配”(只关机，不删数据)，选“删除”关机的时候什么都不留，直接给你删了
+
+![1.png](https://bu.dusays.com/2024/06/30/66814ff8a297c.png)
+![2.png](https://bu.dusays.com/2024/06/30/66814ff8970f8.png)
+
+这些都是很正常的，但是难题是如何被系统中断后让它自动重新启动
+在搜索栏搜索“自动化帐户”并创建，必须保证和虚拟机在一个订阅里，地区不敏感，其他的下一步一直到创建
+![3.png](https://bu.dusays.com/2024/06/30/668150d34b8dc.png)
+
+然后打开创建的自动化账户，打开标识栏目，这个时候“系统分配”应该已经打开了，并且显示了对象ID。">
+<!-- 社交媒体分享描述 -->
+<meta property="og:type" content="article">
+<!-- 社交媒体分享类型 -->
+<meta property="og:url" content="https://blog.freeblock.cn/post/13.html">
+<!-- 社交媒体分享URL -->
+<meta property="og:image" content="https://bu.dusays.com/2024/04/15/661d2848e143a.jpg">
+<!-- 社交媒体分享图像 -->
+<title>稳定1折使用Azure的服务器</title>
+<!-- 页面标题 -->
+
+<!-- 根据配置决定是否引入代码高亮样式 -->
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<!-- 定义页面特定的样式区块 -->
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+<!-- 文章标题样式 -->
+.title-right{display:flex;margin:auto 0 0 auto;}
+<!-- 标题右侧操作按钮布局 -->
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+<!-- 文章主体内容样式 -->
+#postBody hr{height:2px;}
+<!-- 分隔线样式 -->
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+<!-- 文章标题样式 -->
+.title-right{display:flex;margin:auto 0 0 auto;}
+<!-- 标题右侧操作按钮布局 -->
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+<!-- 文章主体内容样式 -->
+#postBody hr{height:2px;}
+<!-- 分隔线样式 -->
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+<!-- 响应式样式，针对小于600px的屏幕 -->
+</style>
+
+<!-- 引入页面额外样式 -->
+
+
+<body>
+    <div id="header">
+<!-- 页面头部内容 -->
+<h1 class="postTitle">稳定1折使用Azure的服务器</h1>
+<!-- 显示文章标题 -->
+<div class="title-right">
+    <!-- 标题右侧操作按钮区域 -->
+    <a href="https://blog.freeblock.cn" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <!-- 首页链接按钮 -->
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题"style="display:none;">
+        <!-- 主题切换按钮 -->
+        <svg class="octicon" width="16" height="16">
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+</div>
+<!-- 结束标题右侧操作按钮区域 -->
+</div>
+    <div id="content">
+<!-- 页面主体内容 -->
+<div class="markdown-body" id="postBody"><p>这是给正常付费并且跑业务的看的</p>
+<p>虽然打一折，该用不起的人还是用不起，流量费原价照收</p>
+<p>你需要做好每月0-1次的每次大约五分钟强制中断服务器的准备，必须接受，不能避免</p>
+<p>三种计费开机方式：<br>
+1，原价，不打折<br>
+2，承诺X年，按月付款，类似于包月，大约6折<br>
+3，现成(抢占,SPOT)，1折(AWS,GCP和阿里云开SPOT都没他便宜)<br>
+什么是SPOT？看阿里云的介绍：<a href="https://help.aliyun.com/document_detail/52088.html" rel="nofollow">https://help.aliyun.com/document_detail/52088.html</a></p>
+<p>原价150刀一个月的F4S现在打1折只需15刀，简直屌爆了</p>
+<p>被关后IP会变的问题，请自己设置DDNS或者用Azure自带的DDNS</p>
+<p>Azure的SPOT的国际三大厂里实打实最便宜的，而且性能给的够，而且还有100G免费流量</p>
+<p>开机方面都一样，就是要多打一个勾，这样大部分配置就会是一折(90%OFF)，可用性区域一定要选择“无需基础结构冗余”<br>
+逐出策略必须选择“停止/解除分配”(只关机，不删数据)，选“删除”关机的时候什么都不留，直接给你删了</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/e93c4fb4905f1c061421d9d07a7646359c5c813db6915f531f9a9f2c963e49df/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313466663861323937632e706e67"><img src="https://camo.githubusercontent.com/e93c4fb4905f1c061421d9d07a7646359c5c813db6915f531f9a9f2c963e49df/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313466663861323937632e706e67" alt="1.png" data-canonical-src="https://bu.dusays.com/2024/06/30/66814ff8a297c.png" style="max-width: 100%;"></a><br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/b757d088413459132c0f5eb2394ed59ab3cd5c252f4460abbbc0267ba11b4209/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313466663839373066382e706e67"><img src="https://camo.githubusercontent.com/b757d088413459132c0f5eb2394ed59ab3cd5c252f4460abbbc0267ba11b4209/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313466663839373066382e706e67" alt="2.png" data-canonical-src="https://bu.dusays.com/2024/06/30/66814ff8970f8.png" style="max-width: 100%;"></a></p>
+<p>这些都是很正常的，但是难题是如何被系统中断后让它自动重新启动<br>
+在搜索栏搜索“自动化帐户”并创建，必须保证和虚拟机在一个订阅里，地区不敏感，其他的下一步一直到创建<br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/0aab4ada3b690d919b4163ecd716e45d0ba9fd04ec5ea076fdf6e226b114f1af/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643334623864632e706e67"><img src="https://camo.githubusercontent.com/0aab4ada3b690d919b4163ecd716e45d0ba9fd04ec5ea076fdf6e226b114f1af/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643334623864632e706e67" alt="3.png" data-canonical-src="https://bu.dusays.com/2024/06/30/668150d34b8dc.png" style="max-width: 100%;"></a></p>
+<p>然后打开创建的自动化账户，打开标识栏目，这个时候“系统分配”应该已经打开了，并且显示了对象ID。如果没有，那就手动打开它</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/5cab3409bbf3617b213e6af6cd81251b2d0fc239e387d8e8f167325fef48816a/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643339343632332e706e67"><img src="https://camo.githubusercontent.com/5cab3409bbf3617b213e6af6cd81251b2d0fc239e387d8e8f167325fef48816a/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643339343632332e706e67" alt="4.png" data-canonical-src="https://bu.dusays.com/2024/06/30/668150d394623.png" style="max-width: 100%;"></a><br>
+复制给你的"对象主体(ID)，打开你的订阅，访问控制→添加→添加角色分配"</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/0836939b3701675e7a7579cbed79ace48cb9f447247273eb817c6691e0e120ad/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643336616636312e706e67"><img src="https://camo.githubusercontent.com/0836939b3701675e7a7579cbed79ace48cb9f447247273eb817c6691e0e120ad/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643336616636312e706e67" alt="5.png" data-canonical-src="https://bu.dusays.com/2024/06/30/668150d36af61.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/5806b048eadb136a77fc52d3493558d0cc99e1fc082c0822a05c03f9c5452b97/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643338333962352e706e67"><img src="https://camo.githubusercontent.com/5806b048eadb136a77fc52d3493558d0cc99e1fc082c0822a05c03f9c5452b97/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643338333962352e706e67" alt="6.png" data-canonical-src="https://bu.dusays.com/2024/06/30/668150d3839b5.png" style="max-width: 100%;"></a><br>
+托管标识选择你创建的那个自动化账户，并且添加，把整个订阅的权限交给自动化。审阅并分配，授权完成<br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/5fc28b74e26c7f19cd6e2ac6d4faf95540a0a548eae3b757d4582b85cb8ca864/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643339326339382e706e67"><img src="https://camo.githubusercontent.com/5fc28b74e26c7f19cd6e2ac6d4faf95540a0a548eae3b757d4582b85cb8ca864/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643339326339382e706e67" alt="7.png" data-canonical-src="https://bu.dusays.com/2024/06/30/668150d392c98.png" style="max-width: 100%;"></a><br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/a28afaf39bc939d8be0436d2c162b9ee25c4420ce943a1a2607a1f234c7560cb/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643361373636342e706e67"><img src="https://camo.githubusercontent.com/a28afaf39bc939d8be0436d2c162b9ee25c4420ce943a1a2607a1f234c7560cb/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643361373636342e706e67" alt="8.png" data-canonical-src="https://bu.dusays.com/2024/06/30/668150d3a7664.png" style="max-width: 100%;"></a><br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/6b576d2e2f9e979fb8f16a96f869169347990d2c9ccbce2073a8e9e35fa7cb52/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643334386565372e706e67"><img src="https://camo.githubusercontent.com/6b576d2e2f9e979fb8f16a96f869169347990d2c9ccbce2073a8e9e35fa7cb52/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643334386565372e706e67" alt="9.png" data-canonical-src="https://bu.dusays.com/2024/06/30/668150d348ee7.png" style="max-width: 100%;"></a><br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/e3f9365505d2fe9db57df3df146bfba40bce5b47945112b12a3424ce6d7601c1/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643338373334322e706e67"><img src="https://camo.githubusercontent.com/e3f9365505d2fe9db57df3df146bfba40bce5b47945112b12a3424ce6d7601c1/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643338373334322e706e67" alt="10.png" data-canonical-src="https://bu.dusays.com/2024/06/30/668150d387342.png" style="max-width: 100%;"></a></p>
+<p>——————————————————————————————————<br>
+回到自动化，选择Runbook，导入Runbook，注意选择要一样</p>
+<p>——————————————————————————————————<br>
+选择导入的Runbook，点击编辑并且发布，你什么都不用修改</p>
+<p>——————————————————————————————————<br>
+现在前置已经完成，开始设置关机后自动开机的监视<br>
+——————————————————————————————————<br>
+选择你那个SPOT的虚拟机，对它打标签.<br>
+标签可以是唯一，也可以不是唯一。比如几个虚拟机使用了同一个标签，那么会同时把所有同标签的启动<br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/04a022652a1175cdb7929de2edad396dc66ed223060c0dc10d066220734af3d0/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643339306530372e706e67"><img src="https://camo.githubusercontent.com/04a022652a1175cdb7929de2edad396dc66ed223060c0dc10d066220734af3d0/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643339306530372e706e67" alt="11.png" data-canonical-src="https://bu.dusays.com/2024/06/30/668150d390e07.png" style="max-width: 100%;"></a><br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/496d395aaf8ca8a04f43d448426b9a0ad2693947724bd84a5b5627ade9a4b9fe/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643336343537612e706e67"><img src="https://camo.githubusercontent.com/496d395aaf8ca8a04f43d448426b9a0ad2693947724bd84a5b5627ade9a4b9fe/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643336343537612e706e67" alt="12.png" data-canonical-src="https://bu.dusays.com/2024/06/30/668150d36457a.png" style="max-width: 100%;"></a></p>
+<p>——————————————————————————————————<br>
+选择下面的（监视、警报），然后开始创建预警规则</p>
+<p>不要看下拉栏，直接选择“See all signals”并搜索“VM Availability Metric (Preview)”<br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/8abefb9e35a31b3efc7dcc4810f5f595d5953b4060753ff03724fbf0781c2a1f/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643466333762382e706e67"><img src="https://camo.githubusercontent.com/8abefb9e35a31b3efc7dcc4810f5f595d5953b4060753ff03724fbf0781c2a1f/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643466333762382e706e67" alt="13.png" data-canonical-src="https://bu.dusays.com/2024/06/30/668150d4f37b8.png" style="max-width: 100%;"></a></p>
+<p>条件照抄，意思是，每一分钟检查一次，如果虚拟机可用小于1(说明被关机了)，然后会触发警报。现在只是触发，后面还有操作需要设置<br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/76469cada2319ded577c25960809efc845cde3e17a70708a69a2a512bb822a47/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643532363935632e706e67"><img src="https://camo.githubusercontent.com/76469cada2319ded577c25960809efc845cde3e17a70708a69a2a512bb822a47/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643532363935632e706e67" alt="14.png" data-canonical-src="https://bu.dusays.com/2024/06/30/668150d52695c.png" style="max-width: 100%;"></a><br>
+然后下一步进行创建操作组，注意，必须和你的服务器是在同一个订阅，不可以跨订阅<br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/99b16198be71f114a9d727017a6e5bdca6753970b8d04cee8b30ccbda86ebd43/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643535613832372e706e67"><img src="https://camo.githubusercontent.com/99b16198be71f114a9d727017a6e5bdca6753970b8d04cee8b30ccbda86ebd43/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643535613832372e706e67" alt="15.png" data-canonical-src="https://bu.dusays.com/2024/06/30/668150d55a827.png" style="max-width: 100%;"></a></p>
+<p>甚至可以给你发短信，告诉你服务器被关了<br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/231652d943493fee81bcbb6b4230b7e11a43bd9964b7e86ba83ae14a1ee25124/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643537643131372e706e67"><img src="https://camo.githubusercontent.com/231652d943493fee81bcbb6b4230b7e11a43bd9964b7e86ba83ae14a1ee25124/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643537643131372e706e67" alt="16.png" data-canonical-src="https://bu.dusays.com/2024/06/30/668150d57d117.png" style="max-width: 100%;"></a></p>
+<p>上一步设置不设置无所谓，反正发短信是要掏钱的，一条一毛钱<br>
+然后开始设置开机操作，选择我给你的那个runbook，在我这里，我设置的名字是“startpw”<br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/7ae8a75c938ea3ddcd52eb6340c8903bc44701a37ffb4b40a57723e8b97296dd/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643633373336312e706e67"><img src="https://camo.githubusercontent.com/7ae8a75c938ea3ddcd52eb6340c8903bc44701a37ffb4b40a57723e8b97296dd/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643633373336312e706e67" alt="17.png" data-canonical-src="https://bu.dusays.com/2024/06/30/668150d637361.png" style="max-width: 100%;"></a><br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/d49a68e72a12f16ea526993d733a9eb43d7c07d013437e515630de5202df8de0/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643561376261632e706e67"><img src="https://camo.githubusercontent.com/d49a68e72a12f16ea526993d733a9eb43d7c07d013437e515630de5202df8de0/68747470733a2f2f62752e6475736179732e636f6d2f323032342f30362f33302f363638313530643561376261632e706e67" alt="18.png" data-canonical-src="https://bu.dusays.com/2024/06/30/668150d5a7bac.png" style="max-width: 100%;"></a></p>
+<p>设置参数，第一个填“Start”，第二个框填你自己给服务器打的标签的第一个(看上面我填的是114)，第三个框填你自己给服务器打的标签的第二个(看上面我填的是514)</p>
+<p>审阅并创建，好了，操作组创建完毕。回到上一层报警规则选择你刚刚创建的操作组。然后给你的报警规则设置一个名字。然后创建，现在整个流程走完了。<br>
+现在可以自行测试了，先自己把服务器关了，稍等一会你的警报里就会出现一条新的警报，然后你的服务器就会开机，大约需要不到5分钟</p>
+<p>按照现在的Azure的容量，大约是1-2个月被关机一次，多台机的MJJ，配合自动化，极限降低成本，开关机基本无感<br>
+那个要导入到Runbook的PowerShell文件在这<br>
+<a href="https://github.com/user-attachments/files/16044623/start.zip">start.zip</a></p></div>
+<!-- 显示文章正文 -->
+<div style="font-size:small;margin-top:8px;float:right;">❤️ 转载文章请注明出处，谢谢！❤️</div>
+<!-- 底部提示信息 -->
+
+<!-- 添加cusdis评论框 -->
+<div id="cusdis_thread" data-thread-key="https://blog.freeblock.cn/post/13.html" data-client-id="2bf84400-f30a-4bfd-92f1-4f9e6f7730ea" data-category-id="YOUR_CUSDIS_CATEGORY_ID" data-page-id="YOUR_CUSDIS_PAGE_ID" data-page-url="https://blog.freeblock.cn/post/13.html"></div>
+</div>
+    <div id="footer">Copyright © <span id="year"></span><a href="https://blog.freeblock.cn"> 诗源笔记 </a>
+<p><a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备2023029031号-1</a>
+</p>
+
+<script>
+if(""!=""){
+    var now=new Date();
+    var startSite=new Date("");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("year").innerHTML=now.getFullYear();
+    if("沪ICP备2023029031号-1"!=""){document.getElementById("runday").innerHTML=" • "+"网站运行"+diffDay+"天"+" • ";}
+    else{document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";}
+}
+</script>
+</div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n\n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<!-- 页面脚本部分 -->
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+<!-- 设置首页图标路径 -->
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+<!-- 设置源码图标路径 -->
+</script>
+<script src='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js'></script><script>var imgLinks = document.querySelectorAll('a > img');imgLinks.forEach(function(imgLink){var parentLink = imgLink.parentElement;parentLink.parentNode.insertBefore(parentLink.removeChild(imgLink), parentLink);parentLink.parentNode.removeChild(parentLink);});mediumZoom('img');</script>
+<script src="https://cdn.jsdelivr.net/npm/cusdis@latest/dist/cusdis.min.js" crossorigin="anonymous" async></script>
+
+</html>
