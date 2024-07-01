@@ -13,6 +13,7 @@
     "showPostSource":0,
     "themeMode":"fix",
     "dayTheme":"dark",
+    "needComment":0,
     "nightTheme":"dark-blue",
     "indexStyle":"<style>#header{flex-direction:column;align-items:center;}.title-right{margin:unset;}h1{display:flex;flex-direction:column;align-items:center;user-select:none;}.avatar{width:30vh;height:30vh;min-width:200px;min-height:200px;margin:5vh;max-height:360px;max-width:360px;}</style>",
     "bottomText":"❤️ 转载文章请注明出处，谢谢！❤️",
