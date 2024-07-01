@@ -4,9 +4,8 @@
     <meta content="text/html; charset=utf-8" http-equiv="content-type" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link href="//mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css" rel="stylesheet" />
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
     <link rel="icon" href="https://bu.dusays.com/2024/04/15/661d2848e143a.jpg">
-<!-- 定义页面头部区块，包含元数据和页面特定的样式链接 -->
 <meta name="description" content="download.yunzhongzhuan.com
 
 upload.yunzhongzhuan.com
@@ -46,9 +45,7 @@ cf.yumy.gay
 海外（全网默认）线路CNAME解析指向：域名全称.cdn.cloudflare.net
 
 国内（中国大陆）所有运营商线路CNAME解析指向这些网站。">
-<!-- 页面描述 -->
 <meta property="og:title" content="cloudflare SaaS 加速网站">
-<!-- 社交媒体分享标题 -->
 <meta property="og:description" content="download.yunzhongzhuan.com
 
 upload.yunzhongzhuan.com
@@ -88,17 +85,11 @@ cf.yumy.gay
 海外（全网默认）线路CNAME解析指向：域名全称.cdn.cloudflare.net
 
 国内（中国大陆）所有运营商线路CNAME解析指向这些网站。">
-<!-- 社交媒体分享描述 -->
 <meta property="og:type" content="article">
-<!-- 社交媒体分享类型 -->
 <meta property="og:url" content="https://blog.freeblock.cn/post/11.html">
-<!-- 社交媒体分享URL -->
 <meta property="og:image" content="https://bu.dusays.com/2024/04/15/661d2848e143a.jpg">
-<!-- 社交媒体分享图像 -->
 <title>cloudflare SaaS 加速网站</title>
-<!-- 页面标题 -->
 
-<!-- 根据配置决定是否引入代码高亮样式 -->
 
 </head>
 <style>
@@ -108,61 +99,44 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
 </style>
 
-<!-- 定义页面特定的样式区块 -->
 <style>
 .postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
-<!-- 文章标题样式 -->
 .title-right{display:flex;margin:auto 0 0 auto;}
-<!-- 标题右侧操作按钮布局 -->
 .title-right .circle{padding: 14px 16px;margin-right:8px;}
 #postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
-<!-- 文章主体内容样式 -->
 #postBody hr{height:2px;}
-<!-- 分隔线样式 -->
-.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
-<!-- 文章标题样式 -->
-.title-right{display:flex;margin:auto 0 0 auto;}
-<!-- 标题右侧操作按钮布局 -->
-.title-right .circle{padding: 14px 16px;margin-right:8px;}
-#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
-<!-- 文章主体内容样式 -->
-#postBody hr{height:2px;}
-<!-- 分隔线样式 -->
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
 @media (max-width: 600px) {
     body {padding: 8px;}
     .postTitle{font-size:24px;}
 }
-<!-- 响应式样式，针对小于600px的屏幕 -->
 </style>
 
-<!-- 引入页面额外样式 -->
+
 
 
 <body>
     <div id="header">
-<!-- 页面头部内容 -->
 <h1 class="postTitle">cloudflare SaaS 加速网站</h1>
-<!-- 显示文章标题 -->
 <div class="title-right">
-    <!-- 标题右侧操作按钮区域 -->
     <a href="https://blog.freeblock.cn" id="buttonHome" class="btn btn-invisible circle" title="首页">
-        <!-- 首页链接按钮 -->
         <svg class="octicon" width="16" height="16">
             <path id="pathHome" fill-rule="evenodd"></path>
         </svg>
     </a>
     
+
     <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题"style="display:none;">
-        <!-- 主题切换按钮 -->
-        <svg class="octicon" width="16" height="16">
+        <svg class="octicon" width="16" height="16" >
             <path id="themeSwitch" fill-rule="evenodd"></path>
         </svg>
     </a>
+
 </div>
-<!-- 结束标题右侧操作按钮区域 -->
 </div>
     <div id="content">
-<!-- 页面主体内容 -->
 <div class="markdown-body" id="postBody"><p>download.yunzhongzhuan.com</p>
 <p>upload.yunzhongzhuan.com</p>
 <p>cloudflare.cfgo.cc</p>
@@ -179,15 +153,12 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>在第三方DNS解析服务商中每个子域名配置两条DNS解析：</p>
 <p>海外（全网默认）线路CNAME解析指向：域名全称.cdn.cloudflare.net</p>
 <p>国内（中国大陆）所有运营商线路CNAME解析指向这些网站。</p></div>
-<!-- 显示文章正文 -->
 <div style="font-size:small;margin-top:8px;float:right;">❤️ 转载文章请注明出处，谢谢！❤️</div>
-<!-- 底部提示信息 -->
 
-<!-- 添加cusdis评论框 -->
-<div id="cusdis_thread" data-thread-key="https://blog.freeblock.cn/post/11.html" data-client-id="2bf84400-f30a-4bfd-92f1-4f9e6f7730ea" data-category-id="YOUR_CUSDIS_CATEGORY_ID" data-page-id="YOUR_CUSDIS_PAGE_ID" data-page-url="https://blog.freeblock.cn/post/11.html"></div>
 </div>
     <div id="footer">Copyright © <span id="year"></span><a href="https://blog.freeblock.cn"> 星源笔记 </a>
 <p><a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备2024101898号-1</a>
+<span id="runday"></span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a>
 </p>
 
 <script>
@@ -210,14 +181,13 @@ var utterancesLoad=0;
 console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n\n","padding:5px 0;background:#02d81d;color:#fff");
 </script>
 
-<!-- 页面脚本部分 -->
 <script>
 document.getElementById("pathHome").setAttribute("d",IconList["home"]);
-<!-- 设置首页图标路径 -->
 document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
-<!-- 设置源码图标路径 -->
+
+
+
 </script>
 <script src='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js'></script><script>var imgLinks = document.querySelectorAll('a > img');imgLinks.forEach(function(imgLink){var parentLink = imgLink.parentElement;parentLink.parentNode.insertBefore(parentLink.removeChild(imgLink), parentLink);parentLink.parentNode.removeChild(parentLink);});mediumZoom('img');</script>
-<script src="https://cdn.jsdelivr.net/npm/cusdis@latest/dist/cusdis.min.js" crossorigin="anonymous" async></script>
 
 </html>

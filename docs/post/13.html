@@ -4,9 +4,8 @@
     <meta content="text/html; charset=utf-8" http-equiv="content-type" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link href="//mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css" rel="stylesheet" />
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
     <link rel="icon" href="https://bu.dusays.com/2024/04/15/661d2848e143a.jpg">
-<!-- 定义页面头部区块，包含元数据和页面特定的样式链接 -->
 <meta name="description" content="这是给正常付费并且跑业务的看的
 
 虽然打一折，该用不起的人还是用不起，流量费原价照收
@@ -38,9 +37,7 @@ Azure的SPOT的国际三大厂里实打实最便宜的，而且性能给的够�
 ![3.png](https://bu.dusays.com/2024/06/30/668150d34b8dc.png)
 
 然后打开创建的自动化账户，打开标识栏目，这个时候“系统分配”应该已经打开了，并且显示了对象ID。">
-<!-- 页面描述 -->
 <meta property="og:title" content="稳定1折使用Azure的服务器">
-<!-- 社交媒体分享标题 -->
 <meta property="og:description" content="这是给正常付费并且跑业务的看的
 
 虽然打一折，该用不起的人还是用不起，流量费原价照收
@@ -72,17 +69,11 @@ Azure的SPOT的国际三大厂里实打实最便宜的，而且性能给的够�
 ![3.png](https://bu.dusays.com/2024/06/30/668150d34b8dc.png)
 
 然后打开创建的自动化账户，打开标识栏目，这个时候“系统分配”应该已经打开了，并且显示了对象ID。">
-<!-- 社交媒体分享描述 -->
 <meta property="og:type" content="article">
-<!-- 社交媒体分享类型 -->
 <meta property="og:url" content="https://blog.freeblock.cn/post/13.html">
-<!-- 社交媒体分享URL -->
 <meta property="og:image" content="https://bu.dusays.com/2024/04/15/661d2848e143a.jpg">
-<!-- 社交媒体分享图像 -->
 <title>稳定1折使用Azure的服务器</title>
-<!-- 页面标题 -->
 
-<!-- 根据配置决定是否引入代码高亮样式 -->
 
 </head>
 <style>
@@ -92,61 +83,44 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
 </style>
 
-<!-- 定义页面特定的样式区块 -->
 <style>
 .postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
-<!-- 文章标题样式 -->
 .title-right{display:flex;margin:auto 0 0 auto;}
-<!-- 标题右侧操作按钮布局 -->
 .title-right .circle{padding: 14px 16px;margin-right:8px;}
 #postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
-<!-- 文章主体内容样式 -->
 #postBody hr{height:2px;}
-<!-- 分隔线样式 -->
-.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
-<!-- 文章标题样式 -->
-.title-right{display:flex;margin:auto 0 0 auto;}
-<!-- 标题右侧操作按钮布局 -->
-.title-right .circle{padding: 14px 16px;margin-right:8px;}
-#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
-<!-- 文章主体内容样式 -->
-#postBody hr{height:2px;}
-<!-- 分隔线样式 -->
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
 @media (max-width: 600px) {
     body {padding: 8px;}
     .postTitle{font-size:24px;}
 }
-<!-- 响应式样式，针对小于600px的屏幕 -->
 </style>
 
-<!-- 引入页面额外样式 -->
+
 
 
 <body>
     <div id="header">
-<!-- 页面头部内容 -->
 <h1 class="postTitle">稳定1折使用Azure的服务器</h1>
-<!-- 显示文章标题 -->
 <div class="title-right">
-    <!-- 标题右侧操作按钮区域 -->
     <a href="https://blog.freeblock.cn" id="buttonHome" class="btn btn-invisible circle" title="首页">
-        <!-- 首页链接按钮 -->
         <svg class="octicon" width="16" height="16">
             <path id="pathHome" fill-rule="evenodd"></path>
         </svg>
     </a>
     
+
     <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题"style="display:none;">
-        <!-- 主题切换按钮 -->
-        <svg class="octicon" width="16" height="16">
+        <svg class="octicon" width="16" height="16" >
             <path id="themeSwitch" fill-rule="evenodd"></path>
         </svg>
     </a>
+
 </div>
-<!-- 结束标题右侧操作按钮区域 -->
 </div>
     <div id="content">
-<!-- 页面主体内容 -->
 <div class="markdown-body" id="postBody"><p>这是给正常付费并且跑业务的看的</p>
 <p>虽然打一折，该用不起的人还是用不起，流量费原价照收</p>
 <p>你需要做好每月0-1次的每次大约五分钟强制中断服务器的准备，必须接受，不能避免</p>
@@ -206,15 +180,12 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>按照现在的Azure的容量，大约是1-2个月被关机一次，多台机的MJJ，配合自动化，极限降低成本，开关机基本无感<br>
 那个要导入到Runbook的PowerShell文件在这<br>
 <a href="https://github.com/user-attachments/files/16044623/start.zip">start.zip</a></p></div>
-<!-- 显示文章正文 -->
 <div style="font-size:small;margin-top:8px;float:right;">❤️ 转载文章请注明出处，谢谢！❤️</div>
-<!-- 底部提示信息 -->
 
-<!-- 添加cusdis评论框 -->
-<div id="cusdis_thread" data-thread-key="https://blog.freeblock.cn/post/13.html" data-client-id="2bf84400-f30a-4bfd-92f1-4f9e6f7730ea" data-category-id="YOUR_CUSDIS_CATEGORY_ID" data-page-id="YOUR_CUSDIS_PAGE_ID" data-page-url="https://blog.freeblock.cn/post/13.html"></div>
 </div>
     <div id="footer">Copyright © <span id="year"></span><a href="https://blog.freeblock.cn"> 星源笔记 </a>
 <p><a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备2024101898号-1</a>
+<span id="runday"></span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a>
 </p>
 
 <script>
@@ -237,14 +208,13 @@ var utterancesLoad=0;
 console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n\n","padding:5px 0;background:#02d81d;color:#fff");
 </script>
 
-<!-- 页面脚本部分 -->
 <script>
 document.getElementById("pathHome").setAttribute("d",IconList["home"]);
-<!-- 设置首页图标路径 -->
 document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
-<!-- 设置源码图标路径 -->
+
+
+
 </script>
 <script src='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js'></script><script>var imgLinks = document.querySelectorAll('a > img');imgLinks.forEach(function(imgLink){var parentLink = imgLink.parentElement;parentLink.parentNode.insertBefore(parentLink.removeChild(imgLink), parentLink);parentLink.parentNode.removeChild(parentLink);});mediumZoom('img');</script>
-<script src="https://cdn.jsdelivr.net/npm/cusdis@latest/dist/cusdis.min.js" crossorigin="anonymous" async></script>
 
 </html>
