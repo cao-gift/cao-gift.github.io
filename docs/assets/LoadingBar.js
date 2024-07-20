@@ -2,7 +2,7 @@
     function loadjQuery(callback) {
         var script = document.createElement('script');
         script.type = 'text/javascript';
-        script.src = 'https://blog.liyifan.xyz/lib/jquery.min.js';
+        script.src = 'https://blog.freeblock.cn/lib/jquery.min.js';
         script.onload = callback;
         document.head.appendChild(script);
     }
