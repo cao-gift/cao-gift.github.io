@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>星源笔记</title><link>https://blog.freeblock.cn</link><description>芸生浮梦,忆昔往已</description><copyright>星源笔记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://blog.freeblock.cn/avatar.webp</url><title>avatar</title><link>https://blog.freeblock.cn</link></image><lastBuildDate>Sat, 20 Jul 2024 02:40:38 +0000</lastBuildDate><managingEditor>星源笔记</managingEditor><ttl>60</ttl><webMaster>星源笔记</webMaster><item><title>国内外免费云数据库汇总</title><link>https://blog.freeblock.cn/post/16.html</link><description>### TiDB Cloud&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>星源笔记</title><link>https://blog.freeblock.cn</link><description>芸生浮梦,忆昔往已</description><copyright>星源笔记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://blog.freeblock.cn/avatar.webp</url><title>avatar</title><link>https://blog.freeblock.cn</link></image><lastBuildDate>Sat, 20 Jul 2024 23:21:23 +0000</lastBuildDate><managingEditor>星源笔记</managingEditor><ttl>60</ttl><webMaster>星源笔记</webMaster><item><title>国内外免费云数据库汇总</title><link>https://blog.freeblock.cn/post/16.html</link><description>### TiDB Cloud&#13;
 &#13;
 介绍：国产之光，5GB 的 MySQL 免费存储和 每月 50M 请求单元，支持每天备份，要 SSL 连接，需下载 CA 证书。</description><guid isPermaLink="true">https://blog.freeblock.cn/post/16.html</guid><pubDate>Fri, 12 Jul 2024 05:15:38 +0000</pubDate></item><item><title>设置VPS限流自动关机</title><link>https://blog.freeblock.cn/post/15.html</link><description>这 Bash 脚本用于监测服务器的网络流量使用情况，并根据预设的阈值进行操作。</description><guid isPermaLink="true">https://blog.freeblock.cn/post/15.html</guid><pubDate>Mon, 01 Jul 2024 10:44:59 +0000</pubDate></item><item><title>稳定1折使用Azure的服务器</title><link>https://blog.freeblock.cn/post/13.html</link><description>这是给正常付费并且跑业务的看的&#13;
 &#13;
@@ -23,13 +23,12 @@ Azure的SPOT的国际三大厂里实打实最便宜的，而且性能给的够�
 &#13;
 开机方面都一样，就是要多打一个勾，这样大部分配置就会是一折(90%OFF)，可用性区域一定要选择“无需基础结构冗余”&#13;
 逐出策略必须选择“停止/解除分配”(只关机，不删数据)，选“删除”关机的时候什么都不留，直接给你删了&#13;
-&#13;
-![1.png](https://bu.dusays.com/2024/06/30/66814ff8a297c.png)&#13;
-![2.png](https://bu.dusays.com/2024/06/30/66814ff8970f8.png)&#13;
+`Gmeek-html&lt;img src='https://bu.dusays.com/2024/06/30/66814ff8a297c.png'&gt;`&#13;
+`Gmeek-html&lt;img src='https://bu.dusays.com/2024/06/30/66814ff8970f8.png'&gt;`&#13;
 &#13;
 这些都是很正常的，但是难题是如何被系统中断后让它自动重新启动&#13;
 在搜索栏搜索“自动化帐户”并创建，必须保证和虚拟机在一个订阅里，地区不敏感，其他的下一步一直到创建&#13;
-![3.png](https://bu.dusays.com/2024/06/30/668150d34b8dc.png)&#13;
+`Gmeek-html&lt;img src='(https://bu.dusays.com/2024/06/30/668150d34b8dc.png'&gt;`&#13;
 &#13;
 然后打开创建的自动化账户，打开标识栏目，这个时候“系统分配”应该已经打开了，并且显示了对象ID。</description><guid isPermaLink="true">https://blog.freeblock.cn/post/13.html</guid><pubDate>Sun, 30 Jun 2024 12:40:45 +0000</pubDate></item><item><title>CloudFlare公共Cname域名</title><link>https://blog.freeblock.cn/post/11.html</link><description>&gt; CloudFlare 公共优选 Cname 域名地址&#13;
 &#13;
