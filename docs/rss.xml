@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>星源笔记</title><link>https://blog.freeblock.cn</link><description>芸生浮梦,忆昔往已</description><copyright>星源笔记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://blog.freeblock.cn/avatar.webp</url><title>avatar</title><link>https://blog.freeblock.cn</link></image><lastBuildDate>Sat, 20 Jul 2024 23:21:23 +0000</lastBuildDate><managingEditor>星源笔记</managingEditor><ttl>60</ttl><webMaster>星源笔记</webMaster><item><title>国内外免费云数据库汇总</title><link>https://blog.freeblock.cn/post/16.html</link><description>### TiDB Cloud&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>星源笔记</title><link>https://blog.freeblock.cn</link><description>芸生浮梦,忆昔往已</description><copyright>星源笔记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://blog.freeblock.cn/avatar.webp</url><title>avatar</title><link>https://blog.freeblock.cn</link></image><lastBuildDate>Sat, 20 Jul 2024 23:38:29 +0000</lastBuildDate><managingEditor>星源笔记</managingEditor><ttl>60</ttl><webMaster>星源笔记</webMaster><item><title>国内外免费云数据库汇总</title><link>https://blog.freeblock.cn/post/16.html</link><description>### TiDB Cloud&#13;
 &#13;
 介绍：国产之光，5GB 的 MySQL 免费存储和 每月 50M 请求单元，支持每天备份，要 SSL 连接，需下载 CA 证书。</description><guid isPermaLink="true">https://blog.freeblock.cn/post/16.html</guid><pubDate>Fri, 12 Jul 2024 05:15:38 +0000</pubDate></item><item><title>设置VPS限流自动关机</title><link>https://blog.freeblock.cn/post/15.html</link><description>这 Bash 脚本用于监测服务器的网络流量使用情况，并根据预设的阈值进行操作。</description><guid isPermaLink="true">https://blog.freeblock.cn/post/15.html</guid><pubDate>Mon, 01 Jul 2024 10:44:59 +0000</pubDate></item><item><title>稳定1折使用Azure的服务器</title><link>https://blog.freeblock.cn/post/13.html</link><description>这是给正常付费并且跑业务的看的&#13;
 &#13;
@@ -34,9 +34,7 @@ Azure的SPOT的国际三大厂里实打实最便宜的，而且性能给的够�
 &#13;
 ##### 简单介绍&#13;
 &#13;
-本文章提供的域名收集网络分享过的域名。</description><guid isPermaLink="true">https://blog.freeblock.cn/post/11.html</guid><pubDate>Sun, 30 Jun 2024 12:00:19 +0000</pubDate></item><item><title>图片缩放功能代码</title><link>https://blog.freeblock.cn/post/10.html</link><description>在文章最后添加如下代码，就可以实现这个功能。</description><guid isPermaLink="true">https://blog.freeblock.cn/post/10.html</guid><pubDate>Wed, 26 Jun 2024 22:39:29 +0000</pubDate></item><item><title>Fastly CDN为开发者推出新的free免费计划</title><link>https://blog.freeblock.cn/post/9.html</link><description>&#13;
-![1](https://github.com/cao-gift/cao-gift.github.io/assets/65548967/c081eb03-231a-4095-87d9-db7ea00d93dc)&#13;
-&#13;
+本文章提供的域名收集网络分享过的域名。</description><guid isPermaLink="true">https://blog.freeblock.cn/post/11.html</guid><pubDate>Sun, 30 Jun 2024 12:00:19 +0000</pubDate></item><item><title>图片缩放功能代码</title><link>https://blog.freeblock.cn/post/10.html</link><description>在文章最后添加如下代码，就可以实现这个功能。</description><guid isPermaLink="true">https://blog.freeblock.cn/post/10.html</guid><pubDate>Wed, 26 Jun 2024 22:39:29 +0000</pubDate></item><item><title>Fastly CDN为开发者推出新的free免费计划</title><link>https://blog.freeblock.cn/post/9.html</link><description>`Gmeek-html&lt;img src='https://bu.dusays.com/2024/07/21/669c4a0dd59b4.jpg'&gt;`&#13;
 Notice&#13;
 原链接：[Fastly CDN为开发者推出新的free免费计划](https://www.nodeseek.com/jump?to=https%3A%2F%2Fwww.microcharon.com%2Ftech%2F401.html)&#13;
 &#13;
@@ -66,16 +64,16 @@ Blog 下标注的权益&#13;
 &#13;
 CDN: Generous requests and bandwidth (well over 200GB and 2 Million requests per month) and TLS certificates on the exact same network that powers the world’s biggest applications, shopping events, and sports championships.&#13;
 Security: Unlimited L3/4 DDoS mitigation and complete flexibility to manage all L7 traffic.&#13;
-Compute: Our Wasm-powered Compute platform to run high-scale apps in your favorite languages like JS, Rust, and Go.&#13;
+Compute: Our Wasm-powered Compute platform runs high-scale apps in your favorite languages like JS, Rust, and Go.&#13;
 WebSockets and Push Notifications: Build and scale real-time systems with direct sockets and one-to-many pushes.&#13;
 Data Storage: Manage secrets, config states, and complete K/V data in one of the fastest edge data platforms on the market.&#13;
 Observability: Real-Time Streaming Logs to Dozens of Endpoints&#13;
-Image Optimization: Enterprise-Grade Image Transformation. Support for smart crop, blur, metadata, framing, and more.&#13;
+Image Optimization: Enterprise-Grade Image Transformation. Support for smart crops, blur, metadata, framing, and more.&#13;
 Community: Learn, troubleshoot, and ship alongside the world's leading open-source maintainers, innovative builders, and the people behind the largest applications on earth.&#13;
 Support: Assistance from the most exceptional customer service operation on the planet.&#13;
 虽然 Fastly 还在跟对手 Akamai 作对比：[How does Fastly stack up to Akamai? | Fastly](https://www.nodeseek.com/jump?to=https%3A%2F%2Fwww.fastly.com%2Fresources%2Fdatasheets%2Fcapability-comparison-akamai%2F)&#13;
 &#13;
-Fastly VS Akamai&#13;
+Fast vs Akamai&#13;
 ![2](https://github.com/cao-gift/cao-gift.github.io/assets/65548967/0ea75865-f5c0-42d8-8235-903858f01d61)&#13;
 &#13;
 &#13;

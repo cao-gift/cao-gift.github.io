@@ -1,6 +1,4 @@
-
-![1](https://github.com/cao-gift/cao-gift.github.io/assets/65548967/c081eb03-231a-4095-87d9-db7ea00d93dc)
-
+`Gmeek-html<img src="https://bu.dusays.com/2024/07/21/669c4a0dd59b4.jpg">`
 Notice
 原链接：[Fastly CDN为开发者推出新的free免费计划](https://www.nodeseek.com/jump?to=https%3A%2F%2Fwww.microcharon.com%2Ftech%2F401.html)
 
@@ -30,16 +28,16 @@ Blog 下标注的权益
 
 CDN: Generous requests and bandwidth (well over 200GB and 2 Million requests per month) and TLS certificates on the exact same network that powers the world’s biggest applications, shopping events, and sports championships.
 Security: Unlimited L3/4 DDoS mitigation and complete flexibility to manage all L7 traffic.
-Compute: Our Wasm-powered Compute platform to run high-scale apps in your favorite languages like JS, Rust, and Go.
+Compute: Our Wasm-powered Compute platform runs high-scale apps in your favorite languages like JS, Rust, and Go.
 WebSockets and Push Notifications: Build and scale real-time systems with direct sockets and one-to-many pushes.
 Data Storage: Manage secrets, config states, and complete K/V data in one of the fastest edge data platforms on the market.
 Observability: Real-Time Streaming Logs to Dozens of Endpoints
-Image Optimization: Enterprise-Grade Image Transformation. Support for smart crop, blur, metadata, framing, and more.
+Image Optimization: Enterprise-Grade Image Transformation. Support for smart crops, blur, metadata, framing, and more.
 Community: Learn, troubleshoot, and ship alongside the world's leading open-source maintainers, innovative builders, and the people behind the largest applications on earth.
 Support: Assistance from the most exceptional customer service operation on the planet.
 虽然 Fastly 还在跟对手 Akamai 作对比：[How does Fastly stack up to Akamai? | Fastly](https://www.nodeseek.com/jump?to=https%3A%2F%2Fwww.fastly.com%2Fresources%2Fdatasheets%2Fcapability-comparison-akamai%2F)
 
-Fastly VS Akamai
+Fast vs Akamai
 ![2](https://github.com/cao-gift/cao-gift.github.io/assets/65548967/0ea75865-f5c0-42d8-8235-903858f01d61)
 
 
