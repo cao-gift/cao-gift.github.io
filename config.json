@@ -20,5 +20,6 @@
     "needComment":0,
     "indexScript":"<script src='https://blog.freeblock.cn/assets/yifantheme_index.js'></script><script src='https://blog.freeblock.cn/assets/rain.js'></script>",
     "bottomText":"❤️ 转载文章请注明出处，谢谢！❤️",
-    "script":"<script src='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js'></script><script>var imgLinks = document.querySelectorAll('a > img');imgLinks.forEach(function(imgLink){var parentLink = imgLink.parentElement;parentLink.parentNode.insertBefore(parentLink.removeChild(imgLink), parentLink);parentLink.parentNode.removeChild(parentLink);});mediumZoom('img');</script><script src='https://blog.freeblock.cn/assets/GmeekTOC.js'></script><script src='https://blog.freeblock.cn/assets/backtotop.js'></script><script src='https://blog.freeblock.cn/assets/lazyload.js'></script>"
+    "allHead":"<script src='https://blog.freeblock.cn/assets/lazyload.js'></script>",
+    "script":"<script src='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js'></script><script>var imgLinks = document.querySelectorAll('a > img');imgLinks.forEach(function(imgLink){var parentLink = imgLink.parentElement;parentLink.parentNode.insertBefore(parentLink.removeChild(imgLink), parentLink);parentLink.parentNode.removeChild(parentLink);});mediumZoom('img');</script><script src='https://blog.freeblock.cn/assets/GmeekTOC.js'></script><script src='https://blog.freeblock.cn/assets/backtotop.js'></script>"
 }
