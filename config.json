@@ -1,6 +1,5 @@
 {
     "title":"星源笔记",
-    "subTitle":"CJW个人笔记记录",
     "avatarUrl":"https://blog.freeblock.cn/avatar.webp",
     "GMEEK_VERSION":"last",
     "displayTitle":"CJW",
@@ -19,9 +18,7 @@
     "urlMode":"issue",
     "showPostSource":0,
     "needComment":0,
-    "nightTheme":"dark-blue",
-    "allHead":"<script src='https://blog.freeblock.cn/assets/LoadingBar.js'></script>",
     "indexScript":"<script src='https://blog.freeblock.cn/assets/yifantheme_index.js'></script><script src='https://blog.freeblock.cn/assets/rain.js'></script>",
     "bottomText":"❤️ 转载文章请注明出处，谢谢！❤️",
-    "script":"<script src='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js'></script><script>var imgLinks = document.querySelectorAll('a > img');imgLinks.forEach(function(imgLink){var parentLink = imgLink.parentElement;parentLink.parentNode.insertBefore(parentLink.removeChild(imgLink), parentLink);parentLink.parentNode.removeChild(parentLink);});mediumZoom('img');</script><script src='https://blog.freeblock.cn/assets/GmeekTOC.js'></script>"
+    "script":"<script src='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js'></script><script>var imgLinks = document.querySelectorAll('a > img');imgLinks.forEach(function(imgLink){var parentLink = imgLink.parentElement;parentLink.parentNode.insertBefore(parentLink.removeChild(imgLink), parentLink);parentLink.parentNode.removeChild(parentLink);});mediumZoom('img');</script><script src='https://blog.freeblock.cn/assets/GmeekTOC.js'></script><script src='https://blog.liyifan.xyz/assets/backtotop.js'></script>"
 }
