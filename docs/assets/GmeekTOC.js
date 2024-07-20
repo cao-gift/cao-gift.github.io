@@ -29,7 +29,7 @@ function createTOC() {
 
 document.addEventListener("DOMContentLoaded", function() {
     createTOC();
-    var css = '.toc {position:fixed;top:130px;left:50%;transform: translateX(50%) translateX(300px);width:200px;padding-left:30px;}@media (max-width: 1249px) {.toc{position:static;top:auto;left:auto;transform:none;padding:10px;margin-bottom:20px;background-color:#eee;}}';
+    var css = '.toc {position:fixed;top:130px;left:50%;transform: translateX(50%) translateX(300px);width:200px;padding-left:30px;}@media (max-width: 1249px) {.toc{position:static;top:auto;left:auto;transform:none;padding:10px;margin-bottom:20px;background-color:var(--color-open-muted);}}';
     loadResource('style', {css: css});
 
     loadResource('script', { src: 'https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/tocbot/4.27.4/tocbot.min.js' }, function() {
@@ -55,4 +55,5 @@ document.addEventListener("DOMContentLoaded", function() {
     var footerPlaceholder = document.createElement('div');
     footerPlaceholder.style.height = window.innerHeight + 'px';
     document.body.appendChild(footerPlaceholder);
+    console.log("\n %c GmeekTOC Plugins https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#C333D0;color:#fff");
 });
