@@ -28,10 +28,10 @@ curl -sS -O https://raw.githubusercontent.com/kejilion/sh/main/kejilion.sh && ch
 国内服务器版
 
 curl -sS -O https://raw.gitmirror.com/kejilion/sh/main/cn/kejilion.sh && chmod +x kejilion.sh && ./kejilion.sh
+`Gmeek-html<img src="https://bu.dusays.com/2024/07/01/66828891cb9e5.jpg">`
+`Gmeek-html<img src="https://bu.dusays.com/2024/07/01/66828891c673b.jpg">`
+`Gmeek-html<img src="https://bu.dusays.com/2024/07/01/66828891cc558.jpg">`
 
-![2.jpg](https://bu.dusays.com/2024/07/01/66828891cb9e5.jpg)
-![3.jpg](https://bu.dusays.com/2024/07/01/66828891c673b.jpg)
-![1.jpg](https://bu.dusays.com/2024/07/01/66828891cc558.jpg)
 
 
 
