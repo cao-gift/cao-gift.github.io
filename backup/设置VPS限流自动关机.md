@@ -2,7 +2,7 @@
 
 
 
-使用方法
+## 使用方法
 安装curl
 Debian/Ubuntu
 
@@ -16,7 +16,7 @@ Alpine Linux
 
 apk update && apk add curl
 
-运行脚本
+## 运行脚本
 官网版
 
 curl -sS -O https://kejilion.pro/kejilion.sh && chmod +x kejilion.sh && ./kejilion.sh

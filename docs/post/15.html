@@ -64,16 +64,16 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </div>
     <div id="content">
 <div class="markdown-body" id="postBody"><p>这 Bash 脚本用于监测服务器的网络流量使用情况，并根据预设的阈值进行操作。它首先显示当前的接收和发送流量，然后询问用户是否设置流量阈值。用户可以选择设置阈值，并输入所需的阈值（以GB为单位）。一旦设置了阈值，脚本将每分钟检测一次流量是否超过了该阈值。如果超过了阈值，脚本将触发关闭服务器的操作。这个脚本可用于限制流量使用，或在流量达到预定阈值时自动关闭服务器以防止不必要的费用或其他问题。</p>
-<p>使用方法<br>
-安装curl<br>
+<h2>使用方法</h2>
+<p>安装curl<br>
 Debian/Ubuntu</p>
 <p>apt update -y  &amp;&amp; apt install -y curl</p>
 <p>CentOS</p>
 <p>yum update &amp;&amp; yum install -y curl</p>
 <p>Alpine Linux</p>
 <p>apk update &amp;&amp; apk add curl</p>
-<p>运行脚本<br>
-官网版</p>
+<h2>运行脚本</h2>
+<p>官网版</p>
 <p>curl -sS -O <a href="https://kejilion.pro/kejilion.sh" rel="nofollow">https://kejilion.pro/kejilion.sh</a> &amp;&amp; chmod +x kejilion.sh &amp;&amp; ./kejilion.sh</p>
 <p>GitHub版 部分小伙伴会遇到官网版出现大段乱码！就用GitHub版本吧！</p>
 <p>curl -sS -O <a href="https://raw.githubusercontent.com/kejilion/sh/main/kejilion.sh" rel="nofollow">https://raw.githubusercontent.com/kejilion/sh/main/kejilion.sh</a> &amp;&amp; chmod +x kejilion.sh &amp;&amp; ./kejilion.sh</p>
