@@ -1,4 +1,4 @@
-function loadResource(type, attributes) {
+function loadResource(type， attributes) {
    if (type === 'style') {
        const style = document.createElement('style');
        style.textContent = attributes.css;
@@ -15,7 +15,7 @@ function createTOC() {
    const headings = contentContainer.querySelectorAll('h1, h2, h3, h4, h5, h6');
    headings.forEach(heading => {
        if (!heading.id) {
-           heading.id = heading.textContent.trim().replace(/\s+/g, '-').toLowerCase();
+           heading.id = heading.textContent.trim()。replace(/\s+/g， '-')。toLowerCase();
        }
        const link = document.createElement('a');
        link.href = '#' + heading.id;
@@ -36,7 +36,7 @@ function toggleTOC() {
    }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded"， function() {
    createTOC();
    const css = `
        :root {
