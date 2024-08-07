@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>星源笔记</title><link>https://blog.freeblock.cn</link><description>芸生浮梦,忆昔往已</description><copyright>星源笔记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://blog.freeblock.cn/avatar.webp</url><title>avatar</title><link>https://blog.freeblock.cn</link></image><lastBuildDate>Wed, 07 Aug 2024 00:55:28 +0000</lastBuildDate><managingEditor>星源笔记</managingEditor><ttl>60</ttl><webMaster>星源笔记</webMaster><item><title>测试2</title><link>https://blog.freeblock.cn/post/23.html</link><description>大概。</description><guid isPermaLink="true">https://blog.freeblock.cn/post/23.html</guid><pubDate>Wed, 07 Aug 2024 00:54:59 +0000</pubDate></item><item><title>驾考科目一总结【文字，不推荐】</title><link>https://blog.freeblock.cn/post/21.html</link><description>**一、扣分规则**&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>星源笔记</title><link>https://blog.freeblock.cn</link><description>芸生浮梦,忆昔往已</description><copyright>星源笔记</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://blog.freeblock.cn/avatar.webp</url><title>avatar</title><link>https://blog.freeblock.cn</link></image><lastBuildDate>Wed, 07 Aug 2024 16:36:02 +0000</lastBuildDate><managingEditor>星源笔记</managingEditor><ttl>60</ttl><webMaster>星源笔记</webMaster><item><title>2024</title><link>https://blog.freeblock.cn/post/24.html</link><description>11。</description><guid isPermaLink="true">https://blog.freeblock.cn/post/24.html</guid><pubDate>Wed, 07 Aug 2024 01:05:42 +0000</pubDate></item><item><title>驾考科目一总结【文字，不推荐】</title><link>https://blog.freeblock.cn/post/21.html</link><description>**一、扣分规则**&#13;
 高快：高速公路、城市快速路&#13;
 普通路：高快之外的其他路&#13;
 校客危：校车、中型以上载客载货汽车、危险物品运输车辆&#13;
@@ -441,15 +441,7 @@
 &#13;
 `Gmeek-html&lt;img src='https://tu.freeblock.cn/PicList/20/202408031340101.webp'&gt;` &#13;
 &#13;
-`Gmeek-html&lt;img src='https://tu.freeblock.cn/PicList/20/202408031340954.webp&gt;` 。</description><guid isPermaLink="true">https://blog.freeblock.cn/post/20.html</guid><pubDate>Sun, 28 Jul 2024 11:05:45 +0000</pubDate></item><item><title>测试</title><link>https://blog.freeblock.cn/post/19.html</link><description>## 假一骗三毒三醉五(假1舞1吊2骗3兵3毒3醉5逃终生)&#13;
-### 假一&#13;
-使用虚假材料报考驾驶证，一年内不得重新申请；&#13;
-### 骗三&#13;
-通过欺骗、贿赂等不正当手段取得驾驶证被依法撤销的，三年内不能重新取得驾驶证；&#13;
-### 毒三&#13;
-三年内有吸食、注射毒品行为或者解除强制隔离戒毒措施未满三年，以及长期服用依赖性精神药品成瘾尚未戒除的，不得申请驾驶证；&#13;
-### 醉五&#13;
-醉酒驾驶被吊销驾照的，五年内不得重新申请。</description><guid isPermaLink="true">https://blog.freeblock.cn/post/19.html</guid><pubDate>Sun, 21 Jul 2024 10:10:24 +0000</pubDate></item><item><title>国内外免费云数据库汇总</title><link>https://blog.freeblock.cn/post/16.html</link><description>### TiDB Cloud&#13;
+`Gmeek-html&lt;img src='https://tu.freeblock.cn/PicList/20/202408031340954.webp&gt;` 。</description><guid isPermaLink="true">https://blog.freeblock.cn/post/20.html</guid><pubDate>Sun, 28 Jul 2024 11:05:45 +0000</pubDate></item><item><title>国内外免费云数据库汇总</title><link>https://blog.freeblock.cn/post/16.html</link><description>### TiDB Cloud&#13;
 &#13;
 介绍：国产之光，5GB 的 MySQL 免费存储和 每月 50M 请求单元，支持每天备份，要 SSL 连接，需下载 CA 证书。</description><guid isPermaLink="true">https://blog.freeblock.cn/post/16.html</guid><pubDate>Fri, 12 Jul 2024 05:15:38 +0000</pubDate></item><item><title>设置VPS限流自动关机</title><link>https://blog.freeblock.cn/post/15.html</link><description>这 Bash 脚本用于监测服务器的网络流量使用情况，并根据预设的阈值进行操作。</description><guid isPermaLink="true">https://blog.freeblock.cn/post/15.html</guid><pubDate>Mon, 01 Jul 2024 10:44:59 +0000</pubDate></item><item><title>稳定1折使用Azure的服务器</title><link>https://blog.freeblock.cn/post/13.html</link><description>这是给正常付费并且跑业务的看的&#13;
 &#13;
