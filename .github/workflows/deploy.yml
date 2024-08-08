@@ -9,19 +9,34 @@ on:
     types: [opened, edited]
 
 jobs:
-  deploy:
+  # 任务 ID
+  build:
+    # 运行环境
     runs-on: ubuntu-latest
-
+    # 步骤
     steps:
-      - name: SSH 命令拉取代码
-        uses: appleboy/ssh-action@main
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.DEPLOY_KEY }}
-
-          script: |
-            cd /www/wwwroot/blog
-            sudo git pull
-            npm i
-            npm run build
+      # 使用别人的 action
+      - use: actions/checkout@v2
+      # 步骤名称
+    - name: install
+      # 步骤执行指令
+      run: yarn
+    - name: build
+      run: yarn run build
+    # 命名这个任务为发布Deploy
+    - name: Deploy
+      # 将仓库打包好的代码上传到自己的服务器
+      uses: easingthemes/ssh-deploy@v4.1.10
+      with:
+          # 服务器密钥
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          # 服务器 IP
+          REMOTE_HOST: ${{ secrets.USER_HOST }}
+          # 用户名
+          REMOTE_USER: ${{ secrets.USER_NAME }}
+          # 上传build目录下所有
+          SOURCE: "/build/"
+          # 上传时如果发现build目录下有文件，将其删除
+          ARGS: -rltgoDzvO --delete
+          # 上传到服务器的指定目录
+          TARGET: /home/ubuntu/blog/build
