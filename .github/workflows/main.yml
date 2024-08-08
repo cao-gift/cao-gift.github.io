@@ -12,38 +12,25 @@ on:
 
 # 作业
 jobs:
-	# job id
   build-and-deploy:
-  	# 运行环境，意味着作业将在 GitHub 托管的最新版本的 Ubuntu Linux 上运行
     runs-on: ubuntu-latest
     steps:
-      # 检查分支 @v2 代表 actions 的版本，官方建议写上。
       - uses: actions/checkout@v2
-      # 安装node
       - uses: actions/setup-node@v3
         with:
-        	# 版本
           node-version: 14
           cache: yarn
       - run: yarn install --frozen-lockfile
-      # 打包
       - name: Build
         run: yarn build
-      # 部署到云服务器
       - name: Deploy to Server
-      	# 使用 别人共享的 action，文档https://github.com/marketplace/actions/ssh-deploy
         uses: easingthemes/ssh-deploy@main
         env:
-        	# ssh 私钥
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           ARGS: "-rltgoDzvO --delete"
-          # 源目录，相对于$GITHUB_WORKSPACE根目录的路径
           SOURCE: docs/
-          # 主机，比如 127.0.0.1
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          # 登录名，比如 root
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          # 部署目标路径（相对于服务器） 比如 /data
           TARGET: ${{ secrets.REMOTE_TARGET }}
           # 指定排除上传的文件
           EXCLUDE: "/node_modules/"
