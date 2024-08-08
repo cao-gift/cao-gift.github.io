@@ -1,11 +1,10 @@
 name: Auto Deploy
 on:
+  # 监听 push 操作
   push:
     branches:
+      # master 分支，也可以改成其他分支
       - main
-  workflow_dispatch:
-  issues:
-    types: [opened, edited]
 jobs:
   # 任务 ID
   build:
