@@ -35,8 +35,8 @@ jobs:
           # 用户名
           REMOTE_USER: ${{ secrets.USER_NAME }}
           # 上传build目录下所有
-          SOURCE: "/build/"
+          SOURCE: "/docs/"
           # 上传时如果发现build目录下有文件，将其删除
           ARGS: -rltgoDzvO --delete
           # 上传到服务器的指定目录
-          TARGET: /home/ubuntu/blog/build
+          TARGET: /www/wwwroot/blog
