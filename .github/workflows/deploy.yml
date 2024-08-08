@@ -1,5 +1,4 @@
-name: 自动部署
-
+name: Auto Deploy
 on:
   push:
     branches:
@@ -7,7 +6,6 @@ on:
   workflow_dispatch:
   issues:
     types: [opened, edited]
-
 jobs:
   # 任务 ID
   build:
