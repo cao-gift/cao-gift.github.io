@@ -1,6 +1,4 @@
-# 案例配置
-# 工作流名称
-name: 'deploy'
+name: Deploy My Server
 
 on:
   push:
@@ -10,27 +8,36 @@ on:
   issues:
     types: [opened, edited]
 
-# 作业
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
+  deploy:
+    runs-on: ubuntu-latest # 使用ubuntu系统镜像运行自动化脚本
+
+    steps: # 自动化步骤
+      #下载代码仓库
+      - uses: actions/checkout@v1
+
+      # 使用action库，安装node
+      - name: use Node.js # 使用action库  actions/setup-node安装node
+        uses: actions/setup-node@v1
         with:
-          node-version: 14
-          cache: yarn
-      - run: yarn install --frozen-lockfile
+          node-version: 18.17.0 # 指定node版本
+      # 安装依赖
+      - name: npm install
+        run: npm install
+
+      #打包项目
       - name: Build
-        run: yarn build
-      - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@main
+        run: npm run build
+
+      #部署到服务器
+      - name: Deploy to Staging My server
+        uses: easingthemes/ssh-deploy@v2.1.6
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: "-rltgoDzvO --delete"
-          SOURCE: docs/
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.REMOTE_TARGET }}
-          # 指定排除上传的文件
+          #私钥
+          SSH_PRIVATE_KEY: ${{ secrets.MY_SERVER_PRIVATE_KEY }}
+          ARGS: "-rltgoDzvO"
+          SOURCE: "docs/"
+          REMOTE_HOST: ${{ secrets.IP }} #服务器ip
+          REMOTE_USER: "root"
+          TARGET: "/www/wwwroot/blog/"
           EXCLUDE: "/node_modules/"
