@@ -29,7 +29,7 @@ style.innerHTML = `
 }
 
 html {
-    background: url('https://api.kdcc.cn/') no-repeat center center fixed;
+    background: url('https://bing.img.run/1920x1080.php') no-repeat center center fixed;
     background-size: cover;
 }
 
