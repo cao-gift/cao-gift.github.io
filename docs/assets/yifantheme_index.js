@@ -29,7 +29,7 @@ style.innerHTML = `
 }
 
 html {
-    background: url('https://blog.freeblock.cn/background.webp') no-repeat center center fixed;
+    background: url('https://api.kdcc.cn/') no-repeat center center fixed;
     background-size: cover;
 }
 
