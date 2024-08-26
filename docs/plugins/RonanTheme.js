@@ -1,73 +1,87 @@
-const style = document.createElement("style");
-style.innerHTML = `
-.blogTitle {
-    display: unset;
-}
+document.addEventListener('DOMContentLoaded', function() {    
+    let currentUrl = window.location.pathname;
+    //let currentHost = window.location.hostname;
 
-#header {
-    height: 300px;
-}
+    //主页主题------------------------------------------------------------------------------
+    
+    if (currentUrl == '/' || currentUrl.includes('/index.html') || currentUrl.includes('/page')) {
+        console.log('应用主页主题');
+        let style = document.createElement("style");
+        style.innerHTML = `
+        .blogTitle {
+            display: unset;
+        }
 
-#header h1 {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+        #header {
+            height: 300px;
+        }
 
-.avatar {
-    width: 200px;
-    height: 200px;
-}
+        #header h1 {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-#header h1 a {
-    margin-top: 30px;
-    font-family: fantasy;
-    margin-left: unset;
-}
+        .avatar {
+            width: 200px;
+            height: 200px;
+        }
 
-html {
-    background: url('https://blog.freeblock.cn/background.webp') no-repeat center center fixed;
-    background-size: cover;
-}
+        #header h1 a {
+            margin-top: 30px;
+            font-family: fantasy;
+            margin-left: unset;
+        }
 
-body {
-    margin: 30px auto;
-    padding: 20px;
-    font-size: 16px;
-    font-family: sans-serif;
-    line-height: 1.25;
-    background: rgba(255, 255, 255, 0.8); /* 白色背景，透明度80% */
-    border-radius: 10px; /* 圆角边框 */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 添加阴影 */
-    overflow: auto;
-}
+        html {    
+            background: url('https://blog.freeblock.cn/background.webp') no-repeat center center fixed;
+            background-size: cover;
+        }
 
-.SideNav {
-    background: rgba(255, 255, 255, 0.6); /* 白色背景，透明度60% */
-    border-radius: 10px; /* 圆角边框 */
-    min-width: unset;
-}
+        /* 主体布局 */
+        body {
+            min-width: 200px;
+            max-width: 885px;
+            margin: 30px auto;   /*设置所有外边距离 */
+            font-size: 16px;
+            font-family: sans-serif;
+            line-height: 1.25;
+            background: rgba(237, 239, 233, 0.84); 
+            border-radius: 10px; /* 圆角边框 */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 添加阴影 */
+            overflow: auto;
+        }
 
-.SideNav-item:hover {
-    background-color: #c3e4e3;
-    border-radius: 10px;
-    transform: scale(1.02);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-}
+        /* 主页博客列表圆角边框 */
+        .SideNav {
+            background: rgba(255, 255, 255, 0.6); /* 白色背景，透明度60% */
+            border-radius: 10px; /* 圆角边框 */
+            min-width: unset;
+        }
 
-.SideNav-item {
-    transition: 0.5s;
-}
+        /* 鼠标放到博客标题后会高亮 */
+        .SideNav-item:hover {
+            background-color: #c3e4e3;
+            border-radius: 10px;
+            transform: scale(1.04);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
 
-.pagination a:hover, .pagination a:focus, .pagination span:hover, .pagination span:focus, .pagination em:hover, .pagination em:focus {
-    border-color: rebeccapurple;
-}
-`;
-document.head.appendChild(style);
- //文章页主题------------------------------------------------------------------------------
+        .SideNav-item {
+            transition: 0.1s;
+        }
+
+        /* 分页条 */
+        .pagination a:hover, .pagination a:focus, .pagination span:hover, .pagination span:focus, .pagination em:hover, .pagination em:focus {
+            border-color: rebeccapurple;
+        `;
+        document.head.appendChild(style);}
+
+
+    //文章页主题------------------------------------------------------------------------------
     
     else if (currentUrl.includes('/post/') || currentUrl.includes('/link.html') || currentUrl.includes('/about.html')) {
         console.log('文章页主题');
