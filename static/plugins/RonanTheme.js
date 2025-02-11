@@ -77,8 +77,25 @@ document.addEventListener('DOMContentLoaded', function() {
         /* 分页条 */
         .pagination a:hover, .pagination a:focus, .pagination span:hover, .pagination span:focus, .pagination em:hover, .pagination em:focus {
             border-color: rebeccapurple;
+        }
+
+        /* 赞助商信息样式 */
+        .sponsor-info {
+            text-align: center;
+            margin-top: 20px;
+            font-size: small;
+            color: #666;
+        }
         `;
-        document.head.appendChild(style);}
+        document.head.appendChild(style);
+
+        // 添加赞助商信息到页脚
+        let footer = document.getElementById('footer');
+        let sponsorInfo = document.createElement('div');
+        sponsorInfo.className = 'sponsor-info';
+        sponsorInfo.innerHTML = '本站由 <a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://gcore.jsdelivr.net/gh/YukiNoUta/cdn-static@main/blog/svg/upyun.svg" width="45" height="13" style="fill: currentColor;"></a> 提供 CDN 加速/云存储服务';
+        footer.insertBefore(sponsorInfo, footer.firstChild);
+    }
 
 
     //文章页主题------------------------------------------------------------------------------
