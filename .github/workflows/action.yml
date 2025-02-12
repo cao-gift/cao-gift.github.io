@@ -6,21 +6,15 @@ on:
   workflow_dispatch:
   issues:
     types: [opened, edited]
-  schedule:
-    - cron: "20 16 * * *"
 
 jobs:
-  deploy:
+  upload:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@master
-
-      - name: Upload file to bucket
-        uses: Rebel028/s3-upload-github-action@master
-        env:
-          FILE: ./docs/
-          S3_ENDPOINT: 's3.api.upyun.com'
-          S3_BUCKET: ${{ secrets.S3_BUCKET }}
-          S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+      - uses: shallwefootball/s3-upload-action@master
+        with:
+          aws_key_id: ${{ secrets.AWS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          aws_bucket: ${{ secrets.AWS_BUCKET }}
+          source_dir: 'docs'
