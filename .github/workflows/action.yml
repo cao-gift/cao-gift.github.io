@@ -1,5 +1,13 @@
 name: Add File to Bucket
-on: push
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  issues:
+    types: [opened, edited]
+  schedule:
+    - cron: "20 16 * * *"
 
 jobs:
   deploy:
