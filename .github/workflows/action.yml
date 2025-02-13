@@ -13,11 +13,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
-      - name: Deploy
-        uses: her-cat/upyun-deployer@v1.0.3
+      
+      - name: deploy-upyun
+        uses: bwcxyk/upyun-upx-action@1.3
+        env:
+          UPX_SERVICENAME: ${{ secrets.UPX_SERVICENAME }}
+          UPX_OPERATOR: ${{ secrets.UPX_OPERATOR }}
+          UPX_PASSWORD: ${{ secrets.UPX_PASSWORD }}
+          LOCAL_DIR: ./docs/
+          REMOTE_DIR: /
+          
+      - name: Upyun Refresh
+        uses: yiyungent/upyun-action@main
         with:
-          bucket: ${{ secrets.UPYUN_BUCKET }}
-          operator: ${{ secrets.UPYUN_OPERATOR_NAME }}
-          password: ${{ secrets.UPYUN_OPERATOR_PWD }}
-          dir: 'docs'
-          publish_dir: '/'
+            upyun_username: ${{ secrets.UPYUN_USERNAME }}
+            upyun_password: ${{ secrets.UPYUN_PASSWORD }}
+            refresh_cache_urls: "https://blog.freeblock.cn/*"    
