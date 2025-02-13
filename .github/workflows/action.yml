@@ -20,4 +20,4 @@ jobs:
           operator: ${{ secrets.UPYUN_OPERATOR_NAME }}
           password: ${{ secrets.UPYUN_OPERATOR_PWD }}
           dir: 'docs'
-          publish_dir: '/'
+          publish_dir: ''
