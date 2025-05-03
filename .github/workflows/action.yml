@@ -17,7 +17,8 @@ jobs:
       - uses: szenius/set-timezone@v1.0 # 设置执行环境的时区
         with:
           timezoneLinux: "Asia/Shanghai"
-      
+      - name: Wait for 3 minutes
+        run: sleep 180 # 等待 30s，单位为秒    
       - name: deploy-upyun
         uses: bwcxyk/upyun-upx-action@1.3
         env:
