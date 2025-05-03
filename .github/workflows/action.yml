@@ -26,7 +26,9 @@ jobs:
           UPX_PASSWORD: ${{ secrets.UPX_PASSWORD }}
           LOCAL_DIR: ./docs/
           REMOTE_DIR: /
-          
+      - name: Wait for 3 minutes
+        run: sleep 30 # 等待 30s，单位为秒
+        
       - name: 又拍云刷新
         uses: yiyungent/upyun-action@main
         with:
@@ -39,7 +41,7 @@ jobs:
         with:
           python-version: "3.10"
       - name: Wait for 3 minutes
-        run: sleep 180 # 等待 3 分钟，单位为秒
+        run: sleep 60 # 等待 90s，单位为秒
       - name: 多吉云刷新
         env:
             ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
