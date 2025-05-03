@@ -26,6 +26,13 @@ jobs:
           UPX_PASSWORD: ${{ secrets.UPX_PASSWORD }}
           LOCAL_DIR: ./docs/
           REMOTE_DIR: /
+          
+      - name: 又拍云刷新
+        uses: yiyungent/upyun-action@main
+        with:
+            upyun_username: ${{ secrets.UPYUN_USERNAME }}
+            upyun_password: ${{ secrets.UPYUN_PASSWORD }}
+            refresh_cache_urls: "https://blog.freeblock.cn/*"   
      
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
@@ -40,11 +47,4 @@ jobs:
         run: |
           pip install requests
           python .github/refresh-dogecloud.py
-        
-      - name: 又拍云刷新
-        uses: yiyungent/upyun-action@main
-        with:
-            upyun_username: ${{ secrets.UPYUN_USERNAME }}
-            upyun_password: ${{ secrets.UPYUN_PASSWORD }}
-            refresh_cache_urls: "https://blog.freeblock.cn/*"
             
