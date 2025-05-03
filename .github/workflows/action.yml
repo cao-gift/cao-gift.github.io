@@ -23,9 +23,9 @@ jobs:
           LOCAL_DIR: ./docs/
           REMOTE_DIR: /
           
-      - name: Upyun Refresh
-        uses: yiyungent/upyun-action@main
-        with:
-            upyun_username: ${{ secrets.UPYUN_USERNAME }}
-            upyun_password: ${{ secrets.UPYUN_PASSWORD }}
-            refresh_cache_urls: "https://blog.freeblock.cn/*"    
+    #  - name: Upyun Refresh
+     #   uses: yiyungent/upyun-action@main
+     #   with:
+       #     upyun_username: ${{ secrets.UPYUN_USERNAME }}
+         #   upyun_password: ${{ secrets.UPYUN_PASSWORD }}
+         #   refresh_cache_urls: "https://blog.freeblock.cn/*"    
