@@ -45,7 +45,7 @@ def dogecloud_api(api_path, data={}, json_mode=False):
 
 
 url_list = [
-    "https://cpen.top/",
+    "https://blog.freeblock.cn/*",
 ]
 
 api = dogecloud_api('/cdn/refresh/add.json', {
