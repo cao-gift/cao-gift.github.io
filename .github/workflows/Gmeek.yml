@@ -1,19 +1,16 @@
 name: build Gmeek
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
   issues:
     types: [opened, edited]
   schedule:
-    - cron: "20 16 * * *"
+    - cron: "0 16 * * *"
     
 jobs:
   build:
     name: Generate blog
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     if: ${{ github.event.repository.owner.id == github.event.sender.id || github.event_name == 'schedule' }}
     permissions: write-all
     steps:
@@ -71,24 +68,10 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'docs/.'
-      - name: deploy-upyun
-        uses: bwcxyk/upyun-upx-action@1.3
-        env:
-          UPX_SERVICENAME: ${{ secrets.UPX_SERVICENAME }}
-          UPX_OPERATOR: ${{ secrets.UPX_OPERATOR }}
-          UPX_PASSWORD: ${{ secrets.UPX_PASSWORD }}
-          LOCAL_DIR: ./docs/
-          REMOTE_DIR: /
-      - name: Upyun Refresh
-        uses: yiyungent/upyun-action@main
-        with:
-            upyun_username: ${{ secrets.UPYUN_USERNAME }}
-            upyun_password: ${{ secrets.UPYUN_PASSWORD }}
-            refresh_cache_urls: "https://blog.freeblock.cn/*"     
           
   deploy:
     name: Deploy blog
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: build
     permissions:
       contents: write
