@@ -1,11 +1,9 @@
 name: Add File to Bucket
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-  issues:
-    types: [opened, edited]
+  workflow_run:
+    workflows: [build Gmeek]
+    types:
+      - completed
 
 jobs:
   deploy:
