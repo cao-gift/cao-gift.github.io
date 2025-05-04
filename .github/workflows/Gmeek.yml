@@ -3,9 +3,9 @@ name: build Gmeek
 on:
   workflow_dispatch:
   issues:
-    types: [opened, edited]
+    types: [opened, edited,  closed, deleted, pinned, unpinned]
   schedule:
-    - cron: "0 16 * * *"
+    - cron: "0 18 31 * *"
     
 jobs:
   build:
