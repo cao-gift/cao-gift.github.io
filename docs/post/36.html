@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="github-light" data-light-theme="light_tritanopia" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://blog.freeblock.cn/primer.css' rel='stylesheet' />
+    <script src='https://blog.freeblock.cn/plugins/RonanTheme.js'></script><script type='text/javascript'>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, 'clarity', 'script', 'pss6qz1yjn');</script>
+    <link rel="icon" href="https://blog.freeblock.cn/avatar.webp">
+<meta name="description" content="备案域名建议部署到EdgeOne Pages（选择全球加速区，有中国大陆节点），未备案域名优先选择Netlify或者Vercel。">
+<meta property="og:title" content="Gmeek博客部署到EdgeOne Pages、vercel 、netlify、cloudflare pages平台">
+<meta property="og:description" content="备案域名建议部署到EdgeOne Pages（选择全球加速区，有中国大陆节点），未备案域名优先选择Netlify或者Vercel。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://blog.freeblock.cn/post/36.html">
+<meta property="og:image" content="https://blog.freeblock.cn/avatar.webp">
+<title>Gmeek博客部署到EdgeOne Pages、vercel 、netlify、cloudflare pages平台</title>
+
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">Gmeek博客部署到EdgeOne Pages、vercel 、netlify、cloudflare pages平台</h1>
+<div class="title-right">
+    <a href="https://blog.freeblock.cn" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题"style="display:none;">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><p>备案域名建议部署到EdgeOne Pages（选择全球加速区，有中国大陆节点），未备案域名优先选择Netlify或者Vercel。</p>
+<h3>部署到EdgeOne Pages</h3>
+<h4>1.打开EdgeOne Pages</h4>
+<p>打开<a href="https://console.cloud.tencent.com/edgeone/pages" rel="nofollow">网址</a>，登录腾讯云账号</p>
+<h4>2.部署项目</h4>
+<p>点击导入项目，授权GitHub账号</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/43a6ff0ac6d30b8a3454bb7b7ac3f454ffe830b1db8eaadf568d2958a9f2a634/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313030343730332e706e67"><img src="https://camo.githubusercontent.com/43a6ff0ac6d30b8a3454bb7b7ac3f454ffe830b1db8eaadf568d2958a9f2a634/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313030343730332e706e67" alt="1" data-canonical-src="https://t.freeblock.cn/2025/07/31/20250731141004703.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/7b6a468fb9785fbe2f943ac5fe5a8c68ddd3556c5ff7c2d670b5711ef230b8ed/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313031343736372e6a7067"><img src="https://camo.githubusercontent.com/7b6a468fb9785fbe2f943ac5fe5a8c68ddd3556c5ff7c2d670b5711ef230b8ed/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313031343736372e6a7067" alt="img" data-canonical-src="https://t.freeblock.cn/2025/07/31/20250731141014767.jpg" style="max-width: 100%;"></a></p>
+<p>找到自己的博客仓库，备案域名可选择全球加速区（含中国大陆）</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/958ff14b9245762ce563d77ca87f7e54686c024c32653549ae1559c74643619a/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313032323035342e706e67"><img src="https://camo.githubusercontent.com/958ff14b9245762ce563d77ca87f7e54686c024c32653549ae1559c74643619a/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313032323035342e706e67" alt="2" data-canonical-src="https://t.freeblock.cn/2025/07/31/20250731141022054.png" style="max-width: 100%;"></a></p>
+<p>根目录填写**./docs** 然后点击开始部署。平台就开始构建部署了。稍等一会即提示部署成功！</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/4a08069a941dfa36b7b882db035fe1264c48a0d547d2a2ed92c6d5dc55e0497a/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313032363237332e706e67"><img src="https://camo.githubusercontent.com/4a08069a941dfa36b7b882db035fe1264c48a0d547d2a2ed92c6d5dc55e0497a/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313032363237332e706e67" alt="3" data-canonical-src="https://t.freeblock.cn/2025/07/31/20250731141026273.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/1544d1d18702fc84ea02cc1902927ebfcd7f8c992e3bab92f1d6358f2e7dfaf9/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313231323036332e6a7067"><img src="https://camo.githubusercontent.com/1544d1d18702fc84ea02cc1902927ebfcd7f8c992e3bab92f1d6358f2e7dfaf9/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313231323036332e6a7067" alt="img" data-canonical-src="https://t.freeblock.cn/2025/07/31/20250731141212063.jpg" style="max-width: 100%;"></a></p>
+<h4>绑定域名</h4>
+<p>1.点击【自定义域名】，填写要绑定的域名，点击【下一步】</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/939ca411837e0697d42a586363f6fa574d44dcebf210a90fa5e0c5879f08376e/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313033333334332e6a7067"><img src="https://camo.githubusercontent.com/939ca411837e0697d42a586363f6fa574d44dcebf210a90fa5e0c5879f08376e/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313033333334332e6a7067" alt="img" data-canonical-src="https://t.freeblock.cn/2025/07/31/20250731141033343.jpg" style="max-width: 100%;"></a></p>
+<p>2.页面给出域名解析的记录信息，按提示完成解析即可！</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/7dd1b238dabfc931043f38531a44b757bdc6b586ffd0641df311d8fbdadd5f3a/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313034303534372e6a7067"><img src="https://camo.githubusercontent.com/7dd1b238dabfc931043f38531a44b757bdc6b586ffd0641df311d8fbdadd5f3a/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313034303534372e6a7067" alt="img" data-canonical-src="https://t.freeblock.cn/2025/07/31/20250731141040547.jpg" style="max-width: 100%;"></a></p>
+<h3>部署到Vercel</h3>
+<h4>准备账号</h4>
+<p>注册登陆<a href="https://vercel.com/" rel="nofollow">Vercel</a> ，这里推荐选择Github账号登录。</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/5bbdf10a0f15d79b834955c3d339f0868f2c63b23a0a39b9b688d1f5738306d9/68747470733a2f2f7777772e6e6f74696f6e2e736f2f696d6167652f687474707325334125324625324673332d75732d776573742d322e616d617a6f6e6177732e636f6d2532467365637572652e6e6f74696f6e2d7374617469632e636f6d25324666376134613833312d343634342d343136632d393131642d306333636263383231366662253246556e7469746c65642e706e673f7461626c653d626c6f636b2669643d32353835653463622d363433362d346537342d616164662d64353866656539393838643126743d32353835653463622d363433362d346537342d616164662d6435386665653939383864312677696474683d3632342663616368653d7632"><img src="https://camo.githubusercontent.com/5bbdf10a0f15d79b834955c3d339f0868f2c63b23a0a39b9b688d1f5738306d9/68747470733a2f2f7777772e6e6f74696f6e2e736f2f696d6167652f687474707325334125324625324673332d75732d776573742d322e616d617a6f6e6177732e636f6d2532467365637572652e6e6f74696f6e2d7374617469632e636f6d25324666376134613833312d343634342d343136632d393131642d306333636263383231366662253246556e7469746c65642e706e673f7461626c653d626c6f636b2669643d32353835653463622d363433362d346537342d616164662d64353866656539393838643126743d32353835653463622d363433362d346537342d616164662d6435386665653939383864312677696474683d3632342663616368653d7632" alt="notion image" data-canonical-src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Ff7a4a831-4644-416c-911d-0c3cbc8216fb%2FUntitled.png?table=block&amp;id=2585e4cb-6436-4e74-aadf-d58fee9988d1&amp;t=2585e4cb-6436-4e74-aadf-d58fee9988d1&amp;width=624&amp;cache=v2" style="max-width: 100%;"></a></p>
+<h4>导入仓库</h4>
+<p>点击<a href="https://vercel.com/new" rel="nofollow">链接</a>创建新项目<br>
+在代码仓库列表中选择导入博客仓库</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/1e318883973cbcc1682afda3ae6b450dd99a35f8da58880812fb8100d0dd4490/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313035353432322e706e67"><img src="https://camo.githubusercontent.com/1e318883973cbcc1682afda3ae6b450dd99a35f8da58880812fb8100d0dd4490/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313035353432322e706e67" alt="QQ20250731-134919" data-canonical-src="https://t.freeblock.cn/2025/07/31/20250731141055422.png" style="max-width: 100%;"></a></p>
+<p>Root Directory配置如图</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/1648f7f9a2eda78aa9c733d689503f0ba96f098f9aa37e860e3d8aa7309dda95/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313331323430302e706e67"><img src="https://camo.githubusercontent.com/1648f7f9a2eda78aa9c733d689503f0ba96f098f9aa37e860e3d8aa7309dda95/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313331323430302e706e67" alt="8png" data-canonical-src="https://t.freeblock.cn/2025/07/31/20250731141312400.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/c64d82f8500ea92cec6a30b637c2309e8b7941445e1478c61282c482b32ae600/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313130323834362e706e67"><img src="https://camo.githubusercontent.com/c64d82f8500ea92cec6a30b637c2309e8b7941445e1478c61282c482b32ae600/68747470733a2f2f742e66726565626c6f636b2e636e2f323032352f30372f33312f32303235303733313134313130323834362e706e67" alt="9" data-canonical-src="https://t.freeblock.cn/2025/07/31/20250731141102846.png" style="max-width: 100%;"></a></p>
+<h4>自定义域名</h4>
+<p>在Vercel控制面板中找到<code class="notranslate">Setting</code>→<code class="notranslate">Domains</code>→<code class="notranslate">Add</code>，在这里可以指定当前项目的绑定域名，一个项目可以绑定多个域名。</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/50c7ccc9ef517daa850330651b28096dc54b15e0b56e38e600bc771c0b0375bd/68747470733a2f2f696d672e6e6f74696f6e75736572636f6e74656e742e636f6d2f73332f70726f642d66696c65732d73656375726525324636633039366234342d626562392d343865652d386639322d31656664646534376633613325324662653065656164302d316565342d343436632d393963352d396364343130373533646137253246556e7469746c65642e706e672f73697a652f773d3333363f6578703d31373534303237383330267369673d554d72306332736e63535f3373572d2d50315876654f7338365a424d76436535476552754c6a4e7764364d2669643d37626534613736622d663231662d346363642d613136392d643132666462663238386432267461626c653d626c6f636b267573657249643d61333666383539622d396232642d346139362d383631612d323265306139343633303330"><img src="https://camo.githubusercontent.com/50c7ccc9ef517daa850330651b28096dc54b15e0b56e38e600bc771c0b0375bd/68747470733a2f2f696d672e6e6f74696f6e75736572636f6e74656e742e636f6d2f73332f70726f642d66696c65732d73656375726525324636633039366234342d626562392d343865652d386639322d31656664646534376633613325324662653065656164302d316565342d343436632d393963352d396364343130373533646137253246556e7469746c65642e706e672f73697a652f773d3333363f6578703d31373534303237383330267369673d554d72306332736e63535f3373572d2d50315876654f7338365a424d76436535476552754c6a4e7764364d2669643d37626534613736622d663231662d346363642d613136392d643132666462663238386432267461626c653d626c6f636b267573657249643d61333666383539622d396232642d346139362d383631612d323265306139343633303330" alt="img" data-canonical-src="https://img.notionusercontent.com/s3/prod-files-secure%2F6c096b44-beb9-48ee-8f92-1efdde47f3a3%2Fbe0eead0-1ee4-446c-99c5-9cd410753da7%2FUntitled.png/size/w=336?exp=1754027830&amp;sig=UMr0c2sncS_3sW--P1XveOs86ZBMvCe5GeRuLjNwd6M&amp;id=7be4a76b-f21f-4ccd-a169-d12fdbf288d2&amp;table=block&amp;userId=a36f859b-9b2d-4a96-861a-22e0a9463030" style="max-width: 100%;"></a></p>
+<p>输入域名,并Add之后，如果看到下图中的提示（Invalid Configuration）👇, 说明域名已经添加，但需要根据提示添加CNAME或Nameserver的方式激活它，图中所示是要在域名后台添加一条CNAME类型的解析，参数名<code class="notranslate">hexo</code>，值为<code class="notranslate">cname.vercel-dns.com</code>。</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/4e02c1a7b0fd0796896a76f1f56bd1f6fd31da98b2e7e206674b0216737a9973/68747470733a2f2f7777772e6e6f74696f6e2e736f2f696d6167652f687474707325334125324625324673332d75732d776573742d322e616d617a6f6e6177732e636f6d2532467365637572652e6e6f74696f6e2d7374617469632e636f6d25324638373939326239622d386439302d346565302d623230322d653738616261313064346161253246556e7469746c65642e706e673f7461626c653d626c6f636b2669643d63313132376566312d656664662d346639382d383139372d36353566316132663061333426743d63313132376566312d656664662d346639382d383139372d3635356631613266306133342677696474683d3338342663616368653d7632"><img src="https://camo.githubusercontent.com/4e02c1a7b0fd0796896a76f1f56bd1f6fd31da98b2e7e206674b0216737a9973/68747470733a2f2f7777772e6e6f74696f6e2e736f2f696d6167652f687474707325334125324625324673332d75732d776573742d322e616d617a6f6e6177732e636f6d2532467365637572652e6e6f74696f6e2d7374617469632e636f6d25324638373939326239622d386439302d346565302d623230322d653738616261313064346161253246556e7469746c65642e706e673f7461626c653d626c6f636b2669643d63313132376566312d656664662d346639382d383139372d36353566316132663061333426743d63313132376566312d656664662d346639382d383139372d3635356631613266306133342677696474683d3338342663616368653d7632" alt="notion image" data-canonical-src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F87992b9b-8d90-4ee0-b202-e78aba10d4aa%2FUntitled.png?table=block&amp;id=c1127ef1-efdf-4f98-8197-655f1a2f0a34&amp;t=c1127ef1-efdf-4f98-8197-655f1a2f0a34&amp;width=384&amp;cache=v2" style="max-width: 100%;"></a></p>
+<p>这里推荐使用CNAME绑定。请按文档后续步骤配置对应的Cname解析。</p>
+<h4>Vercel域名加速</h4>
+<p>vercel.app因为被大量使用，自然而然被墙掉了，不过好在 Vercel 官方提供了单独的 IP 和 CNAME 地址给大家，对于国内的用户来说，配置一下单独的解析，依然可以享受 Vercel 提供的服务。</p>
+<p>将上述步骤中用到的 ip和 cname地址替换成以下内容即可：</p>
+<p>A记录地址：<code class="notranslate">76.223.126.88</code> 或 <code class="notranslate">76.76.21.98</code> 等</p>
+<p>CNAME 记录地址：<code class="notranslate">cname-china.vercel-dns.com</code></p>
+<p>当然，想省事还有另外的解决方案，例如国人开放的CDN项目：</p>
+<p><a href="https://xingpingcn.top/enhanced-faas-in-cn.html" rel="nofollow">提升部署在cloudflare、vercel或netlify的网站在中国国内的访问速度和稳定性</a></p>
+<h3>部署到netlify或者cloudflare Pages</h3>
+<p>方法大同小异，只需把根目录换成./docs 即可</p></div>
+<div style="font-size:small;margin-top:8px;float:right;">❤️ 转载文章请注明出处，谢谢！❤️</div>
+
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://blog.freeblock.cn">星源笔记</a></div>
+<div id="footer2"><span id="filingNum"><a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备2024101898号-1</a> • </span>
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if("08/16/2018"!=""){
+    var startSite=new Date("08/16/2018");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+
+
+
+
+
+
+
+</script>
+<script src='https://blog.freeblock.cn/plugins/ArticleTOC.js'></script><script src='https://blog.freeblock.cn/plugins/lightbox.js'></script><script>document.querySelectorAll('a').forEach(anchor => {const img = anchor.querySelector('img');if (img && img.hasAttribute('data-canonical-src')) {const canonicalSrc = img.getAttribute('data-canonical-src');anchor.setAttribute('href', canonicalSrc);img.setAttribute('src', canonicalSrc);img.removeAttribute('data-canonical-src');}});</script>
+
+</html>
