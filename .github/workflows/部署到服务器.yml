@@ -1,17 +1,29 @@
-name: scp files
+name: 部署到服务器
 on: 
- workflow_dispatch:
+   workflow_run:
+     workflows: [build Gmeek]
+     types:
+       - completed
+   workflow_dispatch:
+   issues:
+    types: [opened, edited,  closed, deleted, pinned, unpinned]   
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Copy files via SSH
-        uses: appleboy/scp-action@v1
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: 22
-          source: ./docs
-          target: /www/wwwroot/blog.freeblock.cn
+     - name: Get changed files
+       id: changed-files
+       uses: tj-actions/changed-files@v35
+       with:
+         since_last_remote_commit: true
+         separator: ","
+
+     - name: Copy changed files to server
+       uses: appleboy/scp-action@v1
+       with:
+         host: ${{ secrets.HOST }}
+         username: ${{ secrets.USERNAME }}
+         password: ${{ secrets.PASSWORD }}
+         port: 22
+         source: ./docs
+         target: /www/wwwroot/blog.freeblock.cn
