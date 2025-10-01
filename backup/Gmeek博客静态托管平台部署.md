@@ -40,7 +40,7 @@
 
 注册登陆[Vercel](https://vercel.com/) ，这里推荐选择Github账号登录。
 
-![notion image](https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Ff7a4a831-4644-416c-911d-0c3cbc8216fb%2FUntitled.png?table=block&id=2585e4cb-6436-4e74-aadf-d58fee9988d1&t=2585e4cb-6436-4e74-aadf-d58fee9988d1&width=624&cache=v2)
+![Untitled](https://t.freeblock.cn/2025/10/01/20251001215701513.webp)
 
 #### 导入仓库
 
@@ -59,11 +59,11 @@ Root Directory配置如图
 
 在Vercel控制面板中找到`Setting`→`Domains`→`Add`，在这里可以指定当前项目的绑定域名，一个项目可以绑定多个域名。
 
-![img](https://img.notionusercontent.com/s3/prod-files-secure%2F6c096b44-beb9-48ee-8f92-1efdde47f3a3%2Fbe0eead0-1ee4-446c-99c5-9cd410753da7%2FUntitled.png/size/w=336?exp=1754027830&sig=UMr0c2sncS_3sW--P1XveOs86ZBMvCe5GeRuLjNwd6M&id=7be4a76b-f21f-4ccd-a169-d12fdbf288d2&table=block&userId=a36f859b-9b2d-4a96-861a-22e0a9463030)
+![Untitled (1)](https://t.freeblock.cn/2025/10/01/20251001214409924.webp)
 
 输入域名,并Add之后，如果看到下图中的提示（Invalid Configuration）👇, 说明域名已经添加，但需要根据提示添加CNAME或Nameserver的方式激活它，图中所示是要在域名后台添加一条CNAME类型的解析，参数名`hexo`，值为`cname.vercel-dns.com`。
 
-![notion image](https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F87992b9b-8d90-4ee0-b202-e78aba10d4aa%2FUntitled.png?table=block&id=c1127ef1-efdf-4f98-8197-655f1a2f0a34&t=c1127ef1-efdf-4f98-8197-655f1a2f0a34&width=384&cache=v2)
+![img](https://t.freeblock.cn/2025/10/01/20251001214205286.webp)
 
 这里推荐使用CNAME绑定。请按文档后续步骤配置对应的Cname解析。
 
@@ -83,4 +83,4 @@ CNAME 记录地址：`cname-china.vercel-dns.com`
 
 ### 部署到netlify或者cloudflare Pages
 
-方法大同小异，只需把根目录换成./docs 即可
+方法大同小异，只需把根目录换成***./docs***即可
