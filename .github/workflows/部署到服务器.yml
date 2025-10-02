@@ -17,4 +17,4 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 22
           source: ./docs
-          target: /www/wwwroot/blog.freeblock.cn
+          target: /home/web/html/blog.freeblock.cn
