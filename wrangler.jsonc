@@ -1,8 +1,8 @@
 {
-	"name": "fuwari",
+	"name": "caoblog",
 	"compatibility_date": "2025-08-11",
 	"assets": {
-		"directory": "./dist",
+		"directory": "./docs",
 		"not_found_handling": "404-page"
 	}
 }
