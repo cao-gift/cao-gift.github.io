@@ -1,7 +1,0 @@
-{
-	"name": "fuwari",
-	"assets": {
-		"directory": "./docs",
-		"not_found_handling": "404-page"
-	}
-}
