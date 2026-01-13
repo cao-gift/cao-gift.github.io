@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let footer = document.getElementById('footer');
         let sponsorInfo = document.createElement('div');
         sponsorInfo.className = 'sponsor-info';
-        sponsorInfo.innerHTML = '本站由 <a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://gcore.jsdelivr.net/gh/YukiNoUta/cdn-static@main/blog/svg/upyun.svg" width="45" height="13" style="fill: currentColor;"></a> 提供 CDN 加速/云存储服务';
+        sponsorInfo.innerHTML = '本站由 <a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="/img/logo.png" width="45" height="13" style="fill: currentColor;"></a> 提供 CDN 加速/云存储服务';
         footer.insertBefore(sponsorInfo, footer.firstChild);
     }
 
