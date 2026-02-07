@@ -135,7 +135,9 @@ document.addEventListener('DOMContentLoaded', function() {
             display: unset;
         }
 
-        /* 头部：头像居中在上，名字居中在下，图标在名字右侧（参考你截图） */
+        /* 头部：头像居中在上，名字居中在下，图标在名字右侧（参考你截图）
+           说明：为避免部分浏览器对 display: contents 的兼容问题，这里配合 JS
+           把头像 img 从 h1 里挪到 header 的直接子节点。 */
         #header {
             height: 300px;
             position: relative;
@@ -147,20 +149,14 @@ document.addEventListener('DOMContentLoaded', function() {
             text-align: center;
         }
 
-        /* 让 h1 的子元素直接参与 grid 排版 */
-        #header h1 {
-            margin: 0;
-            display: contents;
-        }
-
-        /* 头像 */
-        #header h1 .avatar {
+        /* 头像（header 直接子节点） */
+        #header > .avatar {
             grid-column: 2;
             grid-row: 1;
             justify-self: center;
             align-self: center;
-            width: 200px;
-            height: 200px;
+            width: 150px;
+            height: 150px;
             display: block;
             margin: 0;
             border-radius: 50%;
@@ -168,17 +164,22 @@ document.addEventListener('DOMContentLoaded', function() {
             box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
         }
 
-        /* 名字（大字居中） */
-        #header h1 a.blogTitle {
+        #header > h1 {
             grid-column: 2;
             grid-row: 2;
-            justify-self: center;
-            align-self: center;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 名字（大字居中） */
+        #header > h1 a.blogTitle {
             margin: 10px 0 0 0 !important;
             font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-            font-weight: 800;
+            font-weight: 600;
             letter-spacing: 0.02em;
-            font-size: clamp(44px, 5.4vw, 64px);
+            font-size: clamp(44px, 3.2vw, 40px);
             line-height: 1.05;
             text-decoration: none;
             color: transparent;
@@ -307,16 +308,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 grid-template-rows: auto auto auto;
                 padding: 8px 2px 0;
             }
-            #header h1 .avatar {
+            #header > .avatar {
                 grid-column: 1;
                 grid-row: 1;
                 width: clamp(92px, 24vw, 120px);
                 height: clamp(92px, 24vw, 120px);
                 border-width: 3px;
             }
-            #header h1 a.blogTitle {
-                grid-column: 1;
-                grid-row: 2;
+            #header > h1 { grid-column: 1; grid-row: 2; }
+            #header > h1 a.blogTitle {
                 font-size: clamp(30px, 10vw, 40px);
                 margin-top: 8px !important;
             }
@@ -368,6 +368,21 @@ document.addEventListener('DOMContentLoaded', function() {
         ensureBackgroundOverlay();
         ensureGlassShell();
 
+        // 头部结构：把头像 img 从 h1 里挪到 header 直接子节点（配合 grid 布局）
+        try {
+            const header = document.getElementById('header');
+            const h1 = header && header.querySelector('h1');
+            if (header && h1) {
+                const avatar = h1.querySelector('img.avatar');
+                const title = h1.querySelector('a.blogTitle');
+                if (avatar) header.insertBefore(avatar, h1);
+                if (title) {
+                    h1.innerHTML = '';
+                    h1.appendChild(title);
+                }
+            }
+        } catch (e) {}
+2
         // 添加赞助商信息到页脚
         let footer = document.getElementById('footer');
         let sponsorInfo = document.createElement('div');
