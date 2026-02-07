@@ -37,6 +37,7 @@ function createTOC() {
 
 function highlightTOC() {
     const tocLinks = document.querySelectorAll('.toc-link');
+    const tocElement = document.querySelector('.toc');
     const fromTop = window.scrollY + 10;
 
     let currentHeading = null;
@@ -55,11 +56,13 @@ function highlightTOC() {
     if (currentHeading) {
         currentHeading.classList.add('active-toc');
 
-        // 确保当前高亮的目录项在可视区域的中间
-        currentHeading.scrollIntoView({
-            block: 'center',   // 确保当前高亮项滚动到视图中间位置
-            inline: 'nearest'  // 可选，保持水平滚动条不动
-        });
+        // 只滚动目录自身，避免 scrollIntoView 影响页面滚动（某些环境会导致滚动跳跃/锁死）
+        if (tocElement) {
+            const linkTop = currentHeading.offsetTop;
+            const linkHeight = currentHeading.offsetHeight || 0;
+            const targetTop = linkTop - (tocElement.clientHeight / 2) + (linkHeight / 2);
+            tocElement.scrollTo({ top: targetTop, behavior: 'auto' });
+        }
     }
 }
 
