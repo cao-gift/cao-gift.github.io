@@ -138,10 +138,11 @@ document.addEventListener('DOMContentLoaded', function() {
         #header {
             height: 300px;
             position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center;
         }
 
         /* 头像 + 名字：用正常流式布局居中（更稳） */
@@ -154,6 +155,8 @@ document.addEventListener('DOMContentLoaded', function() {
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            width: 100%;
         }
 
         /* 右上角按钮组 */
@@ -172,7 +175,12 @@ document.addEventListener('DOMContentLoaded', function() {
         #header h1 a {
             margin-top: 30px;
             font-family: fantasy;
-            margin-left: unset;
+            margin-left: 0 !important;
+        }
+
+        #header h1 .avatar {
+            display: block;
+            margin: 0 auto;
         }
 
         html {    
