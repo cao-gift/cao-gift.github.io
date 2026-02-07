@@ -12,7 +12,7 @@ function createTOC() {
     tocElement.classList.add('show');
         
     const contentContainer = document.querySelector('.markdown-body');
-    contentContainer.appendChild(tocElement);
+    if (!contentContainer) return;
 
     const headings = contentContainer.querySelectorAll('h1, h2, h3, h4, h5, h6');
     headings.forEach(heading => {
@@ -32,7 +32,8 @@ function createTOC() {
 
     
     tocElement.insertAdjacentHTML('beforeend', '<a class="toc-end" onclick="window.scrollTo({top:0,behavior: \'smooth\'});">返回顶部</a>');
-    contentContainer.prepend(tocElement);
+    // 放到 body 顶层，避免被玻璃容器(backdrop-filter)影响 fixed 定位
+    document.body.appendChild(tocElement);
 }
 
 function highlightTOC() {
@@ -92,8 +93,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         .toc {
             position: fixed;
-            bottom: 60px;
-            right: 20px;
+            bottom: calc(60px + env(safe-area-inset-bottom));
+            right: calc(20px + env(safe-area-inset-right));
             width: 250px;
             max-height: 70vh;
             background-color: var(--toc-bg);
@@ -134,8 +135,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         .toc-icon {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: calc(20px + env(safe-area-inset-bottom));
+            right: calc(20px + env(safe-area-inset-right));
             cursor: pointer;
             font-size: 24px;
             background-color: var(--toc-icon-bg);
