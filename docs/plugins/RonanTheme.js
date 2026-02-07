@@ -137,19 +137,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
         #header {
             height: 300px;
-            position: relative; /* 让头像/标题绝对定位相对 header 居中 */
-        }
-
-        #header h1 {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
-            top: 0;
+            justify-content: center;
+        }
+
+        /* 头像 + 名字：用正常流式布局居中（更稳） */
+        #header h1 {
+            position: relative;
+            left: auto;
+            top: auto;
+            transform: none;
             margin: 0;
-            width: max-content;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 右上角按钮组 */
+        #header .title-right {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            margin: 0;
         }
 
         .avatar {
