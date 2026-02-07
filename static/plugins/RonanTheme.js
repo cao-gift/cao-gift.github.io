@@ -135,36 +135,70 @@ document.addEventListener('DOMContentLoaded', function() {
             display: unset;
         }
 
+        /* 头部：头像居中在上，名字居中在下，图标在名字右侧（参考你截图） */
         #header {
             height: 300px;
             position: relative;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            justify-content: center !important;
+            display: grid !important;
+            grid-template-columns: 1fr auto 1fr;
+            grid-template-rows: auto auto;
+            align-items: center;
+            padding: 10px 6px 0;
             text-align: center;
         }
 
-        /* 头像 + 名字：用正常流式布局居中（更稳） */
+        /* 让 h1 的子元素直接参与 grid 排版 */
         #header h1 {
-            position: relative;
-            left: auto;
-            top: auto;
-            transform: none;
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
+            display: contents;
         }
 
-        /* 右上角按钮组 */
-        #header .title-right {
-            position: absolute;
-            top: 14px;
-            right: 14px;
+        /* 头像 */
+        #header h1 .avatar {
+            grid-column: 2;
+            grid-row: 1;
+            justify-self: center;
+            align-self: center;
+            width: 200px;
+            height: 200px;
+            display: block;
             margin: 0;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.72);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+        }
+
+        /* 名字（大字居中） */
+        #header h1 a.blogTitle {
+            grid-column: 2;
+            grid-row: 2;
+            justify-self: center;
+            align-self: center;
+            margin: 10px 0 0 0 !important;
+            font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            font-size: clamp(44px, 5.4vw, 64px);
+            line-height: 1.05;
+            text-decoration: none;
+            color: transparent;
+            background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(132, 170, 255, 0.98));
+            -webkit-background-clip: text;
+            background-clip: text;
+            text-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        /* 图标：放在名字这一行的右侧 */
+        #header .title-right {
+            grid-column: 3;
+            grid-row: 2;
+            justify-self: end;
+            align-self: center;
+            margin: 0 !important;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            opacity: 0.9;
         }
 
         .avatar {
@@ -172,16 +206,8 @@ document.addEventListener('DOMContentLoaded', function() {
             height: 200px;
         }
 
-        #header h1 a {
-            margin-top: 30px;
-            font-family: fantasy;
-            margin-left: 0 !important;
-        }
-
-        #header h1 .avatar {
-            display: block;
-            margin: 0 auto;
-        }
+        /* 旧规则兜底：避免影响 .blogTitle 的排版 */
+        #header h1 a { margin-left: 0 !important; }
 
         html {    
             background: url('${bgImageDesktopUrl}') no-repeat center center fixed;
@@ -274,9 +300,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 padding: clamp(14px, 3.8vw, 18px);
                 border-radius: 16px;
             }
-            #header { height: clamp(170px, 26vh, 220px); }
-            .avatar { width: clamp(96px, 22vw, 120px); height: clamp(96px, 22vw, 120px); }
-            #header h1 a { margin-top: clamp(10px, 1.8vh, 14px); font-size: clamp(26px, 8vw, 32px); }
+            /* 手机端：图标下移居中，整体更紧凑 */
+            #header {
+                height: auto;
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+                padding: 8px 2px 0;
+            }
+            #header h1 .avatar {
+                grid-column: 1;
+                grid-row: 1;
+                width: clamp(92px, 24vw, 120px);
+                height: clamp(92px, 24vw, 120px);
+                border-width: 3px;
+            }
+            #header h1 a.blogTitle {
+                grid-column: 1;
+                grid-row: 2;
+                font-size: clamp(30px, 10vw, 40px);
+                margin-top: 8px !important;
+            }
+            #header .title-right {
+                grid-column: 1;
+                grid-row: 3;
+                justify-self: center;
+                margin-top: 8px !important;
+            }
         }
 
         /* 主页博客列表圆角边框 */
