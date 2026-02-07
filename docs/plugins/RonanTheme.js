@@ -137,6 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         #header {
             height: 300px;
+            position: relative; /* 让头像/标题绝对定位相对 header 居中 */
         }
 
         #header h1 {
@@ -146,6 +147,9 @@ document.addEventListener('DOMContentLoaded', function() {
             display: flex;
             flex-direction: column;
             align-items: center;
+            top: 0;
+            margin: 0;
+            width: max-content;
         }
 
         .avatar {
