@@ -572,7 +572,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 region: "cn",
             };
             // 注意：这里用相对路径，兼容站点部署在子路径（例如 /docs/）的情况
-            const esaImgPluginUrl = absUrl('ESAAIImageCaptcha.js');
+            const esaImgPluginUrl = absUrl('../plugins/ESAAIImageCaptcha.js');
             loadScriptOnce('esa-ai-image-captcha', esaImgPluginUrl);
 
             // 可视化排障：1.5s 内没看到插件标记，直接在正文顶部提示“脚本未加载/路径错误”
