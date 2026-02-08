@@ -1,26 +1,4 @@
-/**
- * ESA AI 验证码（AliyunCaptcha）- 文章图片加载保护插件
- *
- * 目标：
- * - 仅在“文章页”且存在图片时生效
- * - 未验证：文章文字可读，但图片全部不加载/不显示
- * - 验证成功：一次性恢复本篇文章所有图片
- * - 一篇文章只需要验证一次（sessionStorage 级别，默认 80s 内复用）
- *
- * 依赖：
- * - 按文档要求动态加载 AliyunCaptcha.js，并调用 window.initAliyunCaptcha
- *   https://help.aliyun.com/zh/edge-security-acceleration/esa/user-guide/get-started-with-ai-captchas
- *
- * 配置（建议在全站脚本里统一设置，例如 RonanTheme.js 注入）：
- * window.ESAAIImageCaptchaConfig = {
- *   prefix: "esa-xxxx",    // 必填：身份标
- *   sceneId: "xxxxxx",     // 必填：场景ID
- *   region: "cn",          // cn/sgp
- *   paramName: "captcha_verify_param", // ESA 验签参数名
- *   reuseMs: 80000,        // 复用时长（验证码验签有效期默认 90s，建议 < 90s）
- *   minDelayMs: 2200       // 文档建议：JS加载与验证请求间隔 >2s
- * }
- */
+
 (function () {
   'use strict';
 
@@ -560,9 +538,9 @@
     }
 
     ready = true;
-    setDesc('点击按钮完成验证后，将以懒加载方式加载本篇图片（节省流量）。');
+    setDesc('点击按钮完成验证后，将以懒加载方式加载本篇图片');
     setDebug('状态：就绪');
-    setButtonState(false, '验证并加载图片（懒加载）');
+    setButtonState(false, '验证并加载图片');
   }
 
   function ensureCaptchaDomScaffold() {
