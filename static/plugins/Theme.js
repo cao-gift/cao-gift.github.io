@@ -16,11 +16,32 @@ document.addEventListener('DOMContentLoaded', function() {
     const THEME_BG_IMAGE_MOBILE = '/img/手机1.jpg'; // 建议换更小体积的图片
     const THEME_BG_VIDEO_MOBILE = '/img/手机2.mp4'; // 手机端如需视频可换更小体积
 
-    const themeScript = document.querySelector('script[src*="RonanTheme.js"]');
-    const siteRoot = themeScript ? new URL('..', themeScript.src).href : window.location.href;
+    // 更稳：优先使用 currentScript（某些环境 querySelector 取不到自己）
+    const themeScriptSrc = (document.currentScript && document.currentScript.src)
+        ? document.currentScript.src
+        : (function () {
+            try {
+                const s = document.querySelector('script[src*="RonanTheme.js"]');
+                return s ? s.src : '';
+            } catch (e) {
+                return '';
+            }
+        })();
+    const siteRoot = themeScriptSrc ? new URL('..', themeScriptSrc).href : window.location.href;
 
     function absUrl(relPath) {
         return new URL(relPath, siteRoot).href;
+    }
+
+    function loadScriptOnce(id, src) {
+        try {
+            if (document.getElementById(id)) return;
+            const s = document.createElement('script');
+            s.id = id;
+            s.src = src;
+            s.async = true;
+            document.head.appendChild(s);
+        } catch (e) {}
     }
 
     const bgImageDesktopUrl = absUrl(THEME_BG_IMAGE_DESKTOP);
@@ -540,6 +561,34 @@ document.addEventListener('DOMContentLoaded', function() {
         sponsorInfo.className = 'sponsor-info';
         sponsorInfo.innerHTML = '本站由 <a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="../img/logo.png" width="45" height="13" style="fill: currentColor;"></a> 提供 CDN 加速/云存储服务';
         footer.insertBefore(sponsorInfo, footer.firstChild);
+
+        // ESA AI 验证码：仅保护“文章正文图片”，验证成功才加载（本篇一次即可）
+        if (currentUrl.includes('/post/')) {
+            window.ESAAIImageCaptchaConfig = window.ESAAIImageCaptchaConfig || {
+                // 必填：从 ESA 控制台获取（身份标/场景ID）
+                prefix: "esa-pgrds6as5i",
+                sceneId: "1nux88n8",
+                // 可选：cn（中国内地）/sgp（新加坡）
+                region: "cn",
+            };
+            // 注意：这里用相对路径，兼容站点部署在子路径（例如 /docs/）的情况
+            const esaImgPluginUrl = absUrl('ESAAIImageCaptcha.js');
+            loadScriptOnce('esa-ai-image-captcha', esaImgPluginUrl);
+
+            // 可视化排障：1.5s 内没看到插件标记，直接在正文顶部提示“脚本未加载/路径错误”
+            setTimeout(function () {
+                try {
+                    const flag = document.documentElement.getAttribute('data-esa-img-plugin');
+                    if (flag) return;
+                    const md = document.querySelector('.markdown-body');
+                    if (!md) return;
+                    const warn = document.createElement('div');
+                    warn.style.cssText = 'border:1px solid rgba(220,38,38,.35);background:rgba(254,226,226,.8);border-radius:12px;padding:10px 12px;margin:10px 0 16px;color:#7f1d1d;font-size:13px;';
+                    warn.innerHTML = 'ESA图片验证插件未加载成功。请检查脚本路径是否可访问：<br><code style="word-break:break-all;">' + esaImgPluginUrl + '</code>';
+                    md.insertBefore(warn, md.firstChild);
+                } catch (e) {}
+            }, 1500);
+        }
     } 
 
 
