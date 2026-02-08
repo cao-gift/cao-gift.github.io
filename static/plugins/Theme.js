@@ -170,12 +170,27 @@ document.addEventListener('DOMContentLoaded', function() {
             text-align: center;
         }
 
-        /* 头像（header 直接子节点） */
-        #header > .avatar {
+        /* 适配当前首页结构：
+           #header
+            ├─ .title-left (img.avatar + a.blogTitle)
+            └─ .title-right (buttons)
+         */
+        #header .title-left {
             grid-column: 2;
-            grid-row: 1;
+            grid-row: 1 / span 2;
             justify-self: center;
             align-self: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 0;
+            min-width: 0;
+        }
+
+        /* 头像（在 title-left 内） */
+        #header .title-left .avatar {
             width: 150px;
             height: 150px;
             display: block;
@@ -185,22 +200,13 @@ document.addEventListener('DOMContentLoaded', function() {
             box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
         }
 
-        #header > h1 {
-            grid-column: 2;
-            grid-row: 2;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
         /* 名字（大字居中） */
-        #header > h1 a.blogTitle {
-            margin: 10px 0 0 0 !important;
+        #header .title-left a.blogTitle {
+            margin: 0 !important;
             font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
             font-weight: 600;
             letter-spacing: 0.02em;
-            font-size: clamp(44px, 3.2vw, 40px);
+            font-size: clamp(40px, 3.2vw, 44px);
             line-height: 1.05;
             text-decoration: none;
             color: transparent;
@@ -222,14 +228,6 @@ document.addEventListener('DOMContentLoaded', function() {
             align-items: center;
             opacity: 0.9;
         }
-
-        .avatar {
-            width: 200px;
-            height: 200px;
-        }
-
-        /* 旧规则兜底：避免影响 .blogTitle 的排版 */
-        #header h1 a { margin-left: 0 !important; }
 
         html {    
             background: url('${bgImageDesktopUrl}') no-repeat center center fixed;
@@ -329,17 +327,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 grid-template-rows: auto auto auto;
                 padding: 8px 2px 0;
             }
-            #header > .avatar {
+            #header .title-left {
                 grid-column: 1;
-                grid-row: 1;
+                grid-row: 1 / span 2;
+                gap: 8px;
+            }
+            #header .title-left .avatar {
                 width: clamp(92px, 24vw, 120px);
                 height: clamp(92px, 24vw, 120px);
                 border-width: 3px;
             }
-            #header > h1 { grid-column: 1; grid-row: 2; }
-            #header > h1 a.blogTitle {
+            #header .title-left a.blogTitle {
                 font-size: clamp(30px, 10vw, 40px);
-                margin-top: 8px !important;
             }
             #header .title-right {
                 grid-column: 1;
@@ -389,21 +388,6 @@ document.addEventListener('DOMContentLoaded', function() {
         ensureBackgroundOverlay();
         ensureGlassShell();
 
-        // 头部结构：把头像 img 从 h1 里挪到 header 直接子节点（配合 grid 布局）
-        try {
-            const header = document.getElementById('header');
-            const h1 = header && header.querySelector('h1');
-            if (header && h1) {
-                const avatar = h1.querySelector('img.avatar');
-                const title = h1.querySelector('a.blogTitle');
-                if (avatar) header.insertBefore(avatar, h1);
-                if (title) {
-                    h1.innerHTML = '';
-                    h1.appendChild(title);
-                }
-            }
-        } catch (e) {}
-2
         // 添加赞助商信息到页脚
         let footer = document.getElementById('footer');
         let sponsorInfo = document.createElement('div');
