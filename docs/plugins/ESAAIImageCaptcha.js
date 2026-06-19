@@ -227,6 +227,15 @@
         background: rgba(255, 255, 255, 0.94);
         transform: translateY(-1px);
       }
+      #esa-img-captcha-skip[disabled] {
+        opacity: 0.58;
+        cursor: not-allowed;
+        transform: none;
+      }
+      #esa-img-captcha-skip[disabled]:hover {
+        background: rgba(255, 255, 255, 0.72);
+        transform: none;
+      }
       #esa-img-captcha-debug {
         flex: 0 0 auto;
         max-width: 100%;
@@ -239,6 +248,28 @@
         font-weight: 700;
         line-height: 1.35;
         word-break: break-word;
+      }
+      .esa-img-captcha-banner[data-state="paused"] #esa-img-captcha-debug,
+      .esa-img-captcha-banner[data-state="cancelled"] #esa-img-captcha-debug {
+        border-color: rgba(180, 83, 9, 0.22);
+        background: rgba(245, 158, 11, 0.12);
+        color: #92400e;
+      }
+      .esa-img-captcha-banner[data-state="failed"] #esa-img-captcha-debug,
+      .esa-img-captcha-banner[data-state="error"] #esa-img-captcha-debug {
+        border-color: rgba(220, 38, 38, 0.18);
+        background: rgba(239, 68, 68, 0.10);
+        color: #b91c1c;
+      }
+      .esa-img-captcha-banner[data-state="success"] #esa-img-captcha-debug {
+        border-color: rgba(22, 163, 74, 0.18);
+        background: rgba(34, 197, 94, 0.10);
+        color: #166534;
+      }
+      .esa-img-captcha-banner[data-state="loaded"] #esa-img-captcha-debug {
+        border-color: rgba(22, 163, 74, 0.18);
+        background: rgba(34, 197, 94, 0.10);
+        color: #166534;
       }
       #esa-img-captcha-element {
         min-height: 1px;
@@ -286,6 +317,7 @@
     const banner = document.createElement('div');
     banner.className = 'esa-img-captcha-banner';
     banner.id = 'esa-img-captcha-banner';
+    banner.setAttribute('data-state', 'ready');
 
     const content = document.createElement('div');
     content.className = 'esa-img-captcha-content';
@@ -307,16 +339,16 @@
 
     const title = document.createElement('div');
     title.className = 'esa-img-captcha-banner-title';
-    title.textContent = '本篇文章包含图片，需要验证后加载';
+    title.textContent = '本页图片需验证后查看';
 
     const debug = document.createElement('div');
     debug.id = 'esa-img-captcha-debug';
-    debug.textContent = '状态：准备中';
+    debug.textContent = '准备中';
 
     const desc = document.createElement('div');
     desc.className = 'esa-img-captcha-banner-desc';
     desc.id = 'esa-img-captcha-desc';
-    desc.textContent = '正在准备验证码组件…';
+    desc.textContent = '验证后自动加载图片';
 
     const actions = document.createElement('div');
     actions.className = 'esa-img-captcha-actions';
@@ -324,7 +356,7 @@
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.id = 'esa-img-captcha-button';
-    btn.textContent = '加载图片（验证）';
+    btn.textContent = '验证后查看';
     btn.disabled = true;
 
     // popup 模式需要用户手势点击触发；这里不做异步“模拟点击”
@@ -336,11 +368,14 @@
     const skip = document.createElement('button');
     skip.type = 'button';
     skip.id = 'esa-img-captcha-skip';
-    skip.textContent = '暂不加载图片';
+    skip.textContent = '暂不查看';
     skip.addEventListener('click', function () {
-      // 继续保持锁定
-      const d = document.getElementById('esa-img-captcha-desc');
-      if (d) d.textContent = '已选择不加载图片（可随时点击上方按钮验证加载）。';
+      if (skip.disabled || pendingParam) return;
+      setBannerState('paused');
+      setDesc('图片暂不加载，需要时可再查看');
+      setDebug('已跳过');
+      setButtonState(false, '立即查看');
+      setSkipState('暂不查看', true);
     });
 
     actions.appendChild(btn);
@@ -363,11 +398,63 @@
     if (d) d.textContent = text;
   }
 
+  function setBannerState(state) {
+    const banner = document.getElementById('esa-img-captcha-banner');
+    if (banner) banner.setAttribute('data-state', state || 'ready');
+  }
+
   function setButtonState(disabled, text) {
     const btn = document.getElementById('esa-img-captcha-button');
     if (!btn) return;
     btn.disabled = disabled;
     if (typeof text === 'string') btn.textContent = text;
+  }
+
+  function setSkipState(text, disabled) {
+    const skip = document.getElementById('esa-img-captcha-skip');
+    if (!skip) return;
+    if (typeof text === 'string') skip.textContent = text;
+    if (typeof disabled === 'boolean') skip.disabled = disabled;
+  }
+
+  function applyVerifiedState() {
+    setBannerState('success');
+    setDesc('已验证，图片将按需加载');
+    setDebug('已通过');
+    setButtonState(true, '已验证');
+    setSkipState('可查看图片', true);
+  }
+
+  function refreshLoadedState() {
+    const body = getMarkdownBody();
+    if (!body || !pendingParam) return;
+    const pendingLazyCount = body.querySelectorAll('img[data-esa-final-src], img[data-esa-final-srcset]').length;
+    const loadingCount = Array.from(body.querySelectorAll('img'))
+      .filter(isProbablyRealImage)
+      .filter((img) => img.getAttribute('data-esa-img-locked') !== '1')
+      .filter((img) => {
+        const current = img.currentSrc || img.getAttribute('src') || '';
+        return current && current !== DEFAULT_TINY_PIXEL && !img.complete;
+      }).length;
+
+    if (pendingLazyCount > 0) {
+      applyVerifiedState();
+      return;
+    }
+    if (loadingCount > 0) {
+      setBannerState('success');
+      setDesc('图片正在加载');
+      setDebug('已通过');
+      setButtonState(true, '已验证');
+      setSkipState('可查看图片', true);
+      return;
+    }
+
+    setBannerState('loaded');
+    setDesc('图片已可查看');
+    setDebug('已加载');
+    setButtonState(true, '已验证');
+    setSkipState('已加载', true);
   }
 
   function setDebug(text) {
@@ -478,7 +565,10 @@
   }
 
   function startLazyLoadFor(imgs) {
-    if (!imgs || imgs.length === 0) return;
+    if (!imgs || imgs.length === 0) {
+      refreshLoadedState();
+      return;
+    }
     disconnectLazyObserver();
 
     const loadOne = (img) => {
@@ -488,6 +578,11 @@
       if (finalSrcset) img.setAttribute('srcset', finalSrcset);
       img.removeAttribute('data-esa-final-src');
       img.removeAttribute('data-esa-final-srcset');
+      try {
+        img.addEventListener('load', refreshLoadedState, { once: true });
+        img.addEventListener('error', refreshLoadedState, { once: true });
+      } catch (e) {}
+      refreshLoadedState();
     };
 
     if (!('IntersectionObserver' in window)) {
@@ -530,6 +625,7 @@
     }
     // 开始懒加载（视口内图片会很快触发加载）
     startLazyLoadFor(lazyList);
+    refreshLoadedState();
   }
 
   function disconnectObserver() {
@@ -623,8 +719,11 @@
     }
     initStarted = true;
 
-    setDesc('正在加载验证码组件…');
-    setDebug(`状态：加载中（${new Date().toLocaleTimeString()}）`);
+    setBannerState('loading');
+    setSkipState('暂不查看', true);
+
+    setDesc('正在加载验证组件');
+    setDebug('加载中');
     await loadAliyunCaptchaJsOnce();
 
     if (!window.initAliyunCaptcha) throw new Error('initAliyunCaptcha 不存在');
@@ -635,8 +734,8 @@
       throw new Error('esa-img-captcha-element 不存在（DOM 未就绪或被移除）');
     }
 
-    setDesc('正在初始化验证码…');
-    setDebug('状态：初始化中…');
+    setDesc('正在初始化验证');
+    setDebug('初始化中');
     window.initAliyunCaptcha({
       SceneId: cfg.sceneId,
       mode: 'popup',
@@ -651,39 +750,35 @@
         disconnectObserver();
         disconnectLazyObserver();
         document.body.removeAttribute('data-esa-img-locked');
-        setDesc('验证成功，正在加载图片…');
-        setDebug('状态：验证成功');
-        setButtonState(true, '已验证');
+        applyVerifiedState();
         unlockAndLoadAll(captchaVerifyParam);
       },
       fail: function (result) {
         // eslint-disable-next-line no-console
         console.warn('[ESAAIImageCaptcha] 验证失败：', result);
-        setDesc('验证未通过，请重试（图片仍不会加载）。');
-        try {
-          setDebug('失败信息：' + JSON.stringify(result));
-        } catch (e) {
-          setDebug('失败信息：' + String(result));
-        }
-        setButtonState(false, '重试验证并加载图片');
+        setBannerState('failed');
+        setDesc('验证未通过，请重试');
+        setDebug('未通过');
+        setButtonState(false, '重试验证');
+        setSkipState('暂不查看', false);
       },
       onError: function (errorInfo) {
         // eslint-disable-next-line no-console
         console.error('[ESAAIImageCaptcha] 初始化错误：', errorInfo);
+        setBannerState('error');
         setDesc('验证码初始化失败（请检查 ESA 配置/网络/CSP）。');
-        try {
-          setDebug('错误信息：' + JSON.stringify(errorInfo));
-        } catch (e) {
-          setDebug('错误信息：' + String(errorInfo));
-        }
+        setDebug('不可用');
         setButtonState(true, '不可用');
+        setSkipState('暂不查看', false);
       },
       onClose: function () {
         // 用户关闭弹窗：不解锁
         if (!pendingParam) {
-          setDesc('已关闭验证窗口（图片仍不会加载）。');
-          setDebug('状态：已关闭验证窗口');
-          setButtonState(false, '验证并加载图片');
+          setBannerState('cancelled');
+          setDesc('验证已取消');
+          setDebug('已取消');
+          setButtonState(false, '重新验证');
+          setSkipState('暂不查看', false);
         }
       },
     });
@@ -691,14 +786,15 @@
     // 满足文档建议的 >2s 间隔后再允许点击
     const waitMs = Math.max(0, (allowVerifyAt || 0) - now());
     if (waitMs > 0) {
-      setButtonState(true, `请稍候 ${Math.ceil(waitMs / 100) / 10}s…`);
+      setButtonState(true, `${Math.ceil(waitMs / 100) / 10}s 后可用`);
       await sleep(waitMs);
     }
-
     ready = true;
-    setDesc('点击按钮完成验证后，将以懒加载方式加载本篇图片');
-    setDebug('状态：就绪');
-    setButtonState(false, '验证并加载图片');
+    setDesc('验证后自动加载图片');
+    setBannerState('ready');
+    setDebug('就绪');
+    setButtonState(false, '验证后查看');
+    setSkipState('暂不查看', false);
   }
 
   function ensureCaptchaDomScaffold() {
@@ -727,9 +823,12 @@
     // session 复用：已验证则直接恢复图片（避免重复验证）
     const reused = readReuse();
     if (reused) {
+      ensureBanner();
       pendingParam = reused;
       document.body.removeAttribute('data-esa-img-locked');
+      applyVerifiedState();
       unlockAndLoadAll(reused);
+      refreshLoadedState();
       try {
         document.documentElement.setAttribute('data-esa-img-plugin', 'reused');
       } catch (e) {}
@@ -757,8 +856,11 @@
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error('[ESAAIImageCaptcha] 启动失败：', e);
+      setBannerState('error');
       setDesc('验证码组件加载失败，请稍后刷新重试。');
+      setDebug('不可用');
       setButtonState(true, '不可用');
+      setSkipState('暂不查看', false);
     }
   }
 
