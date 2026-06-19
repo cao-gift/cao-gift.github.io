@@ -10,6 +10,24 @@
     document.documentElement.setAttribute('data-esa-img-plugin', 'loaded');
   } catch (e) {}
 
+  function clearPluginLoadWarnings() {
+    try {
+      const nodes = Array.from(document.querySelectorAll('#postBody > div, .markdown-body > div'));
+      for (const node of nodes) {
+        const text = node.textContent || '';
+        if (
+          text.includes('ESA图片验证插件未加载成功') ||
+          text.includes('/plugins/ESAAIImageCaptcha.js')
+        ) {
+          node.remove();
+        }
+      }
+    } catch (e) {}
+  }
+
+  clearPluginLoadWarnings();
+  setTimeout(clearPluginLoadWarnings, 1800);
+
   const DEFAULT_TINY_PIXEL =
     'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
 
@@ -92,51 +110,164 @@
       body[data-esa-img-locked="1"] ${cfg.imageSelector} {
         visibility: hidden !important;
       }
+      body[data-esa-img-locked="1"] .esa-img-captcha-banner img {
+        visibility: visible !important;
+      }
       .esa-img-captcha-banner {
-        border: 1px solid rgba(17, 24, 39, 0.12);
-        background: rgba(255, 255, 255, 0.78);
-        border-radius: 12px;
-        padding: 12px 12px 10px;
-        margin: 10px 0 18px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.46);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(244, 247, 251, 0.76)),
+          radial-gradient(560px 180px at 8% 0%, rgba(99, 102, 241, 0.18), transparent 62%);
+        border-radius: 18px;
+        padding: 18px;
+        margin: 12px 0 24px;
+        box-shadow:
+          0 18px 48px rgba(15, 23, 42, 0.16),
+          inset 0 1px 0 rgba(255, 255, 255, 0.65);
+        color: rgba(15, 23, 42, 0.92);
+        backdrop-filter: blur(16px) saturate(1.18);
+        -webkit-backdrop-filter: blur(16px) saturate(1.18);
+      }
+      .esa-img-captcha-banner::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 5px;
+        background: linear-gradient(180deg, #4f46e5, #06b6d4);
+      }
+      .esa-img-captcha-content {
+        position: relative;
+        display: grid;
+        grid-template-columns: 48px minmax(0, 1fr);
+        gap: 14px;
+        align-items: start;
+      }
+      .esa-img-captcha-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(79, 70, 229, 0.20);
+        background: linear-gradient(135deg, rgba(79, 70, 229, 0.13), rgba(6, 182, 212, 0.15));
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+      }
+      .esa-img-captcha-avatar {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+      }
+      .esa-img-captcha-main {
+        min-width: 0;
+      }
+      .esa-img-captcha-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 6px;
       }
       .esa-img-captcha-banner-title {
         font-weight: 700;
-        margin: 0 0 6px 0;
-        font-size: 14px;
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.35;
       }
       .esa-img-captcha-banner-desc {
-        margin: 0 0 10px 0;
-        opacity: 0.85;
-        font-size: 13px;
-        line-height: 1.45;
+        margin: 0 0 14px 0;
+        color: rgba(55, 65, 81, 0.92);
+        font-size: 14px;
+        line-height: 1.6;
       }
       .esa-img-captcha-actions {
         display: flex;
-        gap: 10px;
+        gap: 12px;
         flex-wrap: wrap;
         align-items: center;
       }
       #esa-img-captcha-button {
-        padding: 10px 14px;
-        border-radius: 10px;
-        border: 1px solid rgba(17,24,39,0.15);
-        background: #111827;
+        min-height: 42px;
+        padding: 10px 16px;
+        border-radius: 12px;
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        background: linear-gradient(135deg, #111827, #1f2937);
         color: #fff;
         cursor: pointer;
         font-size: 14px;
+        font-weight: 700;
+        box-shadow: 0 10px 24px rgba(17, 24, 39, 0.20);
+        transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+      }
+      #esa-img-captcha-button:not([disabled]):hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 30px rgba(17, 24, 39, 0.24);
       }
       #esa-img-captcha-button[disabled]{
         opacity: 0.6;
         cursor: not-allowed;
+        box-shadow: none;
       }
       #esa-img-captcha-skip {
-        padding: 10px 14px;
-        border-radius: 10px;
-        border: 1px solid rgba(17,24,39,0.15);
-        background: rgba(255,255,255,0.85);
+        min-height: 42px;
+        padding: 10px 16px;
+        border-radius: 12px;
+        border: 1px solid rgba(15, 23, 42, 0.12);
+        background: rgba(255, 255, 255, 0.72);
+        color: rgba(17, 24, 39, 0.92);
         cursor: pointer;
         font-size: 14px;
+        font-weight: 650;
+        transition: background 0.16s ease, transform 0.16s ease;
+      }
+      #esa-img-captcha-skip:hover {
+        background: rgba(255, 255, 255, 0.94);
+        transform: translateY(-1px);
+      }
+      #esa-img-captcha-debug {
+        flex: 0 0 auto;
+        max-width: 100%;
+        border: 1px solid rgba(79, 70, 229, 0.18);
+        background: rgba(79, 70, 229, 0.08);
+        color: #3730a3;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.35;
+        word-break: break-word;
+      }
+      #esa-img-captcha-element {
+        min-height: 1px;
+      }
+      @media (max-width: 640px) {
+        .esa-img-captcha-banner {
+          border-radius: 16px;
+          padding: 15px;
+        }
+        .esa-img-captcha-content {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+        .esa-img-captcha-icon {
+          display: none;
+        }
+        .esa-img-captcha-heading {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .esa-img-captcha-actions {
+          gap: 8px;
+        }
+        #esa-img-captcha-button,
+        #esa-img-captcha-skip {
+          width: 100%;
+          justify-content: center;
+        }
       }
     `;
     document.head.appendChild(style);
@@ -156,9 +287,31 @@
     banner.className = 'esa-img-captcha-banner';
     banner.id = 'esa-img-captcha-banner';
 
+    const content = document.createElement('div');
+    content.className = 'esa-img-captcha-content';
+
+    const icon = document.createElement('div');
+    icon.className = 'esa-img-captcha-icon';
+
+    const avatar = document.createElement('img');
+    avatar.className = 'esa-img-captcha-avatar';
+    avatar.src = '/img/avatar.webp';
+    avatar.alt = '';
+    icon.appendChild(avatar);
+
+    const main = document.createElement('div');
+    main.className = 'esa-img-captcha-main';
+
+    const heading = document.createElement('div');
+    heading.className = 'esa-img-captcha-heading';
+
     const title = document.createElement('div');
     title.className = 'esa-img-captcha-banner-title';
     title.textContent = '本篇文章包含图片，需要验证后加载';
+
+    const debug = document.createElement('div');
+    debug.id = 'esa-img-captcha-debug';
+    debug.textContent = '状态：准备中';
 
     const desc = document.createElement('div');
     desc.className = 'esa-img-captcha-banner-desc';
@@ -193,9 +346,14 @@
     actions.appendChild(btn);
     actions.appendChild(skip);
 
-    banner.appendChild(title);
-    banner.appendChild(desc);
-    banner.appendChild(actions);
+    heading.appendChild(title);
+    heading.appendChild(debug);
+    main.appendChild(heading);
+    main.appendChild(desc);
+    main.appendChild(actions);
+    content.appendChild(icon);
+    content.appendChild(main);
+    banner.appendChild(content);
 
     body.insertBefore(banner, body.firstChild);
   }
@@ -219,7 +377,6 @@
     if (!d) {
       d = document.createElement('div');
       d.id = 'esa-img-captcha-debug';
-      d.style.cssText = 'margin:8px 0 0;opacity:0.75;font-size:12px;line-height:1.35;word-break:break-word;';
       banner.appendChild(d);
     }
     d.textContent = text || '';
@@ -227,6 +384,7 @@
 
   function isProbablyRealImage(img) {
     if (!img) return false;
+    if (img.closest && img.closest('#esa-img-captcha-banner')) return false;
     // 过滤 1x1 像素、站内图标等：只拦正文图片，已通过 selector 限制范围
     const w = img.naturalWidth || img.width || 0;
     const h = img.naturalHeight || img.height || 0;
