@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // - image: 仅图片背景
     // - auto : 若“省流量/减少动态效果”则用图片，否则用视频
     const MOBILE_BREAKPOINT_PX = 720;
-    const THEME_BG_MODE_DESKTOP = 'video'; // 'video' | 'image' | 'auto'
-    const THEME_BG_MODE_MOBILE = 'video';  // 'video' | 'image' | 'auto'
+    const THEME_BG_MODE_DESKTOP = 'image'; // 'video' | 'image' | 'auto'
+    const THEME_BG_MODE_MOBILE = 'image';  // 'video' | 'image' | 'auto'
 
     // 资源路径（相对 docs/）
     const THEME_BG_IMAGE_DESKTOP = '/img/电脑2.jpg';
