@@ -138,6 +138,17 @@
         width: 5px;
         background: linear-gradient(180deg, #4f46e5, #06b6d4);
       }
+      .esa-img-captcha-banner::after {
+        content: "";
+        position: absolute;
+        inset: auto -40px -48px auto;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        background: radial-gradient(circle, rgba(79, 70, 229, 0.16), transparent 68%);
+        pointer-events: none;
+        opacity: 0.9;
+      }
       .esa-img-captcha-content {
         position: relative;
         display: grid;
@@ -155,6 +166,19 @@
         border: 1px solid rgba(79, 70, 229, 0.20);
         background: linear-gradient(135deg, rgba(79, 70, 229, 0.13), rgba(6, 182, 212, 0.15));
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+        position: relative;
+      }
+      .esa-img-captcha-icon::after {
+        content: "";
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        border: 2px solid rgba(255, 255, 255, 0.88);
+        background: linear-gradient(135deg, #6366f1, #06b6d4);
+        box-shadow: 0 6px 14px rgba(79, 70, 229, 0.22);
       }
       .esa-img-captcha-avatar {
         width: 100%;
@@ -204,6 +228,9 @@
         font-weight: 700;
         box-shadow: 0 10px 24px rgba(17, 24, 39, 0.20);
         transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
       #esa-img-captcha-button:not([disabled]):hover {
         transform: translateY(-1px);
@@ -225,6 +252,9 @@
         font-size: 14px;
         font-weight: 650;
         transition: background 0.16s ease, transform 0.16s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
       #esa-img-captcha-skip:hover {
         background: rgba(255, 255, 255, 0.94);
@@ -262,17 +292,33 @@
           0 16px 40px rgba(15, 23, 42, 0.12),
           inset 0 1px 0 rgba(255, 255, 255, 0.72);
       }
+      .esa-img-captcha-banner[data-state="success"]::before,
+      .esa-img-captcha-banner[data-state="loaded"]::before {
+        background: linear-gradient(180deg, #16a34a, #34d399);
+      }
+      .esa-img-captcha-banner[data-state="success"]::after,
+      .esa-img-captcha-banner[data-state="loaded"]::after {
+        background: radial-gradient(circle, rgba(34, 197, 94, 0.18), transparent 68%);
+      }
       .esa-img-captcha-banner[data-state="paused"] #esa-img-captcha-debug,
       .esa-img-captcha-banner[data-state="cancelled"] #esa-img-captcha-debug {
         border-color: rgba(180, 83, 9, 0.22);
         background: rgba(245, 158, 11, 0.12);
         color: #92400e;
       }
+      .esa-img-captcha-banner[data-state="paused"]::before,
+      .esa-img-captcha-banner[data-state="cancelled"]::before {
+        background: linear-gradient(180deg, #d97706, #f59e0b);
+      }
       .esa-img-captcha-banner[data-state="failed"] #esa-img-captcha-debug,
       .esa-img-captcha-banner[data-state="error"] #esa-img-captcha-debug {
         border-color: rgba(220, 38, 38, 0.18);
         background: rgba(239, 68, 68, 0.10);
         color: #b91c1c;
+      }
+      .esa-img-captcha-banner[data-state="failed"]::before,
+      .esa-img-captcha-banner[data-state="error"]::before {
+        background: linear-gradient(180deg, #dc2626, #f97316);
       }
       .esa-img-captcha-banner[data-state="success"] #esa-img-captcha-debug {
         border-color: rgba(22, 163, 74, 0.18);
@@ -316,6 +362,18 @@
         border-color: rgba(34, 197, 94, 0.18);
         background: linear-gradient(135deg, rgba(220, 252, 231, 0.98), rgba(209, 250, 229, 0.92));
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+      }
+      .esa-img-captcha-banner[data-state="success"] .esa-img-captcha-icon::after,
+      .esa-img-captcha-banner[data-state="loaded"] .esa-img-captcha-icon::after {
+        background: linear-gradient(135deg, #16a34a, #34d399);
+      }
+      .esa-img-captcha-banner[data-state="paused"] .esa-img-captcha-icon::after,
+      .esa-img-captcha-banner[data-state="cancelled"] .esa-img-captcha-icon::after {
+        background: linear-gradient(135deg, #d97706, #f59e0b);
+      }
+      .esa-img-captcha-banner[data-state="failed"] .esa-img-captcha-icon::after,
+      .esa-img-captcha-banner[data-state="error"] .esa-img-captcha-icon::after {
+        background: linear-gradient(135deg, #dc2626, #f97316);
       }
       #esa-img-captcha-skip[hidden] {
         display: none !important;
@@ -433,6 +491,7 @@
     skip.addEventListener('click', function () {
       if (skip.disabled || pendingParam) return;
       setBannerState('paused');
+      setTitle('已暂停图片加载');
       setSkipVisible(true);
       setDesc('图片暂不加载，需要时可再查看');
       setDebug('已跳过');
@@ -458,6 +517,11 @@
   function setDesc(text) {
     const d = document.getElementById('esa-img-captcha-desc');
     if (d) d.textContent = text;
+  }
+
+  function setTitle(text) {
+    const t = document.querySelector('#esa-img-captcha-banner .esa-img-captcha-banner-title');
+    if (t) t.textContent = text;
   }
 
   function setBannerState(state) {
@@ -487,6 +551,7 @@
 
   function applyVerifiedState() {
     setBannerState('success');
+    setTitle('图片验证已通过');
     setDesc('验证通过，图片按需显示');
     setDebug('已通过');
     setButtonState(true, '已验证');
@@ -512,6 +577,7 @@
     }
     if (loadingCount > 0) {
       setBannerState('success');
+      setTitle('图片验证已通过');
       setDesc('图片正在加载');
       setDebug('已通过');
       setButtonState(true, '已验证');
@@ -521,6 +587,7 @@
     }
 
     setBannerState('loaded');
+    setTitle('图片已准备完成');
     setDesc('图片已可查看');
     setDebug('已加载');
     setButtonState(true, '已验证');
@@ -791,6 +858,7 @@
     initStarted = true;
 
     setBannerState('loading');
+    setTitle('本页图片需验证后查看');
     setSkipVisible(true);
     setSkipState('暂不查看', true);
 
@@ -807,6 +875,7 @@
     }
 
     setDesc('正在初始化验证');
+    setTitle('本页图片需验证后查看');
     setDebug('初始化中');
     window.initAliyunCaptcha({
       SceneId: cfg.sceneId,
@@ -829,6 +898,7 @@
         // eslint-disable-next-line no-console
         console.warn('[ESAAIImageCaptcha] 验证失败：', result);
         setBannerState('failed');
+        setTitle('验证未通过');
         setSkipVisible(true);
         setDesc('验证未通过，请重试');
         setDebug('未通过');
@@ -839,6 +909,7 @@
         // eslint-disable-next-line no-console
         console.error('[ESAAIImageCaptcha] 初始化错误：', errorInfo);
         setBannerState('error');
+        setTitle('图片验证暂不可用');
         setSkipVisible(true);
         setDesc('验证码初始化失败（请检查 ESA 配置/网络/CSP）。');
         setDebug('不可用');
@@ -849,6 +920,7 @@
         // 用户关闭弹窗：不解锁
         if (!pendingParam) {
           setBannerState('cancelled');
+          setTitle('验证已取消');
           setSkipVisible(true);
           setDesc('验证已取消');
           setDebug('已取消');
@@ -865,6 +937,7 @@
       await sleep(waitMs);
     }
     ready = true;
+    setTitle('本页图片需验证后查看');
     setDesc('验证后自动加载图片');
     setBannerState('ready');
     setSkipVisible(true);
@@ -933,6 +1006,7 @@
       // eslint-disable-next-line no-console
       console.error('[ESAAIImageCaptcha] 启动失败：', e);
       setBannerState('error');
+      setTitle('图片验证暂不可用');
       setSkipVisible(true);
       setDesc('验证码组件加载失败，请稍后刷新重试。');
       setDebug('不可用');
