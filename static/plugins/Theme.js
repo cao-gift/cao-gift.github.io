@@ -44,10 +44,23 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (e) {}
     }
 
+    function normalizeHomeButton() {
+        const homeButton = document.getElementById('buttonHome');
+        if (!homeButton) return;
+        const sameOriginHome = new URL('/', window.location.origin).href;
+        homeButton.href = sameOriginHome;
+        homeButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            window.location.href = sameOriginHome;
+        });
+    }
+
     const bgImageDesktopUrl = absUrl(THEME_BG_IMAGE_DESKTOP);
     const bgVideoDesktopUrl = absUrl(THEME_BG_VIDEO_DESKTOP);
     const bgImageMobileUrl = absUrl(THEME_BG_IMAGE_MOBILE);
     const bgVideoMobileUrl = absUrl(THEME_BG_VIDEO_MOBILE);
+
+    normalizeHomeButton();
 
     function isMobileViewport() {
         try {
