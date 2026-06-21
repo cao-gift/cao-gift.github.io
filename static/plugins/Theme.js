@@ -61,6 +61,136 @@ document.addEventListener('DOMContentLoaded', function() {
     const bgVideoMobileUrl = absUrl(THEME_BG_VIDEO_MOBILE);
     const sponsorLogoUrl = absUrl('../img/logo.png');
 
+    function ensureSiteTypography() {
+        const fontCdnOrigin = 'https://cdn.jsdelivr.net';
+        const fontStylesheet = `${fontCdnOrigin}/npm/lxgw-wenkai-screen-webfont@1.7.0/lxgwwenkaiscreen.css`;
+
+        if (!document.getElementById('site-font-dns-prefetch')) {
+            const dns = document.createElement('link');
+            dns.id = 'site-font-dns-prefetch';
+            dns.rel = 'dns-prefetch';
+            dns.href = fontCdnOrigin;
+            document.head.appendChild(dns);
+        }
+
+        if (!document.getElementById('site-font-preconnect')) {
+            const preconnect = document.createElement('link');
+            preconnect.id = 'site-font-preconnect';
+            preconnect.rel = 'preconnect';
+            preconnect.href = fontCdnOrigin;
+            preconnect.crossOrigin = 'anonymous';
+            document.head.appendChild(preconnect);
+        }
+
+        if (!document.getElementById('site-font-lxgw-wenkai')) {
+            const fontLink = document.createElement('link');
+            fontLink.id = 'site-font-lxgw-wenkai';
+            fontLink.rel = 'stylesheet';
+            fontLink.href = fontStylesheet;
+            document.head.appendChild(fontLink);
+        }
+
+        if (document.getElementById('site-typography-style')) return;
+
+        const style = document.createElement('style');
+        style.id = 'site-typography-style';
+        style.innerHTML = `
+        :root {
+            --site-font-ui: "HarmonyOS Sans SC", "MiSans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --site-font-reading: "LXGW WenKai Screen", "LXGW WenKai", "霞鹜文楷屏幕阅读版", "霞鹜文楷", "HarmonyOS Sans SC", "MiSans", "PingFang SC", "Microsoft YaHei", sans-serif;
+            --site-font-display: "HarmonyOS Sans SC", "MiSans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", system-ui, -apple-system, "Segoe UI", sans-serif;
+            --site-font-mono: "JetBrains Mono", "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html,
+        body,
+        button,
+        input,
+        select,
+        textarea,
+        #glassShell,
+        #header,
+        #footer,
+        .SideNav,
+        .subnav-search-input,
+        .sponsor-info,
+        .esa-img-captcha-card,
+        .article-toc,
+        #articleTOC {
+            font-family: var(--site-font-ui) !important;
+            letter-spacing: 0;
+        }
+
+        .blogTitle,
+        #header .title-left a.blogTitle,
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3,
+        .markdown-body h4,
+        .markdown-body h5,
+        .markdown-body h6 {
+            font-family: var(--site-font-display) !important;
+            font-weight: 750;
+            letter-spacing: 0 !important;
+        }
+
+        .markdown-body {
+            font-family: var(--site-font-reading) !important;
+            font-size: 17px;
+            line-height: 1.78;
+            letter-spacing: 0;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .markdown-body p,
+        .markdown-body li,
+        .markdown-body blockquote,
+        .markdown-body table {
+            line-height: 1.82;
+        }
+
+        .markdown-body strong,
+        .markdown-body b,
+        .markdown-body th {
+            font-weight: 700;
+        }
+
+        .markdown-body code,
+        .markdown-body tt,
+        .markdown-body pre,
+        .markdown-body kbd,
+        .markdown-body samp {
+            font-family: var(--site-font-mono) !important;
+            font-size: 0.94em;
+            letter-spacing: 0;
+        }
+
+        .SideNav-item {
+            font-size: 15.5px;
+            line-height: 1.55;
+        }
+
+        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
+            .markdown-body {
+                font-size: 16px;
+                line-height: 1.76;
+            }
+
+            .markdown-body p,
+            .markdown-body li,
+            .markdown-body blockquote,
+            .markdown-body table {
+                line-height: 1.78;
+            }
+        }
+        `;
+        document.head.appendChild(style);
+    }
+
     function ensureSponsorFooterStyle() {
         if (document.getElementById('sponsor-footer-style')) return;
 
@@ -118,6 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     normalizeHomeButton();
+    ensureSiteTypography();
 
     function isMobileViewport() {
         try {
@@ -784,4 +915,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    ensureSiteTypography();
 })
