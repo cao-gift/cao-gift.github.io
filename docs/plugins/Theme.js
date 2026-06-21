@@ -59,6 +59,63 @@ document.addEventListener('DOMContentLoaded', function() {
     const bgVideoDesktopUrl = absUrl(THEME_BG_VIDEO_DESKTOP);
     const bgImageMobileUrl = absUrl(THEME_BG_IMAGE_MOBILE);
     const bgVideoMobileUrl = absUrl(THEME_BG_VIDEO_MOBILE);
+    const sponsorLogoUrl = absUrl('../img/logo.png');
+
+    function ensureSponsorFooterStyle() {
+        if (document.getElementById('sponsor-footer-style')) return;
+
+        const style = document.createElement('style');
+        style.id = 'sponsor-footer-style';
+        style.innerHTML = `
+        .sponsor-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 20px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #666;
+            text-align: center;
+        }
+
+        .sponsor-info a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 0;
+        }
+
+        .sponsor-info .sponsor-logo {
+            display: block;
+            width: 48px;
+            height: auto;
+            max-height: 24px;
+            object-fit: contain;
+        }
+
+        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
+            .sponsor-info .sponsor-logo {
+                width: 42px;
+                max-height: 21px;
+            }
+        }
+        `;
+        document.head.appendChild(style);
+    }
+
+    function insertSponsorInfo() {
+        let footer = document.getElementById('footer');
+        if (!footer || footer.querySelector('.sponsor-info')) return;
+
+        ensureSponsorFooterStyle();
+
+        let sponsorInfo = document.createElement('div');
+        sponsorInfo.className = 'sponsor-info';
+        sponsorInfo.innerHTML = `本站由 <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img class="sponsor-logo" src="${sponsorLogoUrl}" alt="又拍云"></a> 提供 CDN 加速/云存储服务`;
+        footer.insertBefore(sponsorInfo, footer.firstChild);
+    }
 
     normalizeHomeButton();
 
@@ -401,12 +458,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ensureBackgroundOverlay();
         ensureGlassShell();
 
-        // 添加赞助商信息到页脚
-        let footer = document.getElementById('footer');
-        let sponsorInfo = document.createElement('div');
-        sponsorInfo.className = 'sponsor-info';
-        sponsorInfo.innerHTML = '本站由 <a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="../img/logo.png" width="45" height="13" style="fill: currentColor;"></a> 提供 CDN 加速/云存储服务';
-        footer.insertBefore(sponsorInfo, footer.firstChild);
+        insertSponsorInfo();
     }
 
 
@@ -552,12 +604,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ensureBackgroundVideo();
         ensureBackgroundOverlay();
         ensureGlassShell();
-        // 添加赞助商信息到页脚
-        let footer = document.getElementById('footer');
-        let sponsorInfo = document.createElement('div');
-        sponsorInfo.className = 'sponsor-info';
-        sponsorInfo.innerHTML = '本站由 <a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="../img/logo.png" width="45" height="13" style="fill: currentColor;"></a> 提供 CDN 加速/云存储服务';
-        footer.insertBefore(sponsorInfo, footer.firstChild);
+        insertSponsorInfo();
 
         // ESA AI 验证码：仅保护“文章正文图片”，验证成功才加载（本篇一次即可）
         if (currentUrl.includes('/post/')) {
@@ -725,12 +772,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ensureBackgroundVideo();
         ensureBackgroundOverlay();
         ensureGlassShell();
-        // 添加赞助商信息到页脚
-        let footer = document.getElementById('footer');
-        let sponsorInfo = document.createElement('div');
-        sponsorInfo.className = 'sponsor-info';
-        sponsorInfo.innerHTML = '本站由 <a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="../img/logo.png" width="45" height="13" style="fill: currentColor;"></a> 提供 CDN 加速/云存储服务';
-        footer.insertBefore(sponsorInfo, footer.firstChild);
+        insertSponsorInfo();
     
         // 搜索框回车触发
         let input = document.getElementsByClassName("form-control subnav-search-input float-left")[0];
