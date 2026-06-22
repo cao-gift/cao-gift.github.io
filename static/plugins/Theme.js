@@ -403,18 +403,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
         /* 名字（大字居中） */
         #header .title-left a.blogTitle {
+            position: relative;
+            display: inline-block;
             margin: 0 !important;
             font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            font-size: clamp(40px, 3.2vw, 44px);
-            line-height: 1.05;
+            font-weight: 820 !important;
+            letter-spacing: 0;
+            font-size: clamp(42px, 3.4vw, 48px) !important;
+            line-height: 1;
             text-decoration: none;
-            color: transparent;
-            background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(132, 170, 255, 0.98));
-            -webkit-background-clip: text;
-            background-clip: text;
-            text-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+            color: #176f8a !important;
+            background: transparent !important;
+            -webkit-background-clip: border-box;
+            background-clip: border-box;
+            -webkit-text-fill-color: #176f8a;
+            -webkit-text-stroke: 0 transparent;
+            filter: none !important;
+            text-shadow:
+                0 1px 0 rgba(255, 255, 255, 0.82),
+                0 10px 24px rgba(14, 70, 92, 0.24);
+            transition: color 0.18s ease, text-shadow 0.18s ease, transform 0.18s ease;
+        }
+
+        #header .title-left a.blogTitle::after {
+            content: none;
+        }
+
+        #header .title-left a.blogTitle:hover {
+            color: #0f5f78 !important;
+            -webkit-text-fill-color: #0f5f78;
+            transform: translateY(-1px);
+            text-shadow:
+                0 1px 0 rgba(255, 255, 255, 0.86),
+                0 12px 28px rgba(14, 70, 92, 0.28);
         }
 
         /* 图标：放在名字这一行的右侧 */
