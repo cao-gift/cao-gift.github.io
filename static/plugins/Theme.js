@@ -405,37 +405,49 @@ document.addEventListener('DOMContentLoaded', function() {
         #header .title-left a.blogTitle {
             position: relative;
             display: inline-block;
-            margin: 0 !important;
+            margin: 2px 0 0 !important;
+            padding: 2px 12px 8px;
             font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
             font-weight: 820 !important;
             letter-spacing: 0;
-            font-size: clamp(42px, 3.4vw, 48px) !important;
+            font-size: 46px !important;
             line-height: 1;
             text-decoration: none;
-            color: #176f8a !important;
-            background: transparent !important;
-            -webkit-background-clip: border-box;
-            background-clip: border-box;
-            -webkit-text-fill-color: #176f8a;
-            -webkit-text-stroke: 0 transparent;
+            color: #f5f0df !important;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(247, 224, 178, 0.96) 46%, rgba(112, 185, 191, 0.92) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -webkit-text-stroke: 1px rgba(31, 92, 100, 0.34);
             filter: none !important;
             text-shadow:
-                0 1px 0 rgba(255, 255, 255, 0.82),
-                0 10px 24px rgba(14, 70, 92, 0.24);
-            transition: color 0.18s ease, text-shadow 0.18s ease, transform 0.18s ease;
+                0 1px 0 rgba(255, 255, 255, 0.72),
+                0 3px 9px rgba(28, 55, 66, 0.24),
+                0 14px 34px rgba(217, 147, 105, 0.24);
+            transition: text-shadow 0.18s ease, transform 0.18s ease, opacity 0.18s ease;
         }
 
         #header .title-left a.blogTitle::after {
-            content: none;
+            content: "";
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            bottom: 1px;
+            height: 8px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(75, 137, 127, 0), rgba(239, 180, 128, 0.62), rgba(75, 137, 127, 0));
+            box-shadow: 0 8px 20px rgba(205, 139, 112, 0.18);
+            opacity: 0.88;
+            pointer-events: none;
         }
 
         #header .title-left a.blogTitle:hover {
-            color: #0f5f78 !important;
-            -webkit-text-fill-color: #0f5f78;
             transform: translateY(-1px);
             text-shadow:
-                0 1px 0 rgba(255, 255, 255, 0.86),
-                0 12px 28px rgba(14, 70, 92, 0.28);
+                0 1px 0 rgba(255, 255, 255, 0.82),
+                0 4px 12px rgba(28, 55, 66, 0.28),
+                0 16px 38px rgba(232, 165, 106, 0.34);
         }
 
         /* 图标：放在名字这一行的右侧 */
@@ -560,7 +572,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 border-width: 3px;
             }
             #header .title-left a.blogTitle {
-                font-size: clamp(30px, 10vw, 40px);
+                font-size: 38px !important;
+                padding: 1px 10px 8px;
+                background:
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(250, 229, 155, 0.97) 48%, rgba(112, 159, 119, 0.94) 100%);
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                -webkit-text-stroke: 1px rgba(42, 58, 39, 0.46);
+                text-shadow:
+                    0 1px 0 rgba(255, 255, 255, 0.72),
+                    0 3px 10px rgba(39, 45, 29, 0.34),
+                    0 14px 30px rgba(225, 167, 63, 0.28);
+            }
+            #header .title-left a.blogTitle::after {
+                left: 9px;
+                right: 9px;
+                bottom: 1px;
+                height: 7px;
+                background: linear-gradient(90deg, rgba(98, 130, 76, 0), rgba(250, 211, 94, 0.66), rgba(98, 130, 76, 0));
+                box-shadow: 0 7px 18px rgba(222, 163, 58, 0.22);
+            }
+            #header .title-left a.blogTitle:hover {
+                text-shadow:
+                    0 1px 0 rgba(255, 255, 255, 0.78),
+                    0 4px 12px rgba(39, 45, 29, 0.36),
+                    0 16px 34px rgba(235, 180, 74, 0.36);
+            }
+            @media (max-width: 380px) {
+                #header .title-left a.blogTitle {
+                    font-size: 34px !important;
+                }
             }
             #header .title-right {
                 grid-column: 1;
