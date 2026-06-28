@@ -115,6 +115,9 @@
       }
       .esa-img-captcha-banner {
         position: relative;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
         overflow: hidden;
         border: 1px solid rgba(255, 255, 255, 0.46);
         background:
@@ -155,6 +158,8 @@
         grid-template-columns: 52px minmax(0, 1fr);
         gap: 14px;
         align-items: start;
+        max-width: 100%;
+        box-sizing: border-box;
       }
       .esa-img-captcha-icon {
         width: 52px;
@@ -188,6 +193,7 @@
       }
       .esa-img-captcha-main {
         min-width: 0;
+        max-width: 100%;
         display: grid;
         gap: 10px;
       }
@@ -383,12 +389,18 @@
       }
       @media (max-width: 640px) {
         .esa-img-captcha-banner {
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
           border-radius: 16px;
-          padding: 15px;
+          padding: 14px 15px;
+          margin-left: 0;
+          margin-right: 0;
         }
         .esa-img-captcha-content {
           grid-template-columns: 1fr;
           gap: 10px;
+          min-width: 0;
         }
         .esa-img-captcha-icon {
           display: none;
@@ -399,6 +411,7 @@
           gap: 8px;
         }
         .esa-img-captcha-actions {
+          width: 100%;
           gap: 8px;
         }
         .esa-img-captcha-banner[data-state="success"] .esa-img-captcha-main,

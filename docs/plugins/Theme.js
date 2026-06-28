@@ -44,6 +44,14 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (e) {}
     }
 
+    function markCurrentPageClass() {
+        const root = document.documentElement;
+        root.classList.toggle('site-page-home', currentUrl == '/' || currentUrl.includes('/index.html') || currentUrl.includes('/page'));
+        root.classList.toggle('site-page-article', currentUrl.includes('/post/'));
+        root.classList.toggle('site-page-single', currentUrl.includes('/link.html') || currentUrl.includes('/about.html'));
+        root.classList.toggle('site-page-tag', currentUrl.includes('/tag'));
+    }
+
     function normalizeHomeButton() {
         const homeButton = document.getElementById('buttonHome');
         if (!homeButton) return;
@@ -676,6 +684,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
             body {
                 background-attachment: scroll !important;
+                box-sizing: border-box;
+                width: 100%;
+                max-width: 100vw;
+                overflow-x: hidden !important;
+            }
+
+            html,
+            #glassShell,
+            #header,
+            #content,
+            .markdown-body {
+                max-width: 100vw;
+                overflow-x: hidden;
             }
 
             #content > div:first-child:not(.markdown-body) {
@@ -780,6 +801,214 @@ document.addEventListener('DOMContentLoaded', function() {
                 bottom: calc(118px + env(safe-area-inset-bottom)) !important;
                 max-height: 52vh !important;
             }
+
+            .site-page-article #header,
+            .site-page-single #header,
+            .site-page-tag #header {
+                min-width: 0 !important;
+                display: grid !important;
+                grid-template-columns: minmax(0, 1fr);
+                row-gap: 12px;
+            }
+
+            .site-page-article body,
+            .site-page-single body {
+                padding-left: calc(14px + env(safe-area-inset-left)) !important;
+                padding-right: calc(14px + env(safe-area-inset-right)) !important;
+            }
+
+            .site-page-article #glassShell,
+            .site-page-single #glassShell {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                box-sizing: border-box;
+            }
+
+            .site-page-article #content,
+            .site-page-single #content,
+            .site-page-article #postBody,
+            .site-page-single #postBody {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+                overflow-x: hidden;
+            }
+
+            .site-page-article #header .title-left,
+            .site-page-single #header .title-left,
+            .site-page-tag #header .title-left {
+                min-width: 0 !important;
+            }
+
+            .site-page-article #header .title-right,
+            .site-page-single #header .title-right,
+            .site-page-tag #header .title-right {
+                width: 100%;
+                max-width: 100%;
+                margin: 0 !important;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            #header .title-right a.btn,
+            #header .title-right button,
+            #header a.btn.circle {
+                width: 36px;
+                height: 36px;
+                flex: 0 0 36px;
+            }
+
+            .site-page-article #header .title-left,
+            .site-page-single #header .title-left {
+                display: flex !important;
+                align-items: flex-start !important;
+                justify-content: space-between !important;
+                gap: 12px;
+            }
+
+            .site-page-article #header .title-left > :first-child,
+            .site-page-single #header .title-left > :first-child {
+                min-width: 0;
+            }
+
+            .markdown-body {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+                overflow-wrap: anywhere;
+                word-break: normal;
+            }
+
+            .markdown-body h1,
+            .markdown-body h2,
+            .markdown-body h3 {
+                max-width: 100%;
+                line-height: 1.35;
+                white-space: normal;
+                overflow-wrap: anywhere;
+            }
+
+            .markdown-body p,
+            .markdown-body li {
+                line-height: 1.82;
+            }
+
+            .markdown-body p,
+            .markdown-body li,
+            .markdown-body div,
+            .markdown-body span,
+            .markdown-body a,
+            .markdown-body strong,
+            .markdown-body em {
+                max-width: 100%;
+                overflow-wrap: anywhere;
+                word-break: normal;
+            }
+
+            .markdown-body pre {
+                max-width: 100%;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            [class*="esa"],
+            [id*="esa"],
+            .markdown-body > div {
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .markdown-body button,
+            .markdown-body .btn {
+                max-width: 100%;
+                white-space: normal;
+            }
+
+            .markdown-body button {
+                min-height: 40px;
+            }
+
+            .markdown-body > div button {
+                width: 100%;
+            }
+
+            .subnav-search {
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
+                margin: 0 0 12px !important;
+                display: block;
+                position: relative;
+                float: none !important;
+            }
+
+            .subnav-search-input {
+                width: 100% !important;
+                min-height: 42px;
+                padding-right: 14px !important;
+                border-radius: 999px !important;
+                float: none !important;
+                box-sizing: border-box;
+            }
+
+            .subnav-search-icon {
+                top: 13px !important;
+            }
+
+            .site-page-tag #header .title-right {
+                display: grid !important;
+                grid-template-columns: minmax(0, 1fr) auto;
+                align-items: center;
+                column-gap: 10px;
+            }
+
+            .site-page-tag #header .title-right .subnav-search {
+                grid-column: 1 / -1;
+            }
+
+            .site-page-tag button.btn.float-left {
+                display: none !important;
+            }
+
+            .site-page-tag #buttonHome {
+                justify-self: center;
+                grid-column: 1 / -1;
+                margin: 0 !important;
+            }
+
+            #taglabel {
+                display: flex;
+                gap: 8px;
+                max-width: 100%;
+                overflow-x: auto;
+                padding: 0 18px 10px 2px;
+                margin-bottom: 10px !important;
+                scrollbar-width: none;
+                -webkit-overflow-scrolling: touch;
+                mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 24px), transparent);
+                -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 24px), transparent);
+            }
+
+            #taglabel + .SideNav,
+            #taglabel ~ .SideNav {
+                margin-top: 6px;
+            }
+
+            #taglabel::-webkit-scrollbar {
+                display: none;
+            }
+
+            #taglabel .Label {
+                flex: 0 0 auto;
+                margin-bottom: 0 !important;
+            }
+
+            .toc-icon,
+            #siteBackTop {
+                width: 38px !important;
+                height: 38px !important;
+            }
         }
         `;
         document.head.appendChild(style);
@@ -828,6 +1057,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    markCurrentPageClass();
     normalizeHomeButton();
     normalizeHeaderLocalNavLinks();
     ensureSiteTypography();
