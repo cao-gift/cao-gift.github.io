@@ -55,6 +55,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function normalizeHeaderLocalNavLinks() {
+        const localHosts = ['blog.freeblock.cn', 'www.blog.freeblock.cn', 'cao-gift.github.io'];
+        document.querySelectorAll('#header .title-right a[href]').forEach(function (link) {
+            try {
+                const originalUrl = new URL(link.getAttribute('href'), window.location.href);
+                if (!localHosts.includes(originalUrl.hostname)) return;
+
+                const sameOriginUrl = new URL(originalUrl.pathname + originalUrl.search + originalUrl.hash, window.location.origin).href;
+                link.href = sameOriginUrl;
+                link.removeAttribute('target');
+                link.removeAttribute('rel');
+
+                if (link.dataset.sameOriginNavReady === '1') return;
+                link.dataset.sameOriginNavReady = '1';
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    window.location.href = sameOriginUrl;
+                });
+            } catch (e) {}
+        });
+    }
+
     const bgImageDesktopUrl = absUrl(THEME_BG_IMAGE_DESKTOP);
     const bgVideoDesktopUrl = absUrl(THEME_BG_VIDEO_DESKTOP);
     const bgImageMobileUrl = absUrl(THEME_BG_IMAGE_MOBILE);
@@ -796,6 +818,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     normalizeHomeButton();
+    normalizeHeaderLocalNavLinks();
     ensureSiteTypography();
 
     function isMobileViewport() {
