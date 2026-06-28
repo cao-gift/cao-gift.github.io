@@ -9,7 +9,6 @@ function loadResource(type, attributes) {
 function createTOC() {
     const tocElement = document.createElement('div');
     tocElement.className = 'toc';
-    tocElement.classList.add('show');
         
     const contentContainer = document.querySelector('.markdown-body');
     if (!contentContainer) return;
@@ -190,13 +189,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const tocIcon = document.createElement('div');
     tocIcon.className = 'toc-icon';
-    
-    tocIcon.classList.add('active');
-    
-    tocIcon.textContent = '✖';
+    tocIcon.setAttribute('role', 'button');
+    tocIcon.setAttribute('aria-label', '展开文章目录');
+    tocIcon.setAttribute('title', '文章目录');
+    tocIcon.textContent = '☰';
     tocIcon.onclick = (e) => {
         e.stopPropagation();
         toggleTOC();
+        tocIcon.setAttribute(
+            'aria-label',
+            tocIcon.classList.contains('active') ? '收起文章目录' : '展开文章目录'
+        );
     };
     document.body.appendChild(tocIcon);
 
@@ -213,9 +216,10 @@ document.addEventListener("DOMContentLoaded", function() {
     
     document.addEventListener('click', (e) => {
         const tocElement = document.querySelector('.toc');
-        if (tocElement && tocElement.classList.contains('show') && !tocElement.contains(e.target) && e.target.classList.contains('toc-icon')) {
+        if (tocElement && tocElement.classList.contains('show') && !tocElement.contains(e.target) && !e.target.classList.contains('toc-icon')) {
             toggleTOC();
-            
+            const tocIcon = document.querySelector('.toc-icon');
+            if (tocIcon) tocIcon.setAttribute('aria-label', '展开文章目录');
         }
     });
 });
