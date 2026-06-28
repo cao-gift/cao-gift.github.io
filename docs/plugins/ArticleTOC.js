@@ -77,6 +77,12 @@ function toggleTOC() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
+    const contentContainer = document.querySelector('.markdown-body');
+    if (!contentContainer) return;
+
+    const headingCount = contentContainer.querySelectorAll('h1, h2, h3, h4, h5, h6').length;
+    if (!headingCount) return;
+
     createTOC();
     const css = `
        :root {
@@ -203,8 +209,9 @@ document.addEventListener("DOMContentLoaded", function() {
     };
     document.body.appendChild(tocIcon);
 
-    window.onscroll = function() {
+    const updateBackToTop = function() {
         const backToTopButton = document.querySelector('.toc-end');
+        if (!backToTopButton) return;
         if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
             backToTopButton.style="visibility: visible;background-color: white;"
         } else {
@@ -212,7 +219,16 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     };
 
-    document.addEventListener('scroll', highlightTOC);
+    let ticking = false;
+    document.addEventListener('scroll', function () {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function () {
+            updateBackToTop();
+            highlightTOC();
+            ticking = false;
+        });
+    }, { passive: true });
     
     document.addEventListener('click', (e) => {
         const tocElement = document.querySelector('.toc');

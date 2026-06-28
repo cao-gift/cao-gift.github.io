@@ -674,6 +674,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     rgba(255, 255, 255, 0.14) !important;
             }
 
+            body {
+                background-attachment: scroll !important;
+            }
+
             #content > div:first-child:not(.markdown-body) {
                 font-size: 15.5px;
                 margin-bottom: 14px !important;
@@ -814,6 +818,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     link.rel = 'noopener noreferrer';
                 }
             } catch (e) {}
+        });
+    }
+
+    function optimizeArticleImages() {
+        document.querySelectorAll('.markdown-body img').forEach(function (img) {
+            if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
+            if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
         });
     }
 
@@ -1374,6 +1385,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ensureGlobalPolishStyle();
         ensureBackToTopButton();
         improveExternalLinks();
+        optimizeArticleImages();
         insertSponsorInfo();
 
         // ESA AI 验证码：仅保护“文章正文图片”，验证成功才加载（本篇一次即可）

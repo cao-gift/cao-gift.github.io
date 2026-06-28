@@ -211,12 +211,13 @@
     }
 
     handleImageClick(event) {
-      const clickedImage = event.target.closest('img');
+      const clickedImage = event.target.closest('.markdown-body img');
       if (clickedImage && !this.isOpen) {
         event.preventDefault();
         event.stopPropagation();
         this.images = Array.from(document.querySelectorAll('.markdown-body img'));
         this.currentIndex = this.images.indexOf(clickedImage);
+        if (this.currentIndex < 0) return;
         this.open();
       }
     }
@@ -352,6 +353,7 @@
     }
 
     preloadImages() {
+      if (!this.images || this.images.length < 2 || this.currentIndex < 0) return;
       const preloadNext = (this.currentIndex + 1) % this.images.length;
       const preloadPrev = (this.currentIndex - 1 + this.images.length) % this.images.length;
       new Image().src = this.images[preloadNext].src;
@@ -364,6 +366,7 @@
 
   // 自动初始化
   document.addEventListener('DOMContentLoaded', () => {
+    if (!document.querySelector('.markdown-body img')) return;
     new Lightbox();
   });
 })();
