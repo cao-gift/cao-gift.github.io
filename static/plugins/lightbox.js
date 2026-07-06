@@ -18,6 +18,7 @@
       this.touchStartX = 0;
       this.touchEndX = 0;
       this.wheelTimer = null;
+      this.previousBodyOverflow = '';
 
       this.init();
     }
@@ -164,6 +165,9 @@
       this.overlay = document.createElement('div');
       this.overlay.className = 'lb-lightbox-overlay';
       this.overlay.style.zIndex = '-1';
+      this.overlay.setAttribute('role', 'dialog');
+      this.overlay.setAttribute('aria-modal', 'true');
+      this.overlay.setAttribute('aria-label', '图片预览');
 
       this.contentWrapper = document.createElement('div');
       this.contentWrapper.className = 'lb-lightbox-content-wrapper';
@@ -173,17 +177,24 @@
 
       this.image = document.createElement('img');
       this.image.className = 'lb-lightbox-image';
+      this.image.alt = '';
 
       this.prevButton = document.createElement('button');
+      this.prevButton.type = 'button';
       this.prevButton.className = 'lb-lightbox-nav lb-lightbox-prev';
+      this.prevButton.setAttribute('aria-label', '上一张图片');
       this.prevButton.innerHTML = '&#10094;';
 
       this.nextButton = document.createElement('button');
+      this.nextButton.type = 'button';
       this.nextButton.className = 'lb-lightbox-nav lb-lightbox-next';
+      this.nextButton.setAttribute('aria-label', '下一张图片');
       this.nextButton.innerHTML = '&#10095;';
 
       this.closeButton = document.createElement('button');
+      this.closeButton.type = 'button';
       this.closeButton.className = 'lb-lightbox-close';
+      this.closeButton.setAttribute('aria-label', '关闭图片预览');
       this.closeButton.innerHTML = '&times;';
 
       this.container.appendChild(this.image);
@@ -204,18 +215,28 @@
       this.nextButton.addEventListener('click', this.showNextImage.bind(this));
       this.closeButton.addEventListener('click', this.close.bind(this));
       document.addEventListener('keydown', this.handleKeyDown.bind(this));
-      this.overlay.addEventListener('wheel', this.handleWheel.bind(this));
-      this.overlay.addEventListener('touchstart', this.handleTouchStart.bind(this));
-      this.overlay.addEventListener('touchmove', this.handleTouchMove.bind(this));
+      this.overlay.addEventListener('wheel', this.handleWheel.bind(this), { passive: false });
+      this.overlay.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: true });
+      this.overlay.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: true });
       this.overlay.addEventListener('touchend', this.handleTouchEnd.bind(this));
+    }
+
+    isPreviewableImage(img) {
+      if (!img) return false;
+      if (img.closest && img.closest('#esa-img-captcha-banner')) return false;
+      if (img.getAttribute('data-esa-img-locked') === '1') return false;
+
+      const src = img.currentSrc || img.getAttribute('src') || '';
+      if (!src || src.startsWith('data:image/gif;base64,R0lGODlhAQABA')) return false;
+      return true;
     }
 
     handleImageClick(event) {
       const clickedImage = event.target.closest('.markdown-body img');
-      if (clickedImage && !this.isOpen) {
+      if (clickedImage && !this.isOpen && this.isPreviewableImage(clickedImage)) {
         event.preventDefault();
         event.stopPropagation();
-        this.images = Array.from(document.querySelectorAll('.markdown-body img'));
+        this.images = Array.from(document.querySelectorAll('.markdown-body img')).filter((img) => this.isPreviewableImage(img));
         this.currentIndex = this.images.indexOf(clickedImage);
         if (this.currentIndex < 0) return;
         this.open();
@@ -223,13 +244,9 @@
     }
 
     handleOverlayClick(event) {
-      if (event.target === this.overlay && this.options.closeOnOverlayClick) {
+      if (event.target.closest('.lb-lightbox-nav, .lb-lightbox-close')) return;
+      if ((event.target === this.overlay || event.target === this.contentWrapper) && this.options.closeOnOverlayClick) {
         this.close();
-      } else if (!event.target.closest('.lb-lightbox-container')) {
-        const elementBelow = document.elementFromPoint(event.clientX, event.clientY);
-        if (elementBelow) {
-          elementBelow.click();
-        }
       }
     }
 
@@ -265,6 +282,7 @@
 
     handleTouchStart(event) {
       this.touchStartX = event.touches[0].clientX;
+      this.touchEndX = this.touchStartX;
     }
 
     handleTouchMove(event) {
@@ -284,6 +302,7 @@
 
     open() {
       this.isOpen = true;
+      this.previousBodyOverflow = document.body.style.overflow;
       this.overlay.style.zIndex = '10000';
       this.overlay.classList.add('active');
       this.showImage();
@@ -298,7 +317,7 @@
       this.isOpen = false;
       this.overlay.style.opacity = '0';
       this.overlay.classList.remove('active');
-      document.body.style.overflow = '';
+      document.body.style.overflow = this.previousBodyOverflow || '';
       setTimeout(() => {
         this.image.style.transform = '';
         this.zoomLevel = 1;
@@ -325,8 +344,12 @@
     }
 
     showImage() {
-      const imgSrc = this.images[this.currentIndex].src;
+      const sourceImage = this.images[this.currentIndex];
+      if (!sourceImage) return;
+      const imgSrc = sourceImage.currentSrc || sourceImage.src;
+      if (!imgSrc) return;
       this.image.style.opacity = '0';
+      this.image.alt = sourceImage.alt || '图片预览';
       
       const newImage = new Image();
       newImage.src = imgSrc;
@@ -356,8 +379,10 @@
       if (!this.images || this.images.length < 2 || this.currentIndex < 0) return;
       const preloadNext = (this.currentIndex + 1) % this.images.length;
       const preloadPrev = (this.currentIndex - 1 + this.images.length) % this.images.length;
-      new Image().src = this.images[preloadNext].src;
-      new Image().src = this.images[preloadPrev].src;
+      const nextSrc = this.images[preloadNext] && (this.images[preloadNext].currentSrc || this.images[preloadNext].src);
+      const prevSrc = this.images[preloadPrev] && (this.images[preloadPrev].currentSrc || this.images[preloadPrev].src);
+      if (nextSrc) new Image().src = nextSrc;
+      if (prevSrc) new Image().src = prevSrc;
     }
   }
 
@@ -367,6 +392,8 @@
   // 自动初始化
   document.addEventListener('DOMContentLoaded', () => {
     if (!document.querySelector('.markdown-body img')) return;
+    if (window.__siteLightboxReady) return;
+    window.__siteLightboxReady = true;
     new Lightbox();
   });
 })();

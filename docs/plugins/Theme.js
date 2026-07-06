@@ -16,12 +16,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const THEME_BG_IMAGE_MOBILE = '/img/手机1.jpg'; // 建议换更小体积的图片
     const THEME_BG_VIDEO_MOBILE = '/img/手机2.mp4'; // 手机端如需视频可换更小体积
 
-    // 更稳：优先使用 currentScript（某些环境 querySelector 取不到自己）
+    // 更稳：优先使用当前脚本标签，兼容部署在子路径下的站点
     const themeScriptSrc = (document.currentScript && document.currentScript.src)
         ? document.currentScript.src
         : (function () {
             try {
-                const s = document.querySelector('script[src*="RonanTheme.js"]');
+                const s = document.querySelector('script[src*="/plugins/Theme.js"],script[src*="Theme.js"],script[src*="RonanTheme.js"]');
                 return s ? s.src : '';
             } catch (e) {
                 return '';
@@ -90,6 +90,43 @@ document.addEventListener('DOMContentLoaded', function() {
     const bgImageMobileUrl = absUrl(THEME_BG_IMAGE_MOBILE);
     const bgVideoMobileUrl = absUrl(THEME_BG_VIDEO_MOBILE);
     const sponsorLogoUrl = absUrl('../img/logo.png');
+
+    function addHeadLinkOnce(id, attrs) {
+        try {
+            if (document.getElementById(id)) return;
+            const link = document.createElement('link');
+            link.id = id;
+            Object.keys(attrs).forEach(function (key) {
+                if (key in link) {
+                    link[key] = attrs[key];
+                } else {
+                    link.setAttribute(key, attrs[key]);
+                }
+            });
+            document.head.appendChild(link);
+        } catch (e) {}
+    }
+
+    function ensureHeadPerformanceHints() {
+        const bgImageUrl = isMobileViewport() ? bgImageMobileUrl : bgImageDesktopUrl;
+
+        addHeadLinkOnce('site-bg-preload', {
+            rel: 'preload',
+            as: 'image',
+            href: bgImageUrl,
+            fetchPriority: 'high'
+        });
+        addHeadLinkOnce('site-avatar-preload', {
+            rel: 'preload',
+            as: 'image',
+            href: absUrl('../img/avatar.webp'),
+            fetchPriority: 'high'
+        });
+        addHeadLinkOnce('site-upyun-dns-prefetch', {
+            rel: 'dns-prefetch',
+            href: 'https://www.upyun.com'
+        });
+    }
 
     function ensureSiteTypography() {
         const fontCdnOrigin = 'https://cdn.jsdelivr.net';
@@ -1044,16 +1081,31 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 if (new URL(link.href).origin !== window.location.origin) {
                     link.target = '_blank';
-                    link.rel = 'noopener noreferrer';
+                    const relTokens = new Set((link.getAttribute('rel') || '').split(/\s+/).filter(Boolean));
+                    relTokens.add('noopener');
+                    relTokens.add('noreferrer');
+                    link.setAttribute('rel', Array.from(relTokens).join(' '));
                 }
             } catch (e) {}
         });
     }
 
     function optimizeArticleImages() {
-        document.querySelectorAll('.markdown-body img').forEach(function (img) {
+        document.querySelectorAll('.markdown-body img').forEach(function (img, index) {
+            const canonicalSrc = img.getAttribute('data-canonical-src');
+            if (canonicalSrc) {
+                const parentLink = img.closest('a[href]');
+                if (parentLink) parentLink.href = canonicalSrc;
+                if (!img.getAttribute('data-esa-img-locked')) {
+                    img.src = canonicalSrc;
+                }
+            }
+            if (!img.hasAttribute('alt')) img.setAttribute('alt', '');
             if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
             if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+            try {
+                img.fetchPriority = index === 0 ? 'high' : 'low';
+            } catch (e) {}
         });
     }
 
@@ -1061,6 +1113,7 @@ document.addEventListener('DOMContentLoaded', function() {
     normalizeHomeButton();
     normalizeHeaderLocalNavLinks();
     ensureSiteTypography();
+    ensureHeadPerformanceHints();
 
     function isMobileViewport() {
         try {

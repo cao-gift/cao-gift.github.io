@@ -986,6 +986,13 @@
     const reused = readReuse();
     if (reused) {
       ensureBanner();
+      document.body.setAttribute('data-esa-img-locked', '1');
+      internalUpdate = true;
+      try {
+        lockImagesOnce();
+      } finally {
+        internalUpdate = false;
+      }
       pendingParam = reused;
       document.body.removeAttribute('data-esa-img-locked');
       applyVerifiedState();
