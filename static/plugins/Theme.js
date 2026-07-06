@@ -1,3 +1,135 @@
+(function earlySiteBoot() {
+    const path = window.location.pathname;
+    const mobileBreakpoint = 720;
+    const bgImageDesktop = '/img/电脑2.jpg';
+    const bgImageMobile = '/img/手机1.jpg';
+    const tinyPixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+
+    function appendEarlyStyle() {
+        if (document.getElementById('site-early-theme-style')) return;
+        const style = document.createElement('style');
+        style.id = 'site-early-theme-style';
+        style.textContent = `
+            html {
+                min-height: 100%;
+                overflow-x: hidden;
+                background: url("${bgImageDesktop}") no-repeat center center fixed;
+                background-size: cover;
+            }
+            @media (max-width: ${mobileBreakpoint}px), (hover: none) and (pointer: coarse) {
+                html {
+                    background-image: url("${bgImageMobile}");
+                }
+            }
+            body {
+                box-sizing: border-box;
+                min-height: 100vh;
+                margin: 0;
+                padding: 28px 16px;
+                width: 100%;
+                max-width: none;
+                background: transparent;
+                overflow-x: hidden;
+            }
+            html[data-site-early-img-lock="1"] .markdown-body img {
+                visibility: hidden !important;
+            }
+            html[data-site-early-img-lock="1"] .esa-img-captcha-banner img {
+                visibility: visible !important;
+            }
+            @media (max-width: ${mobileBreakpoint}px), (hover: none) and (pointer: coarse) {
+                body {
+                    padding-left: calc(clamp(10px, 3.2vw, 14px) + env(safe-area-inset-left));
+                    padding-right: calc(clamp(10px, 3.2vw, 14px) + env(safe-area-inset-right));
+                    padding-top: calc(clamp(10px, 2.2vh, 14px) + env(safe-area-inset-top));
+                    padding-bottom: calc(clamp(10px, 2.2vh, 14px) + env(safe-area-inset-bottom));
+                }
+            }
+        `;
+        (document.head || document.documentElement).appendChild(style);
+    }
+
+    function hasRecentImageVerifyReuse() {
+        try {
+            const raw = sessionStorage.getItem(`esa_img_verified:1nux88n8:${path}`);
+            if (!raw) return false;
+            const parsed = JSON.parse(raw);
+            return !!(parsed && parsed.param && parsed.at && Date.now() - parsed.at <= 80000);
+        } catch (e) {
+            return false;
+        }
+    }
+
+    function lockImageEarly(img) {
+        if (!img || img.nodeType !== 1 || img.tagName !== 'IMG') return;
+        if (!img.closest || !img.closest('.markdown-body')) return;
+        if (img.closest('#esa-img-captcha-banner')) return;
+
+        const canonicalSrc = img.getAttribute('data-canonical-src');
+        const currentSrc = img.getAttribute('src') || '';
+        const src = canonicalSrc || currentSrc;
+        const srcset = img.getAttribute('srcset') || '';
+        const alreadyLocked = img.getAttribute('data-esa-img-locked') === '1';
+        if (!src || (alreadyLocked && currentSrc === tinyPixel && !srcset)) return;
+
+        const parentLink = img.closest('a[href]');
+        if (parentLink && canonicalSrc) parentLink.href = canonicalSrc;
+        if (src !== tinyPixel) img.setAttribute('data-esa-orig-src', src);
+        if (srcset && !img.getAttribute('data-esa-orig-srcset')) img.setAttribute('data-esa-orig-srcset', srcset);
+        img.setAttribute('src', tinyPixel);
+        img.removeAttribute('srcset');
+        img.setAttribute('data-esa-img-locked', '1');
+        try {
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            img.fetchPriority = 'low';
+        } catch (e) {}
+    }
+
+    function startEarlyArticleImageLock() {
+        if (!path.includes('/post/') || hasRecentImageVerifyReuse() || !('MutationObserver' in window)) return;
+        document.documentElement.setAttribute('data-site-early-img-lock', '1');
+
+        const scanNode = function (node) {
+            if (!node || node.nodeType !== 1) return;
+            if (node.tagName === 'IMG') lockImageEarly(node);
+            if (node.querySelectorAll) node.querySelectorAll('.markdown-body img').forEach(lockImageEarly);
+        };
+
+        const observer = new MutationObserver(function (mutations) {
+            if (document.documentElement.getAttribute('data-site-early-img-lock') !== '1') return;
+            mutations.forEach(function (mutation) {
+                if (mutation.type === 'childList') {
+                    mutation.addedNodes.forEach(scanNode);
+                } else if (mutation.type === 'attributes') {
+                    lockImageEarly(mutation.target);
+                }
+            });
+        });
+
+        observer.observe(document.documentElement, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['src', 'srcset', 'data-canonical-src']
+        });
+
+        const stop = function () {
+            setTimeout(function () {
+                try { observer.disconnect(); } catch (e) {}
+            }, 8000);
+        };
+        if (document.readyState === 'complete') {
+            stop();
+        } else {
+            window.addEventListener('load', stop, { once: true });
+        }
+    }
+
+    appendEarlyStyle();
+    startEarlyArticleImageLock();
+})();
+
 document.addEventListener('DOMContentLoaded', function() {    
     let currentUrl = window.location.pathname;
     //let currentHost = window.location.hostname;
@@ -1212,6 +1344,98 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (e) {}
     }
 
+    function sharedPageShellCss(lineHeight) {
+        return `
+        html {
+            background: url('${bgImageDesktopUrl}') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
+            html {
+                background-image: url('${bgImageMobileUrl}');
+            }
+        }
+
+        #bgVideo {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            object-fit: cover;
+            background: #000;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+        }
+
+        #bgVideo.is-ready {
+            opacity: 1;
+        }
+
+        #bgOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background:
+                radial-gradient(1100px 650px at 18% 8%, rgba(255, 255, 255, 0.16), transparent 60%),
+                radial-gradient(900px 600px at 82% 0%, rgba(99, 102, 241, 0.12), transparent 55%),
+                linear-gradient(180deg, rgba(0, 0, 0, 0.48), rgba(0, 0, 0, 0.18));
+        }
+
+        body {
+            box-sizing: border-box;
+            min-height: 100vh;
+            margin: 0;
+            padding: 28px 16px;
+            width: 100%;
+            max-width: none;
+            font-size: 16px;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            line-height: ${lineHeight || '1.35'};
+            color: rgba(15, 23, 42, 0.92);
+            background: transparent;
+            overflow-x: hidden;
+        }
+
+        #glassShell {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 44px;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.26);
+            border-radius: 18px;
+            box-shadow:
+                0 28px 90px rgba(0, 0, 0, 0.36),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(20px) saturate(1.35);
+            -webkit-backdrop-filter: blur(20px) saturate(1.35);
+        }
+
+        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
+            body {
+                padding-left: calc(clamp(10px, 3.2vw, 14px) + env(safe-area-inset-left));
+                padding-right: calc(clamp(10px, 3.2vw, 14px) + env(safe-area-inset-right));
+                padding-top: calc(clamp(10px, 2.2vh, 14px) + env(safe-area-inset-top));
+                padding-bottom: calc(clamp(10px, 2.2vh, 14px) + env(safe-area-inset-bottom));
+                font-size: 15px;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                touch-action: pan-y;
+            }
+            #glassShell {
+                padding: clamp(14px, 3.8vw, 18px);
+                border-radius: 16px;
+            }
+        }
+        `;
+    }
+
     //主页主题------------------------------------------------------------------------------
     
     if (currentUrl == '/' || currentUrl.includes('/index.html') || currentUrl.includes('/page')) {
@@ -1530,93 +1754,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let style = document.createElement("style");
         style.innerHTML = `
-
-        html {    
-            background: url('${bgImageDesktopUrl}') no-repeat center center fixed;
-            background-size: cover;
-        }
-
-        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
-            html {
-                background-image: url('${bgImageMobileUrl}');
-            }
-        }
-
-        /* 背景视频 */
-        #bgVideo {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            object-fit: cover;
-            background: #000;
-            opacity: 0;
-            transition: opacity 0.6s ease;
-            pointer-events: none;
-        }
-
-        #bgVideo.is-ready {
-            opacity: 1;
-        }
-
-        #bgOverlay {
-            position: fixed;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            background:
-                radial-gradient(1100px 650px at 18% 8%, rgba(255, 255, 255, 0.16), transparent 60%),
-                radial-gradient(900px 600px at 82% 0%, rgba(99, 102, 241, 0.12), transparent 55%),
-                linear-gradient(180deg, rgba(0, 0, 0, 0.48), rgba(0, 0, 0, 0.18));
-        }
-
-        body {
-            box-sizing: border-box;
-            min-height: 100vh;
-            margin: 0;
-            padding: 28px 16px;
-            width: 100%;
-            max-width: none;
-            font-size: 16px;
-            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-            line-height: 1.55;
-            color: rgba(15, 23, 42, 0.92);
-            background: transparent;
-            overflow-x: hidden;
-            /* 用 margin: 0 auto 居中容器，避免 fixed 元素参与 flex 布局导致偏移 */
-        }
-
-        #glassShell {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 44px;
-            background: rgba(255, 255, 255, 0.14);
-            border: 1px solid rgba(255, 255, 255, 0.26);
-            border-radius: 18px;
-            box-shadow:
-                0 28px 90px rgba(0, 0, 0, 0.36),
-                inset 0 1px 0 rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(20px) saturate(1.35);
-            -webkit-backdrop-filter: blur(20px) saturate(1.35);
-        }
-
-        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
-            body {
-                padding-left: calc(clamp(10px, 3.2vw, 14px) + env(safe-area-inset-left));
-                padding-right: calc(clamp(10px, 3.2vw, 14px) + env(safe-area-inset-right));
-                padding-top: calc(clamp(10px, 2.2vh, 14px) + env(safe-area-inset-top));
-                padding-bottom: calc(clamp(10px, 2.2vh, 14px) + env(safe-area-inset-bottom));
-                font-size: 15px;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
-                touch-action: pan-y;
-            }
-            #glassShell { padding: clamp(14px, 3.8vw, 18px); border-radius: 16px; }
-        }
+        ${sharedPageShellCss('1.55')}
 
         /* markdown内容 */
         /* 图片圆角 */
@@ -1707,93 +1845,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('应用搜索页主题');
         let style = document.createElement("style");
         style.innerHTML = `
-        
-        html {    
-            background: url('${bgImageDesktopUrl}') no-repeat center center fixed;
-            background-size: cover;
-        }
-
-        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
-            html {
-                background-image: url('${bgImageMobileUrl}');
-            }
-        }
-
-        /* 背景视频 */
-        #bgVideo {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            object-fit: cover;
-            background: #000;
-            opacity: 0;
-            transition: opacity 0.6s ease;
-            pointer-events: none;
-        }
-
-        #bgVideo.is-ready {
-            opacity: 1;
-        }
-
-        #bgOverlay {
-            position: fixed;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            background:
-                radial-gradient(1100px 650px at 18% 8%, rgba(255, 255, 255, 0.16), transparent 60%),
-                radial-gradient(900px 600px at 82% 0%, rgba(99, 102, 241, 0.12), transparent 55%),
-                linear-gradient(180deg, rgba(0, 0, 0, 0.48), rgba(0, 0, 0, 0.18));
-        }
-
-        body {
-            box-sizing: border-box;
-            min-height: 100vh;
-            margin: 0;
-            padding: 28px 16px;
-            width: 100%;
-            max-width: none;
-            font-size: 16px;
-            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-            line-height: 1.35;
-            color: rgba(15, 23, 42, 0.92);
-            background: transparent;
-            overflow-x: hidden;
-            /* 用 margin: 0 auto 居中容器，避免 fixed 元素参与 flex 布局导致偏移 */
-        }
-
-        #glassShell {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 44px;
-            background: rgba(255, 255, 255, 0.14);
-            border: 1px solid rgba(255, 255, 255, 0.26);
-            border-radius: 18px;
-            box-shadow:
-                0 28px 90px rgba(0, 0, 0, 0.36),
-                inset 0 1px 0 rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(20px) saturate(1.35);
-            -webkit-backdrop-filter: blur(20px) saturate(1.35);
-        }
-
-        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
-            body {
-                padding-left: calc(clamp(10px, 3.2vw, 14px) + env(safe-area-inset-left));
-                padding-right: calc(clamp(10px, 3.2vw, 14px) + env(safe-area-inset-right));
-                padding-top: calc(clamp(10px, 2.2vh, 14px) + env(safe-area-inset-top));
-                padding-bottom: calc(clamp(10px, 2.2vh, 14px) + env(safe-area-inset-bottom));
-                font-size: 15px;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
-                touch-action: pan-y;
-            }
-            #glassShell { padding: clamp(14px, 3.8vw, 18px); border-radius: 16px; }
-        }
+        ${sharedPageShellCss('1.35')}
         
         .SideNav {
             background: rgba(255, 255, 255, 0.10);

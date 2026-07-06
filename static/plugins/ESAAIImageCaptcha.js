@@ -28,6 +28,12 @@
   clearPluginLoadWarnings();
   setTimeout(clearPluginLoadWarnings, 1800);
 
+  function clearEarlyImageLock() {
+    try {
+      document.documentElement.removeAttribute('data-site-early-img-lock');
+    } catch (e) {}
+  }
+
   const DEFAULT_TINY_PIXEL =
     'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
 
@@ -623,6 +629,7 @@
   function isProbablyRealImage(img) {
     if (!img) return false;
     if (img.closest && img.closest('#esa-img-captcha-banner')) return false;
+    if (img.getAttribute('data-esa-orig-src') || img.getAttribute('data-esa-img-locked') === '1') return true;
     // 过滤 1x1 像素、站内图标等：只拦正文图片，已通过 selector 限制范围
     const w = img.naturalWidth || img.width || 0;
     const h = img.naturalHeight || img.height || 0;
@@ -903,6 +910,7 @@
         writeReuse(captchaVerifyParam);
         disconnectObserver();
         disconnectLazyObserver();
+        clearEarlyImageLock();
         document.body.removeAttribute('data-esa-img-locked');
         applyVerifiedState();
         unlockAndLoadAll(captchaVerifyParam);
@@ -976,6 +984,7 @@
 
     const imgs = Array.from(body.querySelectorAll('img')).filter(isProbablyRealImage);
     if (imgs.length === 0) {
+      clearEarlyImageLock();
       try {
         document.documentElement.setAttribute('data-esa-img-plugin', 'no-images');
       } catch (e) {}
@@ -994,6 +1003,7 @@
         internalUpdate = false;
       }
       pendingParam = reused;
+      clearEarlyImageLock();
       document.body.removeAttribute('data-esa-img-locked');
       applyVerifiedState();
       unlockAndLoadAll(reused);
