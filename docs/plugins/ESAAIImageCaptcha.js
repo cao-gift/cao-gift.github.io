@@ -37,6 +37,7 @@
   const DEFAULT_TINY_PIXEL =
     'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
 
+  const siteEsaConfig = (window.SiteRuntimeConfig && window.SiteRuntimeConfig.esa) || {};
   const cfg = Object.assign(
     {
       prefix: 'esa-pgrds6as5i',
@@ -51,6 +52,7 @@
       // 只保护文章正文内图片
       imageSelector: '.markdown-body img',
     },
+    siteEsaConfig,
     window.ESAAIImageCaptchaConfig || {}
   );
 
@@ -486,7 +488,7 @@
     const desc = document.createElement('div');
     desc.className = 'esa-img-captcha-banner-desc';
     desc.id = 'esa-img-captcha-desc';
-    desc.textContent = '验证后自动加载图片';
+    desc.textContent = '验证后显示图片';
 
     const actions = document.createElement('div');
     actions.className = 'esa-img-captcha-actions';
@@ -510,9 +512,9 @@
     skip.addEventListener('click', function () {
       if (skip.disabled || pendingParam) return;
       setBannerState('paused');
-      setTitle('已暂停图片加载');
+      setTitle('已暂停图片显示');
       setSkipVisible(true);
-      setDesc('图片暂不加载，需要时可再查看');
+      setDesc('图片暂不显示，需要时可再查看');
       setDebug('已跳过');
       setButtonState(false, '立即查看');
       setSkipState('暂不查看', true);
@@ -959,7 +961,7 @@
     }
     ready = true;
     setTitle('本页图片需验证后查看');
-    setDesc('验证后自动加载图片');
+    setDesc('验证后显示图片');
     setBannerState('ready');
     setSkipVisible(true);
     setDebug('就绪');

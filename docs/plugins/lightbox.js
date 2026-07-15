@@ -1,9 +1,15 @@
 (function() {
+  'use strict';
+
+  if (window.__siteLightboxScriptLoaded) return;
+  window.__siteLightboxScriptLoaded = true;
+
   // 灯箱插件
   class Lightbox {
     constructor(options = {}) {
+      const reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
       this.options = Object.assign({
-        animationDuration: 300,
+        animationDuration: reduceMotion ? 0 : 300,
         closeOnOverlayClick: true,
         onOpen: null,
         onClose: null,
@@ -19,6 +25,9 @@
       this.touchEndX = 0;
       this.wheelTimer = null;
       this.previousBodyOverflow = '';
+      this.previousActiveElement = null;
+      this.inertStates = [];
+      this.closeTimer = null;
 
       this.init();
     }
@@ -87,7 +96,7 @@
           justify-content: center;
           align-items: center;
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: transform 0.3s ease, background-color 0.3s ease;
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         .lb-lightbox-nav:hover {
@@ -118,7 +127,7 @@
           justify-content: center;
           align-items: center;
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: transform 0.3s ease, background-color 0.3s ease;
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         .lb-lightbox-close:hover {
@@ -157,6 +166,15 @@
             box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
           }
         }
+        @media (prefers-reduced-motion: reduce) {
+          .lb-lightbox-overlay,
+          .lb-lightbox-container,
+          .lb-lightbox-image,
+          .lb-lightbox-nav,
+          .lb-lightbox-close {
+            transition-duration: 0.01ms !important;
+          }
+        }
       `;
       document.head.appendChild(style);
     }
@@ -168,6 +186,8 @@
       this.overlay.setAttribute('role', 'dialog');
       this.overlay.setAttribute('aria-modal', 'true');
       this.overlay.setAttribute('aria-label', '图片预览');
+      this.overlay.setAttribute('aria-hidden', 'true');
+      this.overlay.setAttribute('tabindex', '-1');
 
       this.contentWrapper = document.createElement('div');
       this.contentWrapper.className = 'lb-lightbox-content-wrapper';
@@ -210,6 +230,7 @@
 
     bindEvents() {
       document.addEventListener('click', this.handleImageClick.bind(this), true);
+      document.addEventListener('keydown', this.handleImageKeyDown.bind(this), true);
       this.overlay.addEventListener('click', this.handleOverlayClick.bind(this));
       this.prevButton.addEventListener('click', this.showPreviousImage.bind(this));
       this.nextButton.addEventListener('click', this.showNextImage.bind(this));
@@ -236,11 +257,27 @@
       if (clickedImage && !this.isOpen && this.isPreviewableImage(clickedImage)) {
         event.preventDefault();
         event.stopPropagation();
-        this.images = Array.from(document.querySelectorAll('.markdown-body img')).filter((img) => this.isPreviewableImage(img));
-        this.currentIndex = this.images.indexOf(clickedImage);
-        if (this.currentIndex < 0) return;
-        this.open();
+        this.openFromImage(clickedImage);
       }
+    }
+
+    handleImageKeyDown(event) {
+      if (this.isOpen || (event.key !== 'Enter' && event.key !== ' ')) return;
+      if (!event.target || !event.target.closest) return;
+      const link = event.target.closest('.markdown-body a[href]');
+      if (!link || link.textContent.trim()) return;
+      const images = link.querySelectorAll('img');
+      if (images.length !== 1 || !this.isPreviewableImage(images[0])) return;
+      event.preventDefault();
+      this.openFromImage(images[0]);
+    }
+
+    openFromImage(image) {
+      this.images = Array.from(document.querySelectorAll('.markdown-body img'))
+        .filter((img) => this.isPreviewableImage(img));
+      this.currentIndex = this.images.indexOf(image);
+      if (this.currentIndex < 0) return;
+      this.open();
     }
 
     handleOverlayClick(event) {
@@ -253,17 +290,38 @@
     handleKeyDown(event) {
       if (!this.isOpen) return;
 
+      if (event.key === 'Tab') {
+        this.trapFocus(event);
+        return;
+      }
+
       switch (event.key) {
         case 'ArrowLeft':
+          event.preventDefault();
           this.showPreviousImage();
           break;
         case 'ArrowRight':
+          event.preventDefault();
           this.showNextImage();
           break;
         case 'Escape':
+          event.preventDefault();
           this.close();
           break;
       }
+    }
+
+    trapFocus(event) {
+      const focusable = [this.prevButton, this.nextButton, this.closeButton]
+        .filter((element) => element && element.style.display !== 'none' && !element.disabled);
+      if (!focusable.length) return;
+
+      const currentIndex = focusable.indexOf(document.activeElement);
+      const nextIndex = event.shiftKey
+        ? (currentIndex <= 0 ? focusable.length - 1 : currentIndex - 1)
+        : (currentIndex < 0 || currentIndex === focusable.length - 1 ? 0 : currentIndex + 1);
+      event.preventDefault();
+      focusable[nextIndex].focus();
     }
 
     handleWheel(event) {
@@ -301,28 +359,49 @@
     }
 
     open() {
+      if (this.isOpen) return;
       this.isOpen = true;
+      clearTimeout(this.closeTimer);
+      this.previousActiveElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       this.previousBodyOverflow = document.body.style.overflow;
+      this.setBackgroundInert(true);
       this.overlay.style.zIndex = '10000';
+      this.overlay.setAttribute('aria-hidden', 'false');
       this.overlay.classList.add('active');
       this.showImage();
       this.overlay.style.opacity = '1';
       document.body.style.overflow = 'hidden';
+      try {
+        this.closeButton.focus({ preventScroll: true });
+      } catch (e) {
+        this.closeButton.focus();
+      }
+      window.requestAnimationFrame(() => {
+        if (this.isOpen && !this.overlay.contains(document.activeElement)) {
+          this.closeButton.focus();
+        }
+      });
       if (typeof this.options.onOpen === 'function') {
         this.options.onOpen();
       }
     }
 
     close() {
+      if (!this.isOpen) return;
       this.isOpen = false;
       this.overlay.style.opacity = '0';
       this.overlay.classList.remove('active');
       document.body.style.overflow = this.previousBodyOverflow || '';
-      setTimeout(() => {
+      this.closeTimer = setTimeout(() => {
         this.image.style.transform = '';
         this.zoomLevel = 1;
         this.isZoomed = false;
         this.overlay.style.zIndex = '-1';
+        this.overlay.setAttribute('aria-hidden', 'true');
+        this.setBackgroundInert(false);
+        if (this.previousActiveElement && this.previousActiveElement.isConnected) {
+          this.previousActiveElement.focus();
+        }
       }, this.options.animationDuration);
       if (typeof this.options.onClose === 'function') {
         this.options.onClose();
@@ -350,6 +429,7 @@
       if (!imgSrc) return;
       this.image.style.opacity = '0';
       this.image.alt = sourceImage.alt || '图片预览';
+      this.overlay.setAttribute('aria-label', `图片预览，第 ${this.currentIndex + 1} 张，共 ${this.images.length} 张`);
       
       const newImage = new Image();
       newImage.src = imgSrc;
@@ -366,6 +446,31 @@
       }
 
       this.preloadImages();
+    }
+
+    setBackgroundInert(inert) {
+      if (inert) {
+        this.inertStates = Array.from(document.body.children)
+          .filter((element) => element !== this.overlay && element.id !== 'bgVideo' && element.id !== 'bgOverlay')
+          .map((element) => ({
+            element,
+            hadInert: element.hasAttribute('inert'),
+            ariaHidden: element.getAttribute('aria-hidden')
+          }));
+        this.inertStates.forEach(({ element }) => {
+          element.setAttribute('inert', '');
+          element.setAttribute('aria-hidden', 'true');
+        });
+        return;
+      }
+
+      this.inertStates.forEach(({ element, hadInert, ariaHidden }) => {
+        if (!element.isConnected) return;
+        if (!hadInert) element.removeAttribute('inert');
+        if (ariaHidden === null) element.removeAttribute('aria-hidden');
+        else element.setAttribute('aria-hidden', ariaHidden);
+      });
+      this.inertStates = [];
     }
 
     zoom(factor) {
@@ -390,10 +495,16 @@
   window.Lightbox = Lightbox;
 
   // 自动初始化
-  document.addEventListener('DOMContentLoaded', () => {
+  const initLightbox = () => {
     if (!document.querySelector('.markdown-body img')) return;
     if (window.__siteLightboxReady) return;
     window.__siteLightboxReady = true;
     new Lightbox();
-  });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLightbox, { once: true });
+  } else {
+    initLightbox();
+  }
 })();
