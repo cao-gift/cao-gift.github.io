@@ -38,8 +38,17 @@ jobs:
           GMEEK_VERSION=$(jq -r ".GMEEK_VERSION" config.json)
           git clone https://github.com/cao-gift/Gmeek.git /opt/Gmeek;
           cd /opt/Gmeek/
-          lastTag=$(git describe --tags `git rev-list --tags --max-count=1`)
-          if [ $GMEEK_VERSION == 'last' ]; then git checkout $lastTag; else git checkout $GMEEK_VERSION; fi;
+          if [ "$GMEEK_VERSION" = 'last' ]; then
+            latestTaggedCommit=$(git rev-list --tags --max-count=1)
+            if [ -n "$latestTaggedCommit" ]; then
+              lastTag=$(git describe --tags "$latestTaggedCommit")
+              git checkout "$lastTag"
+            else
+              echo "No tags found; using the repository default branch."
+            fi
+          else
+            git checkout "$GMEEK_VERSION"
+          fi
 
       - name: Install dependencies
         run: |
