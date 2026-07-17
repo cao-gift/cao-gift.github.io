@@ -152,7 +152,12 @@ function applyThemeRuntime() {
     // 资源路径（相对 docs/）
     const THEME_BG_IMAGE_DESKTOP = backgroundConfig.desktopImage || '/img/电脑2.jpg';
     const THEME_BG_VIDEO_DESKTOP = backgroundConfig.desktopVideo || '/img/电脑1.mp4';
-    const THEME_BG_IMAGE_MOBILE = backgroundConfig.mobileImage || '/img/手机1.jpg';
+    const THEME_BG_IMAGE_MOBILE_SMALL = backgroundConfig.mobileImageSmall || '/img/手机1-720.webp';
+    const THEME_BG_IMAGE_MOBILE_LARGE = backgroundConfig.mobileImageLarge || backgroundConfig.mobileImage || '/img/手机1-1080.webp';
+    const THEME_BG_IMAGE_MOBILE_SMALL_MAX_WIDTH = backgroundConfig.mobileImageSmallMaxWidth || 480;
+    const THEME_BG_IMAGE_MOBILE = window.innerWidth <= THEME_BG_IMAGE_MOBILE_SMALL_MAX_WIDTH
+        ? THEME_BG_IMAGE_MOBILE_SMALL
+        : THEME_BG_IMAGE_MOBILE_LARGE;
     const THEME_BG_VIDEO_MOBILE = backgroundConfig.mobileVideo || '/img/手机2.mp4';
 
     // 更稳：优先使用当前脚本标签，兼容部署在子路径下的站点
@@ -269,6 +274,13 @@ function applyThemeRuntime() {
             href: absUrl('../img/avatar.webp'),
             fetchPriority: 'high'
         });
+        addHeadLinkOnce('site-reading-font-preload', {
+            rel: 'preload',
+            as: 'font',
+            href: absUrl('../fonts/lxgwwenkaiscreen-subset-118.woff2'),
+            type: 'font/woff2',
+            crossOrigin: 'anonymous'
+        });
         addHeadLinkOnce('site-upyun-dns-prefetch', {
             rel: 'dns-prefetch',
             href: 'https://www.upyun.com'
@@ -276,25 +288,7 @@ function applyThemeRuntime() {
     }
 
     function ensureSiteTypography() {
-        const fontCdnOrigin = 'https://cdn.jsdelivr.net';
-        const fontStylesheet = `${fontCdnOrigin}/npm/lxgw-wenkai-screen-webfont@1.7.0/lxgwwenkaiscreen.css`;
-
-        if (!document.getElementById('site-font-dns-prefetch')) {
-            const dns = document.createElement('link');
-            dns.id = 'site-font-dns-prefetch';
-            dns.rel = 'dns-prefetch';
-            dns.href = fontCdnOrigin;
-            document.head.appendChild(dns);
-        }
-
-        if (!document.getElementById('site-font-preconnect')) {
-            const preconnect = document.createElement('link');
-            preconnect.id = 'site-font-preconnect';
-            preconnect.rel = 'preconnect';
-            preconnect.href = fontCdnOrigin;
-            preconnect.crossOrigin = 'anonymous';
-            document.head.appendChild(preconnect);
-        }
+        const fontStylesheet = absUrl(`../fonts/lxgw-wenkai-screen-subset.css?v=${siteConfig.assetVersion || '20260717-1'}`);
 
         if (!document.getElementById('site-font-lxgw-wenkai')) {
             const fontLink = document.createElement('link');
@@ -1262,7 +1256,7 @@ function applyThemeRuntime() {
                 }
             }
             if (!img.hasAttribute('alt')) img.setAttribute('alt', '');
-            if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
+            if (!img.hasAttribute('loading')) img.setAttribute('loading', index === 0 ? 'eager' : 'lazy');
             if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
             try {
                 img.fetchPriority = index === 0 ? 'high' : 'low';

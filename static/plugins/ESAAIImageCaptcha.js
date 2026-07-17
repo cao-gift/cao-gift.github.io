@@ -682,8 +682,11 @@
     if (!body) return 0;
     const imgs = Array.from(body.querySelectorAll('img'));
     let locked = 0;
+    let priorityAssigned = false;
     for (const img of imgs) {
       if (!isProbablyRealImage(img)) continue;
+      const isPriority = !priorityAssigned;
+      priorityAssigned = true;
 
       // 已锁定且已是占位图：跳过，避免触发 MutationObserver 自循环导致内存增长
       const alreadyLocked = img.getAttribute('data-esa-img-locked') === '1';
@@ -706,9 +709,9 @@
       img.setAttribute('data-esa-img-locked', '1');
       // 提前给 lazy 字段（解锁后仍然可用）
       try {
-        img.loading = 'lazy';
+        img.loading = isPriority ? 'eager' : 'lazy';
         img.decoding = 'async';
-        img.fetchPriority = 'low';
+        img.fetchPriority = isPriority ? 'high' : 'low';
       } catch (e) {}
       locked++;
     }
@@ -730,6 +733,13 @@
       return;
     }
     disconnectLazyObserver();
+    imgs.forEach((img, index) => {
+      try {
+        img.loading = index === 0 ? 'eager' : 'lazy';
+        img.decoding = 'async';
+        img.fetchPriority = index === 0 ? 'high' : 'low';
+      } catch (e) {}
+    });
 
     const loadOne = (img) => {
       const finalSrc = img.getAttribute('data-esa-final-src') || '';

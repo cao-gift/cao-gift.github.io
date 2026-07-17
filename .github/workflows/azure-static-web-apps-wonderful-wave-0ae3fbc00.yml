@@ -4,18 +4,16 @@ on:
   push:
     branches:
       - main
+    paths:
+      - docs/**
   workflow_dispatch:
-  issues:
-    types: [opened, edited]
-  schedule:
-    - cron: "25 16 * * *"
 
 jobs:
   build_and_deploy_job:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
           lfs: false

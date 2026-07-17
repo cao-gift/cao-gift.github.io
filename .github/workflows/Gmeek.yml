@@ -5,8 +5,12 @@ on:
   issues:
     types: [opened, edited,  closed, deleted, pinned, unpinned]
   schedule:
-    - cron: "0 18 31 * *"
-    
+    - cron: "0 18 1 * *"
+
+concurrency:
+  group: gmeek-${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: Generate blog
@@ -21,23 +25,11 @@ jobs:
         id: pages
         uses: actions/configure-pages@v4
 
-      - name: Get config.json
-        run: |
-          echo "====== check config.josn file ======"
-          cat config.json
-          echo "====== check config.josn end  ======"
-          sudo apt-get install jq
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.8
-
       - name: Clone source code
         run: |
-          GMEEK_VERSION=$(jq -r ".GMEEK_VERSION" config.json)
-          git clone https://github.com/cao-gift/Gmeek.git /opt/Gmeek;
-          cd /opt/Gmeek/
+          GMEEK_VERSION=$(python3 -c "import json; print(json.load(open('config.json', encoding='utf-8'))['GMEEK_VERSION'])")
+          git clone https://github.com/cao-gift/Gmeek.git .gmeek
+          cd .gmeek
           if [ "$GMEEK_VERSION" = 'last' ]; then
             latestTaggedCommit=$(git rev-list --tags --max-count=1)
             if [ -n "$latestTaggedCommit" ]; then
@@ -50,28 +42,47 @@ jobs:
             git checkout "$GMEEK_VERSION"
           fi
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+          cache: pip
+          cache-dependency-path: .gmeek/requirements.txt
+
+      - name: Restore Gmeek render cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/gmeek-cache
+          key: gmeek-v1-${{ runner.os }}-${{ github.repository_id }}-${{ github.run_id }}
+          restore-keys: |
+            gmeek-v1-${{ runner.os }}-${{ github.repository_id }}-
+
       - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r /opt/Gmeek/requirements.txt
+        run: python -m pip install -r .gmeek/requirements.txt
 
       - name: Generate new html
+        env:
+          GMEEK_CACHE_DIR: ${{ runner.temp }}/gmeek-cache
         run: |
-          cp -r ./* /opt/Gmeek/
-          cd /opt/Gmeek/
+          cp -r ./* .gmeek/
+          cd .gmeek
           python Gmeek.py ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} --issue_number '${{ github.event.issue.number }}'
-          cp -a /opt/Gmeek/docs ${{ github.workspace }} 
-          cp -a /opt/Gmeek/backup ${{ github.workspace }} 
-          cp /opt/Gmeek/blogBase.json ${{ github.workspace }} 
+          rm -rf "${{ github.workspace }}/docs" "${{ github.workspace }}/backup"
+          cp -a docs "${{ github.workspace }}/docs"
+          cp -a backup "${{ github.workspace }}/backup"
+          cp blogBase.json "${{ github.workspace }}/blogBase.json"
           
       - name: update html
         run: |
-          git config --local user.email "$(jq -r ".email" config.json)"
+          git config --local user.email "$(python -c "import json; print(json.load(open('config.json', encoding='utf-8'))['email'])")"
           git config --local user.name "${{ github.repository_owner }}"
-          git add .
-          git commit -a -m '🎉auto update by Gmeek action' || echo "nothing to commit"
-          git push || echo "nothing to push"
-          sleep 3
+          git add -A
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+          else
+            git commit -m '🎉auto update by Gmeek action'
+            git push
+          fi
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

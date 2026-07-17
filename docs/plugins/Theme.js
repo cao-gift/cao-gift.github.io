@@ -1,11 +1,16 @@
 (function defineSiteRuntimeConfig() {
+    const assetVersion = '20260717-1';
     const defaults = {
+        assetVersion,
         mobileBreakpoint: 720,
         background: {
             desktopMode: 'image',
             mobileMode: 'image',
             desktopImage: '/img/电脑2.jpg',
-            mobileImage: '/img/手机1.jpg',
+            mobileImage: '/img/手机1-1080.webp',
+            mobileImageSmall: '/img/手机1-720.webp',
+            mobileImageLarge: '/img/手机1-1080.webp',
+            mobileImageSmallMaxWidth: 480,
             desktopVideo: '/img/电脑1.mp4',
             mobileVideo: '/img/手机2.mp4'
         },
@@ -33,7 +38,9 @@
     const path = window.location.pathname;
     const mobileBreakpoint = config.mobileBreakpoint;
     const bgImageDesktop = config.background.desktopImage;
-    const bgImageMobile = config.background.mobileImage;
+    const bgImageMobile = window.innerWidth <= config.background.mobileImageSmallMaxWidth
+        ? config.background.mobileImageSmall
+        : config.background.mobileImageLarge;
     const tinyPixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
 
     function appendEarlyStyle() {
@@ -113,9 +120,10 @@
         img.removeAttribute('srcset');
         img.setAttribute('data-esa-img-locked', '1');
         try {
-            img.loading = 'lazy';
+            const isPriority = document.querySelector('.markdown-body img') === img;
+            img.loading = isPriority ? 'eager' : 'lazy';
             img.decoding = 'async';
-            img.fetchPriority = 'low';
+            img.fetchPriority = isPriority ? 'high' : 'low';
         } catch (e) {}
     }
 
@@ -172,7 +180,9 @@
         : '/plugins/Theme.js';
     const runtime = document.createElement('script');
     runtime.id = 'site-theme-runtime';
-    runtime.src = new URL('ThemeRuntime.js', themeSrc).href;
+    const runtimeUrl = new URL('ThemeRuntime.js', themeSrc);
+    runtimeUrl.searchParams.set('v', window.SiteRuntimeConfig.assetVersion);
+    runtime.src = runtimeUrl.href;
     runtime.async = true;
     runtime.addEventListener('load', function () {
         document.documentElement.setAttribute('data-theme-runtime', 'loaded');
