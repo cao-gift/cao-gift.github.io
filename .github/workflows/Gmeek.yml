@@ -3,9 +3,9 @@ name: build Gmeek
 on:
   workflow_dispatch:
   issues:
-    types: [opened, edited,  closed, deleted, pinned, unpinned]
+    types: [opened, edited, closed, deleted, reopened, labeled, unlabeled, pinned, unpinned]
   schedule:
-    - cron: "0 18 1 * *"
+    - cron: "0 * * * *"
 
 concurrency:
   group: gmeek-${{ github.repository }}-${{ github.ref }}
@@ -15,15 +15,15 @@ jobs:
   build:
     name: Generate blog
     runs-on: ubuntu-24.04
-    if: ${{ github.event.repository.owner.id == github.event.sender.id || github.event_name == 'schedule' }}
+    if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event.repository.owner.id == github.event.sender.id }}
     permissions: write-all
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Pages
         id: pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v6
 
       - name: Clone source code
         run: |
@@ -43,14 +43,14 @@ jobs:
           fi
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.8'
           cache: pip
           cache-dependency-path: .gmeek/requirements.txt
 
       - name: Restore Gmeek render cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ runner.temp }}/gmeek-cache
           key: gmeek-v1-${{ runner.os }}-${{ github.repository_id }}-${{ github.run_id }}
@@ -85,7 +85,7 @@ jobs:
           fi
           
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: 'docs/.'
           
@@ -106,4 +106,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

@@ -1,0 +1,68 @@
+name: Preview article
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Issue number to preview
+        required: true
+        type: number
+
+permissions:
+  contents: read
+  issues: read
+
+jobs:
+  preview:
+    name: Build noindex preview
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout blog
+        uses: actions/checkout@v5
+
+      - name: Clone Gmeek
+        run: |
+          GMEEK_VERSION=$(python3 -c "import json; print(json.load(open('config.json', encoding='utf-8'))['GMEEK_VERSION'])")
+          git clone https://github.com/cao-gift/Gmeek.git .gmeek
+          cd .gmeek
+          if [ "$GMEEK_VERSION" = 'last' ]; then
+            latestTaggedCommit=$(git rev-list --tags --max-count=1)
+            if [ -n "$latestTaggedCommit" ]; then
+              lastTag=$(git describe --tags "$latestTaggedCommit")
+              git checkout "$lastTag"
+            else
+              echo "No tags found; using the repository default branch."
+            fi
+          else
+            git checkout "$GMEEK_VERSION"
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.8'
+          cache: pip
+          cache-dependency-path: .gmeek/requirements.txt
+
+      - name: Install dependencies
+        run: python -m pip install -r .gmeek/requirements.txt
+
+      - name: Generate preview
+        run: |
+          cp -r ./* .gmeek/
+          cd .gmeek
+          python Gmeek.py '${{ secrets.GITHUB_TOKEN }}' '${{ github.repository }}' --issue_number '${{ inputs.issue_number }}' --preview
+
+      - name: Upload preview artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: article-preview-${{ inputs.issue_number }}
+          path: .gmeek/docs
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Add usage note
+        run: |
+          echo "### Article preview ${{ inputs.issue_number }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Download the artifact, unzip it, and serve the directory with \`python -m http.server\`." >> "$GITHUB_STEP_SUMMARY"
+          echo "Preview pages carry \`noindex,nofollow\` and are never committed or deployed by this workflow." >> "$GITHUB_STEP_SUMMARY"
