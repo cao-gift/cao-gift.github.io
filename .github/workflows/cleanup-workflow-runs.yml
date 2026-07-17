@@ -1,4 +1,4 @@
-name: Cleanup workflow runs
+name: 定时清理工作流运行记录
 
 on:
   schedule:
@@ -7,17 +7,17 @@ on:
   workflow_dispatch:
     inputs:
       retention_days:
-        description: Delete completed runs older than this many days
+        description: 删除超过指定天数的已完成运行记录
         required: true
         default: 14
         type: number
       keep_minimum:
-        description: Always keep at least this many recent runs per workflow
+        description: 每个工作流至少保留最近多少次运行
         required: true
         default: 10
         type: number
       dry_run:
-        description: List matching runs without deleting them
+        description: 仅列出匹配记录，不执行删除
         required: true
         default: false
         type: boolean
@@ -32,7 +32,7 @@ concurrency:
 
 jobs:
   cleanup:
-    name: Delete expired workflow runs
+    name: 删除过期的工作流运行记录
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
@@ -41,7 +41,7 @@ jobs:
       KEEP_MINIMUM: ${{ inputs.keep_minimum || 10 }}
       DRY_RUN: ${{ inputs.dry_run || false }}
     steps:
-      - name: Delete expired runs
+      - name: 查找并删除过期记录
         shell: bash
         run: |
           set -euo pipefail
@@ -61,9 +61,9 @@ jobs:
           dry_run = os.environ["DRY_RUN"].lower() == "true"
 
           if retention_days < 1:
-              raise ValueError("retention_days must be a positive integer")
+              raise ValueError("保留天数必须是正整数")
           if keep_minimum < 0:
-              raise ValueError("keep_minimum must be a non-negative integer")
+              raise ValueError("每个工作流的最少保留数量不能是负数")
 
           api_root = f"https://api.github.com/repos/{repository}"
           headers = {
@@ -114,7 +114,7 @@ jobs:
           failed = 0
           for run in candidates:
               print(
-                  f"Matched run {run['id']} | {run['updated_at']} | {run['name']}"
+                  f"匹配记录 {run['id']} | {run['updated_at']} | {run['name']}"
               )
               if dry_run:
                   continue
@@ -124,18 +124,18 @@ jobs:
               except urllib.error.HTTPError as error:
                   failed += 1
                   print(
-                      f"Failed to delete run {run['id']}: HTTP {error.code}",
+                      f"删除记录 {run['id']} 失败：HTTP {error.code}",
                       file=sys.stderr,
                   )
 
           with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary:
-              summary.write("### Workflow run cleanup\n")
-              summary.write(f"- Cutoff: {cutoff.isoformat()}\n")
-              summary.write(f"- Minimum retained per workflow: {keep_minimum}\n")
-              summary.write(f"- Dry run: {str(dry_run).lower()}\n")
-              summary.write(f"- Matched: {len(candidates)}\n")
-              summary.write(f"- Deleted: {deleted}\n")
-              summary.write(f"- Failed: {failed}\n")
+              summary.write("### 工作流运行记录清理结果\n")
+              summary.write(f"- 清理截止时间：{cutoff.isoformat()}\n")
+              summary.write(f"- 每个工作流最少保留：{keep_minimum}\n")
+              summary.write(f"- 仅预览：{'是' if dry_run else '否'}\n")
+              summary.write(f"- 匹配数量：{len(candidates)}\n")
+              summary.write(f"- 删除数量：{deleted}\n")
+              summary.write(f"- 失败数量：{failed}\n")
 
           if failed:
               raise SystemExit(1)
