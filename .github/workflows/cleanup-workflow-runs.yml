@@ -1,4 +1,4 @@
-name: 定时清理工作流运行记录
+name: 清理运行记录
 
 on:
   schedule:
@@ -7,17 +7,17 @@ on:
   workflow_dispatch:
     inputs:
       retention_days:
-        description: 删除超过指定天数的已完成运行记录
+        description: 删除多少天前的运行记录
         required: true
         default: 14
         type: number
       keep_minimum:
-        description: 每个工作流至少保留最近多少次运行
+        description: 每个工作流至少保留几次运行
         required: true
         default: 10
         type: number
       dry_run:
-        description: 仅列出匹配记录，不执行删除
+        description: 仅预览，不删除
         required: true
         default: false
         type: boolean
@@ -32,7 +32,7 @@ concurrency:
 
 jobs:
   cleanup:
-    name: 删除过期的工作流运行记录
+    name: 删除过期记录
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
@@ -41,7 +41,7 @@ jobs:
       KEEP_MINIMUM: ${{ inputs.keep_minimum || 10 }}
       DRY_RUN: ${{ inputs.dry_run || false }}
     steps:
-      - name: 查找并删除过期记录
+      - name: 清理过期记录
         shell: bash
         run: |
           set -euo pipefail

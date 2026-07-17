@@ -1,4 +1,4 @@
-name: build Gmeek
+name: 构建博客
 
 on:
   workflow_dispatch:
@@ -13,19 +13,19 @@ concurrency:
 
 jobs:
   build:
-    name: Generate blog
+    name: 生成站点
     runs-on: ubuntu-24.04
     if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event.repository.owner.id == github.event.sender.id }}
     permissions: write-all
     steps:
-      - name: Checkout
+      - name: 检出代码
         uses: actions/checkout@v5
 
-      - name: Setup Pages
+      - name: 配置 Pages
         id: pages
         uses: actions/configure-pages@v6
 
-      - name: Clone source code
+      - name: 克隆生成器
         run: |
           GMEEK_VERSION=$(python3 -c "import json; print(json.load(open('config.json', encoding='utf-8'))['GMEEK_VERSION'])")
           git clone https://github.com/cao-gift/Gmeek.git .gmeek
@@ -36,20 +36,20 @@ jobs:
               lastTag=$(git describe --tags "$latestTaggedCommit")
               git checkout "$lastTag"
             else
-              echo "No tags found; using the repository default branch."
+              echo "未找到标签，使用默认分支。"
             fi
           else
             git checkout "$GMEEK_VERSION"
           fi
 
-      - name: Set up Python
+      - name: 配置 Python
         uses: actions/setup-python@v6
         with:
           python-version: '3.8'
           cache: pip
           cache-dependency-path: .gmeek/requirements.txt
 
-      - name: Restore Gmeek render cache
+      - name: 恢复渲染缓存
         uses: actions/cache@v5
         with:
           path: ${{ runner.temp }}/gmeek-cache
@@ -57,10 +57,10 @@ jobs:
           restore-keys: |
             gmeek-v1-${{ runner.os }}-${{ github.repository_id }}-
 
-      - name: Install dependencies
+      - name: 安装依赖
         run: python -m pip install -r .gmeek/requirements.txt
 
-      - name: Generate new html
+      - name: 生成站点
         env:
           GMEEK_CACHE_DIR: ${{ runner.temp }}/gmeek-cache
         run: |
@@ -72,7 +72,7 @@ jobs:
           cp -a backup "${{ github.workspace }}/backup"
           cp blogBase.json "${{ github.workspace }}/blogBase.json"
           
-      - name: update html
+      - name: 提交更新
         run: |
           git config --local user.email "$(python -c "import json; print(json.load(open('config.json', encoding='utf-8'))['email'])")"
           git config --local user.name "${{ github.repository_owner }}"
@@ -84,13 +84,13 @@ jobs:
             git push
           fi
           
-      - name: Upload artifact
+      - name: 上传站点
         uses: actions/upload-pages-artifact@v5
         with:
           path: 'docs/.'
           
   deploy:
-    name: Deploy blog
+    name: 发布站点
     runs-on: ubuntu-24.04
     needs: build
     permissions:
@@ -104,6 +104,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
+      - name: 发布到 GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5

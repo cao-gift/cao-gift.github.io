@@ -1,16 +1,18 @@
-name: scp files
+name: 服务器部署
 on: 
   workflow_run:
-    workflows: [build Gmeek]
+    workflows: [构建博客]
     types:
       - completed
 jobs:
   build:
+    name: 上传服务器
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - uses: actions/checkout@v5
-      - name: Copy files via SSH
+      - name: 检出代码
+        uses: actions/checkout@v5
+      - name: 上传文件
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.HOST }}

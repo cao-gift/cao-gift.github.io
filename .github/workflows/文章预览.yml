@@ -1,10 +1,10 @@
-name: Preview article
+name: 文章预览
 
 on:
   workflow_dispatch:
     inputs:
       issue_number:
-        description: Issue number to preview
+        description: 要预览的 Issue 编号
         required: true
         type: number
 
@@ -14,13 +14,13 @@ permissions:
 
 jobs:
   preview:
-    name: Build noindex preview
+    name: 生成预览
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout blog
+      - name: 检出博客
         uses: actions/checkout@v5
 
-      - name: Clone Gmeek
+      - name: 克隆生成器
         run: |
           GMEEK_VERSION=$(python3 -c "import json; print(json.load(open('config.json', encoding='utf-8'))['GMEEK_VERSION'])")
           git clone https://github.com/cao-gift/Gmeek.git .gmeek
@@ -31,38 +31,38 @@ jobs:
               lastTag=$(git describe --tags "$latestTaggedCommit")
               git checkout "$lastTag"
             else
-              echo "No tags found; using the repository default branch."
+              echo "未找到标签，使用默认分支。"
             fi
           else
             git checkout "$GMEEK_VERSION"
           fi
 
-      - name: Set up Python
+      - name: 配置 Python
         uses: actions/setup-python@v6
         with:
           python-version: '3.8'
           cache: pip
           cache-dependency-path: .gmeek/requirements.txt
 
-      - name: Install dependencies
+      - name: 安装依赖
         run: python -m pip install -r .gmeek/requirements.txt
 
-      - name: Generate preview
+      - name: 生成预览
         run: |
           cp -r ./* .gmeek/
           cd .gmeek
           python Gmeek.py '${{ secrets.GITHUB_TOKEN }}' '${{ github.repository }}' --issue_number '${{ inputs.issue_number }}' --preview
 
-      - name: Upload preview artifact
+      - name: 上传预览
         uses: actions/upload-artifact@v6
         with:
-          name: article-preview-${{ inputs.issue_number }}
+          name: 文章预览-${{ inputs.issue_number }}
           path: .gmeek/docs
           if-no-files-found: error
           retention-days: 7
 
-      - name: Add usage note
+      - name: 添加说明
         run: |
-          echo "### Article preview ${{ inputs.issue_number }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "Download the artifact, unzip it, and serve the directory with \`python -m http.server\`." >> "$GITHUB_STEP_SUMMARY"
-          echo "Preview pages carry \`noindex,nofollow\` and are never committed or deployed by this workflow." >> "$GITHUB_STEP_SUMMARY"
+          echo "### 文章预览 ${{ inputs.issue_number }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "下载并解压制品后，在该目录运行 \`python -m http.server\` 即可查看。" >> "$GITHUB_STEP_SUMMARY"
+          echo "预览页带有 \`noindex,nofollow\`，不会由此工作流提交或部署。" >> "$GITHUB_STEP_SUMMARY"
