@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://blog.freeblock.cn/sitemap.xml

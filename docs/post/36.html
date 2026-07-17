@@ -6,16 +6,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href='/plugins/primer.css?v=20260717-1' rel='stylesheet' />
     <link id='site-reading-font-preload' rel='preload' href='/fonts/lxgwwenkaiscreen-subset-118.woff2' as='font' type='font/woff2' crossorigin><link id='site-font-lxgw-wenkai' href='/fonts/lxgw-wenkai-screen-subset.css?v=20260717-1' rel='stylesheet'><script src='/plugins/Theme.js?v=20260717-3'></script><script type='text/javascript'>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, 'clarity', 'script', 'pss6qz1yjn');</script>
-    <link rel="icon" href="/img/avatar.webp"><script>
+    <link rel="icon" href="/img/avatar.webp">
+    <link rel="canonical" href="https://blog.freeblock.cn/post/36.html">
+    <link rel="alternate" type="application/rss+xml" title="星源笔记 RSS" href="https://blog.freeblock.cn/rss.xml">
+    <meta name="robots" content="index,follow">
+    <link rel="manifest" href="https://blog.freeblock.cn/manifest.webmanifest">
+    <meta name="theme-color" content="#0969da"><script>
         let theme = localStorage.getItem("meek_theme") || "auto";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
 <meta name="description" content="备案域名建议部署到EdgeOne Pages（选择全球加速区，有中国大陆节点），未备案域名优先选择Netlify或者Vercel。">
+<meta name="author" content="CJW">
 <meta property="og:title" content="Gmeek博客静态托管平台部署">
 <meta property="og:description" content="备案域名建议部署到EdgeOne Pages（选择全球加速区，有中国大陆节点），未备案域名优先选择Netlify或者Vercel。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://blog.freeblock.cn/post/36.html">
-<meta property="og:image" content="/img/avatar.webp">
+<meta property="og:image" content="https://blog.freeblock.cn/img/avatar.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Gmeek博客静态托管平台部署">
+<meta name="twitter:description" content="备案域名建议部署到EdgeOne Pages（选择全球加速区，有中国大陆节点），未备案域名优先选择Netlify或者Vercel。">
+<meta name="twitter:image" content="https://blog.freeblock.cn/img/avatar.webp">
+
+<meta property="article:published_time" content="2025-07-31T06:15:50Z">
+<meta property="article:modified_time" content="2025-10-01T13:59:13Z">
+<meta property="article:author" content="CJW">
+<meta property="article:tag" content="建站">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "author": {"@type": "Person", "name": "CJW"}, "dateModified": "2025-10-01T13:59:13Z", "datePublished": "2025-07-31T06:15:50Z", "description": "\u5907\u6848\u57df\u540d\u5efa\u8bae\u90e8\u7f72\u5230EdgeOne Pages\uff08\u9009\u62e9\u5168\u7403\u52a0\u901f\u533a\uff0c\u6709\u4e2d\u56fd\u5927\u9646\u8282\u70b9\uff09\uff0c\u672a\u5907\u6848\u57df\u540d\u4f18\u5148\u9009\u62e9Netlify\u6216\u8005Vercel\u3002", "headline": "Gmeek\u535a\u5ba2\u9759\u6001\u6258\u7ba1\u5e73\u53f0\u90e8\u7f72", "image": "https://blog.freeblock.cn/img/avatar.webp", "mainEntityOfPage": {"@id": "https://blog.freeblock.cn/post/36.html", "@type": "WebPage"}, "publisher": {"@type": "Organization", "logo": {"@type": "ImageObject", "url": "https://blog.freeblock.cn/img/avatar.webp"}, "name": "\u661f\u6e90\u7b14\u8bb0"}}</script>
+
 <title>Gmeek博客静态托管平台部署</title>
 
 
@@ -35,12 +52,22 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 .title-right .circle{padding: 14px 16px;margin-right:8px;}
 #postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
 #postBody hr{height:2px;}
+.postMeta{display:flex;flex-wrap:wrap;gap:6px 16px;margin:-4px 0 20px;color:var(--fgColor-muted,var(--color-fg-muted));font-size:14px;}
+.postMeta span{white-space:nowrap;}
+.postNavigation{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:32px;}
+.postNavigation a,.relatedPosts a{display:block;padding:12px;border:1px solid var(--borderColor-muted,var(--color-border-muted));border-radius:6px;}
+.postNavigation .nextPost{text-align:right;}
+.relatedPosts{margin-top:32px;}
+.relatedPosts h2{font-size:20px;margin-bottom:12px;}
+.relatedPosts ul{display:grid;gap:8px;list-style:none;}
 #cmButton{height:48px;margin-top:48px;}
 #comments{margin-top:64px;}
 .g-emoji{font-size:24px;}
 @media (max-width: 600px) {
     body {padding: 8px;}
     .postTitle{font-size:24px;}
+    .postNavigation{grid-template-columns:1fr;}
+    .postNavigation .nextPost{text-align:left;}
 }
 
 </style>
@@ -58,6 +85,11 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
         </svg>
     </a>
     
+    <a href="https://blog.freeblock.cn/archive.html" class="btn btn-invisible circle" title="归档" aria-label="归档">
+        <svg class="octicon" width="16" height="16" aria-hidden="true"><path id="pathArchive" fill-rule="evenodd"></path></svg>
+    </a>
+    
+    
 
     <button class="btn btn-invisible circle" type="button" onclick="modeSwitch();" title="切换主题" aria-label="切换主题">
         <svg class="octicon" width="16" height="16" aria-hidden="true">
@@ -68,6 +100,14 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </div>
 </header>
     <main id="content">
+
+<div class="postMeta" aria-label="文章元数据">
+    <span>发布于 <time datetime="2025-07-31T06:15:50Z">2025-07-31</time></span>
+    <span>更新于 <time datetime="2025-10-01T13:59:13Z">2025-10-01</time></span>
+    <span>作者 CJW</span>
+    <span>字数 2100 · 阅读时长 6 分钟</span>
+</div>
+
 <article class="markdown-body" id="postBody"><p>备案域名建议部署到EdgeOne Pages（选择全球加速区，有中国大陆节点），未备案域名优先选择Netlify或者Vercel。</p>
 <h3>部署到EdgeOne Pages</h3>
 <h4>1.打开EdgeOne Pages</h4>
@@ -114,6 +154,13 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>方法大同小异，只需把根目录换成***./docs***即可</p></article>
 <div style="font-size:small;margin-top:8px;float:right;">❤️ 转载文章请注明出处，谢谢！❤️</div>
 
+<nav class="postNavigation" aria-label="文章导航">
+    <div><a class="previousPost" rel="prev" href="https://blog.freeblock.cn/post/35.html"><small>上一篇</small><br>windows电脑的免费5%性能提升</a></div>
+    <div></div>
+</nav>
+
+
+
 </main>
     <footer id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://blog.freeblock.cn">星源笔记</a></div>
 <div id="footer2"><span id="filingNum"><a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备2024101898号-1</a> • </span>
@@ -133,7 +180,7 @@ if("08/16/2018"!=""){
 </script></footer>
 </body>
 <script>
-var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z', 'archive': 'M1.75 1h12.5C15.216 1 16 1.784 16 2.75v1.5c0 .698-.409 1.3-1 1.582v7.418A1.75 1.75 0 0 1 13.25 15H2.75A1.75 1.75 0 0 1 1 13.25V5.832A1.751 1.751 0 0 1 0 4.25v-1.5C0 1.784.784 1 1.75 1ZM2.5 6v7.25c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25V6Zm-.75-3.5a.25.25 0 0 0-.25.25v1.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-1.5a.25.25 0 0 0-.25-.25Zm3.5 5.75a.75.75 0 0 1 .75-.75h4a.75.75 0 0 1 0 1.5H6a.75.75 0 0 1-.75-.75Z'};
 var utterancesLoad=0;
 
 let themeSettings={
@@ -169,10 +216,16 @@ function utterancesTheme(theme){
 }
 if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
 console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+
+if('serviceWorker' in navigator){
+    window.addEventListener('load',()=>navigator.serviceWorker.register("https://blog.freeblock.cn/sw.js").catch(error=>console.warn('[Gmeek PWA] registration failed',error)));
+}
+
 </script>
 
 <script>
 document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathArchive").setAttribute("d",IconList["archive"]);
 
 
 

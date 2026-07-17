@@ -1,0 +1,17 @@
+{
+  "name": "星源笔记",
+  "short_name": "CJW",
+  "description": "一位热爱探索互联网的大学生",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0969da",
+  "icons": [
+    {
+      "src": "/img/avatar.webp",
+      "sizes": "957x957",
+      "type": "image/webp"
+    }
+  ]
+}

@@ -6,12 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href='/plugins/primer.css?v=20260717-1' rel='stylesheet' />
     <link id='site-reading-font-preload' rel='preload' href='/fonts/lxgwwenkaiscreen-subset-118.woff2' as='font' type='font/woff2' crossorigin><link id='site-font-lxgw-wenkai' href='/fonts/lxgw-wenkai-screen-subset.css?v=20260717-1' rel='stylesheet'><script src='/plugins/Theme.js?v=20260717-3'></script><script type='text/javascript'>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, 'clarity', 'script', 'pss6qz1yjn');</script>
-    <link rel="icon" href="/img/avatar.webp"><script>
+    <link rel="icon" href="/img/avatar.webp">
+    <link rel="canonical" href="https://blog.freeblock.cn/tag.html">
+    <link rel="alternate" type="application/rss+xml" title="星源笔记 RSS" href="https://blog.freeblock.cn/rss.xml">
+    <meta name="robots" content="noindex,follow">
+    <link rel="manifest" href="https://blog.freeblock.cn/manifest.webmanifest">
+    <meta name="theme-color" content="#0969da"><script>
         let theme = localStorage.getItem("meek_theme") || "auto";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
 <meta name="description" content="星源笔记 search page">
-<title>星源笔记 - Tag</title>
+<title>星源笔记 - 搜索</title>
 
 </head>
 <style>
@@ -40,6 +45,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 .d-flex{min-width:0;}
 .listTitle{overflow:hidden;white-space:nowrap;text-overflow: ellipsis;max-width: 100%;}
 .listLabels{white-space:nowrap;}
+.searchStatus{font-size:18px;margin:16px 8px;color:var(--fgColor-muted,var(--color-fg-muted));}
 
 @media (max-width: 600px) {
     body { padding: 8px;}
@@ -66,6 +72,11 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
             <path id="pathHome" fill-rule="evenodd"></path>
         </svg>
     </a>
+    
+    <a href="https://blog.freeblock.cn/archive.html" class="btn btn-invisible circle" title="归档" aria-label="归档">
+        <svg class="octicon" width="16" height="16" aria-hidden="true"><path id="pathArchive" fill-rule="evenodd"></path></svg>
+    </a>
+    
     <button class="btn btn-invisible circle" type="button" onclick="modeSwitch()" title="切换主题" aria-label="切换主题">
         <svg class="octicon" width="16" height="16" aria-hidden="true">
             <path id="themeSwitch" fill-rule="evenodd"></path>
@@ -76,7 +87,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     <main id="content">
 <div id="taglabel" style="margin-bottom:8px;"></div>
 <nav class="SideNav" aria-label="搜索结果"></nav>
-<div class="notFind" role="status" aria-live="polite" style="display:none;font-size:24px;margin:8px;">Not Find</div>
+<div id="searchStatus" class="searchStatus" role="status" aria-live="polite">正在加载文章索引…</div>
 </main>
     <footer id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://blog.freeblock.cn">星源笔记</a></div>
 <div id="footer2"><span id="filingNum"><a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备2024101898号-1</a> • </span>
@@ -96,7 +107,7 @@ if("08/16/2018"!=""){
 </script></footer>
 </body>
 <script>
-var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'search': 'M15.7 13.3l-3.81-3.83A5.93 5.93 0 0 0 13 6c0-3.31-2.69-6-6-6S1 2.69 1 6s2.69 6 6 6c1.3 0 2.48-.41 3.47-1.11l3.83 3.81c.19.2.45.3.7.3.25 0 .52-.09.7-.3a.996.996 0 0 0 0-1.41v.01zM7 10.7c-2.59 0-4.7-2.11-4.7-4.7 0-2.59 2.11-4.7 4.7-4.7 2.59 0 4.7 2.11 4.7 4.7 0 2.59-2.11 4.7-4.7 4.7z', 'post': 'M0 3.75C0 2.784.784 2 1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 14H1.75A1.75 1.75 0 0 1 0 12.25Zm1.75-.25a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-8.5a.25.25 0 0 0-.25-.25ZM3.5 6.25a.75.75 0 0 1 .75-.75h7a.75.75 0 0 1 0 1.5h-7a.75.75 0 0 1-.75-.75Zm.75 2.25h4a.75.75 0 0 1 0 1.5h-4a.75.75 0 0 1 0-1.5Z'};
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'search': 'M15.7 13.3l-3.81-3.83A5.93 5.93 0 0 0 13 6c0-3.31-2.69-6-6-6S1 2.69 1 6s2.69 6 6 6c1.3 0 2.48-.41 3.47-1.11l3.83 3.81c.19.2.45.3.7.3.25 0 .52-.09.7-.3a.996.996 0 0 0 0-1.41v.01zM7 10.7c-2.59 0-4.7-2.11-4.7-4.7 0-2.59 2.11-4.7 4.7-4.7 2.59 0 4.7 2.11 4.7 4.7 0 2.59-2.11 4.7-4.7 4.7z', 'post': 'M0 3.75C0 2.784.784 2 1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 14H1.75A1.75 1.75 0 0 1 0 12.25Zm1.75-.25a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-8.5a.25.25 0 0 0-.25-.25ZM3.5 6.25a.75.75 0 0 1 .75-.75h7a.75.75 0 0 1 0 1.5h-7a.75.75 0 0 1-.75-.75Zm.75 2.25h4a.75.75 0 0 1 0 1.5h-4a.75.75 0 0 1 0-1.5Z', 'archive': 'M1.75 1h12.5C15.216 1 16 1.784 16 2.75v1.5c0 .698-.409 1.3-1 1.582v7.418A1.75 1.75 0 0 1 13.25 15H2.75A1.75 1.75 0 0 1 1 13.25V5.832A1.751 1.751 0 0 1 0 4.25v-1.5C0 1.784.784 1 1.75 1ZM2.5 6v7.25c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25V6Zm-.75-3.5a.25.25 0 0 0-.25.25v1.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-1.5a.25.25 0 0 0-.25-.25Zm3.5 5.75a.75.75 0 0 1 .75-.75h4a.75.75 0 0 1 0 1.5H6a.75.75 0 0 1-.75-.75Z'};
 var utterancesLoad=0;
 
 let themeSettings={
@@ -132,163 +143,159 @@ function utterancesTheme(theme){
 }
 if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
 console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+
+if('serviceWorker' in navigator){
+    window.addEventListener('load',()=>navigator.serviceWorker.register("https://blog.freeblock.cn/sw.js").catch(error=>console.warn('[Gmeek PWA] registration failed',error)));
+}
+
 </script>
 
 <script>
 document.getElementById("pathHome").setAttribute("d",IconList["home"]);
 document.getElementById("searchSVG").setAttribute("d",IconList["search"]);
+document.getElementById("pathArchive").setAttribute("d",IconList["archive"]);
 
-tagList=[];
-labelsCount={};
-jsonData='';
-let requestJson="postList.json"
-let request=new XMLHttpRequest();
-request.open("GET",requestJson);
-request.responseType='text';
-request.send();
-request.onload=function(){
-    jsonData=JSON.parse(request.response);
-    console.log(jsonData);
-    showList(labelsCount);
-    setClassDisplay(decodeURI(window.location.hash.slice(1)));
+const SEARCH_UI={
+    search:"\u641c\u7d22",
+    noResults:"\u6ca1\u6709\u627e\u5230\u5339\u914d\u7684\u6587\u7ae0",
+    loadFailed:"\u6587\u7ae0\u7d22\u5f15\u52a0\u8f7d\u5931\u8d25\uff0c\u8bf7\u7a0d\u540e\u91cd\u8bd5\u3002",
+    siteTitle:"\u661f\u6e90\u7b14\u8bb0"
+};
+const searchState={posts:[],labels:new Set(),labelColors:{},ready:false};
+const resultList=document.querySelector('.SideNav');
+const tagContainer=document.getElementById('taglabel');
+const statusElement=document.getElementById('searchStatus');
+const searchInput=document.getElementById('siteSearch');
+const pageTitle=document.querySelector('.tagTitle');
+
+const normalize=value=>(value || '').normalize('NFKC').toLocaleLowerCase();
+const setStatus=(message,visible=true)=>{
+    statusElement.textContent=message;
+    statusElement.style.display=visible ? 'block' : 'none';
+};
+
+function createPostItem(post){
+    const wrapper=document.createElement('div');
+    wrapper.className='lists';
+    wrapper.dataset.labels=JSON.stringify(post.labels || []);
+    wrapper.dataset.search=normalize([post.postTitle,(post.labels || []).join(' '),post.description,post.searchText].join(' '));
+
+    const item=document.createElement('a');
+    item.className='SideNav-item d-flex flex-items-center flex-justify-between';
+    item.href=post.postUrl;
+    const center=document.createElement('div');
+    center.className='d-flex flex-items-center';
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('class','SideNav-icon octicon');
+    svg.setAttribute('width','16');
+    svg.setAttribute('height','16');
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d',IconList.post);
+    svg.appendChild(path);
+    const title=document.createElement('span');
+    title.className='listTitle';
+    title.textContent=post.postTitle;
+    center.append(svg,title);
+
+    const labels=document.createElement('div');
+    labels.className='listLabels';
+    (post.labels || []).forEach(label=>{
+        const badge=document.createElement('span');
+        badge.className='Label LabelName';
+        badge.style.backgroundColor=searchState.labelColors[label] || '#57606a';
+        badge.textContent=label;
+        labels.appendChild(badge);
+    });
+    const date=document.createElement('span');
+    date.className='Label LabelTime';
+    date.style.backgroundColor=post.dateLabelColor;
+    date.textContent=post.createdDate;
+    labels.appendChild(date);
+    item.append(center,labels);
+    wrapper.appendChild(item);
+    return wrapper;
 }
 
-function showList(labelsCount){
-    let SideNav=document.getElementsByClassName("SideNav")[0];
-    SideNav.classList.add("border");
-    let taglabel=document.getElementById("taglabel");
+function renderIndex(payload){
+    searchState.labelColors=payload.labelColorDict || {};
+    searchState.posts=Object.entries(payload).filter(([key])=>key!=='labelColorDict').map(([,post])=>post);
+    const counts={All:searchState.posts.length};
+    searchState.posts.forEach(post=>(post.labels || []).forEach(label=>counts[label]=(counts[label] || 0)+1));
+    searchState.labels=new Set(Object.keys(counts));
+    searchState.labelColors.All='#24292f';
 
-    jsonData['labelColorDict']["All"]="#000";
-    labelsCount["All"]=0;
-    for (let key in jsonData) {
-        if (key !== 'labelColorDict' && Array.isArray(jsonData[key]['labels'])) {
-            labelsCount["All"]++;
-            for (let label of jsonData[key]['labels']) {
-                labelsCount[label] = (labelsCount[label] || 0) + 1;
-            }
-        }
-    }
+    Object.keys(counts).sort((a,b)=>counts[b]-counts[a] || a.localeCompare(b)).forEach(label=>{
+        const button=document.createElement('button');
+        button.className='Label';
+        button.type='button';
+        button.style.cssText='background-color:'+(searchState.labelColors[label] || '#57606a')+';padding:4px;';
+        button.append(document.createTextNode('\u00a0\u00a0'+label+' '));
+        const count=document.createElement('span');
+        count.className='Counter';
+        count.textContent=counts[label];
+        button.appendChild(count);
+        button.addEventListener('click',()=>updateShowTag(label));
+        tagContainer.appendChild(button);
+    });
+    const fragment=document.createDocumentFragment();
+    searchState.posts.forEach(post=>fragment.appendChild(createPostItem(post)));
+    resultList.appendChild(fragment);
+    resultList.classList.add('border');
+    searchState.ready=true;
+}
 
-    let sortedLabelsList = Object.keys(labelsCount).sort((a, b) => labelsCount[b] - labelsCount[a]);
-    for (let label of sortedLabelsList) {
-        tagList.push(label);
-        let showLabels = document.createElement("button");
-        showLabels.setAttribute("class", "Label");
-        showLabels.setAttribute("type", "button");
-        showLabels.setAttribute("style", "background-color:" + jsonData['labelColorDict'][label]+";padding:4px;");
-        showLabels.innerHTML="&nbsp;&nbsp;"+label+" ";
-        showLabels.setAttribute("onclick", "javascript:updateShowTag('" + label + "');");
-
-        let LabelNum=document.createElement("span");
-        LabelNum.setAttribute("class","Counter");
-        LabelNum.innerHTML=labelsCount[label];
-        showLabels.appendChild(LabelNum);
-        taglabel.appendChild(showLabels);
-    }
-
-    for(i in jsonData){
-        if(i!='labelColorDict'){
-            let div=document.createElement("div");
-            div.setAttribute("class","lists "+jsonData[i]['labels'].join(" "));
-            let item=document.createElement("a");
-            item.setAttribute("class","SideNav-item d-flex flex-items-center flex-justify-between");
-            item.setAttribute("href",jsonData[i]['postUrl']);
-
-            let center=document.createElement("div");
-            center.setAttribute("class","d-flex flex-items-center");
-
-            svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-            path=document.createElementNS("http://www.w3.org/2000/svg","path"); 
-            span=document.createElement("span");
-            svg.setAttributeNS(null,"class","SideNav-icon octicon");
-            svg.setAttributeNS(null,"style","width:16px;height:16px");
-            path.setAttributeNS(null, "d", IconList["post"]);
-            svg.appendChild(path);
-
-            let title=document.createElement("span");
-            title.setAttribute("class","listTitle");
-            title.innerHTML=jsonData[i]['postTitle'];
-            center.appendChild(svg);
-            center.appendChild(title);
-
-            let listLabels=document.createElement("div");
-            listLabels.setAttribute("class","listLabels");
-            
-            for(label of jsonData[i]['labels']){
-                let LabelName=document.createElement("span");
-                LabelName.setAttribute("class","Label LabelName");
-                LabelName.setAttribute("style","background-color:"+jsonData['labelColorDict'][label]);
-                LabelName.innerHTML=label;
-                listLabels.appendChild(LabelName);
-            }
-            let LabelTime=document.createElement("span");
-            LabelTime.setAttribute("class","Label LabelTime");
-            LabelTime.setAttribute("style","background-color:"+jsonData[i]['dateLabelColor']);
-            LabelTime.innerHTML=jsonData[i]['createdDate'];
-            listLabels.appendChild(LabelTime);
-
-            item.appendChild(center);
-            item.appendChild(listLabels);
-            div.appendChild(item);
-            SideNav.appendChild(div);
-        }
-    }
+function applyFilter(value,forceSearch=false){
+    if(!searchState.ready) return;
+    const label=value || 'All';
+    const isTag=!forceSearch && searchState.labels.has(label);
+    const terms=normalize(value).split(/\s+/).filter(Boolean);
+    let matches=0;
+    document.querySelectorAll('.lists').forEach(item=>{
+        const labels=JSON.parse(item.dataset.labels);
+        const visible=isTag ? (label==='All' || labels.includes(label)) : terms.every(term=>item.dataset.search.includes(term));
+        item.style.display=visible ? 'block' : 'none';
+        if(visible) matches++;
+    });
+    pageTitle.textContent=(isTag ? 'Tag #' : SEARCH_UI.search+' #')+(value || (isTag ? 'All' : ''));
+    document.title=(value || SEARCH_UI.search)+' - '+SEARCH_UI.siteTitle;
+    setStatus(matches ? '' : SEARCH_UI.noResults+(value ? ' “'+value+'”' : ''),matches===0);
 }
 
 function updateShowTag(label){
-    if(window.location.hash.slice(1)!=encodeURI(label)){
-        window.location.hash="#"+(label);
-        setClassDisplay(label);
-    }
-}
-
-function setClassDisplay(label){
-    let lists = document.getElementsByClassName("lists");
-    let tagTitle = document.getElementsByClassName("tagTitle")[0];
-    tagTitle.innerHTML="Tag #"+label;
-    document.title=label+" - 星源笔记";
-    document.getElementsByClassName("subnav-search-input")[0].value='';
-    if(label=="All"){
-        for(let i = 0; i < lists.length; i++){lists[i].style.display='block';}
-        document.getElementsByClassName("notFind")[0].style.display='none';
-    }
-    else if(tagList.indexOf(label)!=-1){
-        for(let i = 0; i < lists.length; i++){
-            lists[i].style.display='none';
-        }
-
-        let labels = document.getElementsByClassName(label);
-        for(let i = 0; i < labels.length; i++){
-            labels[i].style.display='block';
-        }
-        document.getElementsByClassName("notFind")[0].style.display='none';
-    }
-    else{
-        document.getElementsByClassName("subnav-search-input")[0].value=label;
-        searchShow();
-    }
+    searchInput.value='';
+    window.location.hash=encodeURIComponent(label);
+    applyFilter(label);
 }
 
 function searchShow(){
-    let lists = document.getElementsByClassName("lists");
-    let tagTitle = document.getElementsByClassName("tagTitle")[0];
-    let searchInput = document.getElementsByClassName("subnav-search-input")[0].value;
-    tagTitle.innerHTML="Search #"+searchInput;
-    if(searchInput==''){document.title="Search - 星源笔记";}
-    else{document.title=searchInput+" - 星源笔记";}
-    let a=0;
-    window.location.hash="#"+(searchInput);
-    for(let i = 0; i < lists.length; i++){
-        if(lists[i].childNodes[0].childNodes[0].childNodes[1].innerHTML.toUpperCase().indexOf(searchInput.toUpperCase())==-1){lists[i].style.display='none';}
-        else{lists[i].style.display='block';a=a+1;}
-    }
-    if(a==0){
-        let notFind=document.getElementsByClassName("notFind")[0];
-        notFind.style.display='block';
-        notFind.innerHTML='Not Find "'+searchInput+'"';
-    }
-    else{document.getElementsByClassName("notFind")[0].style.display='none';}
+    const query=searchInput.value.trim();
+    window.location.hash=encodeURIComponent(query);
+    applyFilter(query,true);
 }
+
+window.updateShowTag=updateShowTag;
+window.searchShow=searchShow;
+
+fetch('postList.json',{headers:{Accept:'application/json'}})
+    .then(response=>{
+        if(!response.ok) throw new Error('HTTP '+response.status);
+        return response.json();
+    })
+    .then(payload=>{
+        renderIndex(payload);
+        let initial='All';
+        try{initial=decodeURIComponent(window.location.hash.slice(1)) || 'All';}catch(error){initial='All';}
+        if(searchState.labels.has(initial)) applyFilter(initial);
+        else{
+            searchInput.value=initial;
+            applyFilter(initial,true);
+        }
+    })
+    .catch(error=>{
+        console.error('[Gmeek search]',error);
+        pageTitle.textContent=SEARCH_UI.search;
+        setStatus(SEARCH_UI.loadFailed);
+    });
 
 </script>
 
