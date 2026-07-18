@@ -1,5 +1,5 @@
 (function defineSiteRuntimeConfig() {
-    const assetVersion = '20260717-3';
+    const assetVersion = '20260718-1';
     const defaults = {
         assetVersion,
         mobileBreakpoint: 720,
@@ -180,7 +180,10 @@
         : '/plugins/Theme.js';
     const runtime = document.createElement('script');
     runtime.id = 'site-theme-runtime';
-    const runtimeUrl = new URL('ThemeRuntime.js', themeSrc);
+    const runtimeName = /\.min\.js$/i.test(new URL(themeSrc).pathname)
+        ? 'ThemeRuntime.min.js'
+        : 'ThemeRuntime.js';
+    const runtimeUrl = new URL(runtimeName, themeSrc);
     runtimeUrl.searchParams.set('v', window.SiteRuntimeConfig.assetVersion);
     runtime.src = runtimeUrl.href;
     runtime.async = true;

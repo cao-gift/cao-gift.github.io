@@ -9,6 +9,15 @@ const projectRoot = path.resolve(scriptDir, '..');
 const sourceDir = path.join(projectRoot, 'static', 'plugins');
 const targetDir = path.join(projectRoot, 'docs', 'plugins');
 
+const minifyResult = spawnSync(process.execPath, [path.join(scriptDir, 'minify-theme.mjs')], {
+    cwd: projectRoot,
+    encoding: 'utf8'
+});
+if (minifyResult.status !== 0) {
+    throw minifyResult.error || new Error(minifyResult.stderr || minifyResult.stdout || '主题压缩失败');
+}
+process.stdout.write(minifyResult.stdout);
+
 await mkdir(targetDir, { recursive: true });
 
 const files = (await readdir(sourceDir))

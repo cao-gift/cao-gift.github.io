@@ -5,7 +5,7 @@ on:
   issues:
     types: [opened, edited, closed, deleted, reopened, labeled, unlabeled, pinned, unpinned]
   schedule:
-    - cron: "0 * * * *"
+    - cron: "0 0,12 * * *"
 
 concurrency:
   group: gmeek-${{ github.repository }}-${{ github.ref }}
@@ -26,6 +26,7 @@ jobs:
         uses: actions/configure-pages@v6
 
       - name: 克隆生成器
+        id: generator
         run: |
           GMEEK_VERSION=$(python3 -c "import json; print(json.load(open('config.json', encoding='utf-8'))['GMEEK_VERSION'])")
           git clone https://github.com/cao-gift/Gmeek.git .gmeek
@@ -41,11 +42,12 @@ jobs:
           else
             git checkout "$GMEEK_VERSION"
           fi
+          echo "ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: 配置 Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.8'
+          python-version: '3.12'
           cache: pip
           cache-dependency-path: .gmeek/requirements.txt
 
@@ -53,9 +55,10 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ runner.temp }}/gmeek-cache
-          key: gmeek-v1-${{ runner.os }}-${{ github.repository_id }}-${{ github.run_id }}
+          key: gmeek-v2-${{ runner.os }}-${{ github.repository_id }}-${{ hashFiles('.gmeek/requirements.txt') }}-${{ steps.generator.outputs.ref }}-${{ hashFiles('blogBase.json') }}
           restore-keys: |
-            gmeek-v1-${{ runner.os }}-${{ github.repository_id }}-
+            gmeek-v2-${{ runner.os }}-${{ github.repository_id }}-${{ hashFiles('.gmeek/requirements.txt') }}-${{ steps.generator.outputs.ref }}-
+            gmeek-v2-${{ runner.os }}-${{ github.repository_id }}-${{ hashFiles('.gmeek/requirements.txt') }}-
 
       - name: 安装依赖
         run: python -m pip install -r .gmeek/requirements.txt

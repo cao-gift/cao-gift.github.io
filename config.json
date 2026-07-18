@@ -31,9 +31,9 @@
   "archivePage": 1,
   "email": "3514088137@qq.com",
   "pwa": 1,
-  "pwaRecentPosts": 5,
+  "pwaRecentPosts": 0,
   "pwaAssets": [
-    "/plugins/ThemeRuntime.js?v=20260717-3"
+    "/plugins/ThemeRuntime.min.js?v=20260718-1"
   ],
   "pwaIcon": "/img/avatar.webp",
   "pwaIconSizes": "957x957",
@@ -42,5 +42,5 @@
   "bottomText": "❤️ 转载文章请注明出处，谢谢！❤️",
   "primerCSS": "<link href='/plugins/primer.css?v=20260717-1' rel='stylesheet' />",
   "script": "<script src='/plugins/ArticleTOC.js'></script><script src='/plugins/lightbox.js'></script><script>document.querySelectorAll('a').forEach(anchor => {const img = anchor.querySelector('img');if (img && img.hasAttribute('data-canonical-src')) {const canonicalSrc = img.getAttribute('data-canonical-src');anchor.setAttribute('href', canonicalSrc);if (img.getAttribute('data-esa-img-locked') !== '1') {img.setAttribute('src', canonicalSrc);}}});</script>",
-  "allHead": "<link id='site-reading-font-preload' rel='preload' href='/fonts/lxgwwenkaiscreen-subset-118.woff2' as='font' type='font/woff2' crossorigin><link id='site-font-lxgw-wenkai' href='/fonts/lxgw-wenkai-screen-subset.css?v=20260717-1' rel='stylesheet'><script src='/plugins/Theme.js?v=20260717-3'></script>"
+  "allHead": "<link id='site-reading-font-preload' rel='preload' href='/fonts/lxgwwenkaiscreen-subset-118.woff2' as='font' type='font/woff2' crossorigin><link id='site-font-lxgw-wenkai' href='/fonts/lxgw-wenkai-screen-subset.css?v=20260717-1' rel='stylesheet'><script src='/plugins/Theme.min.js?v=20260718-1'></script>"
 }
