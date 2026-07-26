@@ -51,6 +51,12 @@
       slideStyle: { width: 360, height: 40 },
       // 只保护文章正文内图片
       imageSelector: '.markdown-body img',
+      // 仅这些域名会附加 captcha_verify_param，避免参数泄露到第三方图床
+      paramAllowHosts: [
+        'file.freetop.eu.org',
+        'aliyuncs.com',
+        'alicdn.com',
+      ],
     },
     siteEsaConfig,
     window.ESAAIImageCaptchaConfig || {}
@@ -655,10 +661,40 @@
     if (srcset) img.setAttribute('data-esa-orig-srcset', srcset);
   }
 
+  function normalizeHost(host) {
+    return String(host || '').trim().toLowerCase().replace(/\.+$/, '');
+  }
+
+  function hostMatches(host, allowedHost) {
+    const current = normalizeHost(host);
+    const allowed = normalizeHost(allowedHost);
+    if (!current || !allowed) return false;
+    return current === allowed || current.endsWith('.' + allowed);
+  }
+
+  function isParamAllowedUrl(urlLike) {
+    try {
+      const u = new URL(urlLike, location.href);
+      if (u.protocol !== 'http:' && u.protocol !== 'https:') return false;
+      if (u.hostname && hostMatches(u.hostname, location.hostname)) return true;
+      const allowHosts = Array.isArray(cfg.paramAllowHosts) ? cfg.paramAllowHosts : [];
+      return allowHosts.some((host) => hostMatches(u.hostname, host));
+    } catch (e) {
+      return false;
+    }
+  }
+
   function withParam(urlLike, param) {
-    const u = new URL(urlLike, location.href);
-    u.searchParams.set(cfg.paramName, param);
-    return u.toString();
+    try {
+      const u = new URL(urlLike, location.href);
+      if (!isParamAllowedUrl(u.href)) {
+        return u.toString();
+      }
+      u.searchParams.set(cfg.paramName, param);
+      return u.toString();
+    } catch (e) {
+      return urlLike;
+    }
   }
 
   function withParamSrcset(srcset, param) {
