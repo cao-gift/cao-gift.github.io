@@ -318,21 +318,9 @@ function applyThemeRuntime() {
             object-fit: contain;
         }
 
-        .sponsor-info .sponsor-logo-kuocai {
-            width: auto;
-            height: 24px;
-            max-height: 24px;
-        }
-
         @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
             .sponsor-info .sponsor-logo {
                 width: 42px;
-                max-height: 21px;
-            }
-
-            .sponsor-info .sponsor-logo-kuocai {
-                width: auto;
-                height: 21px;
                 max-height: 21px;
             }
         }
@@ -351,7 +339,7 @@ function applyThemeRuntime() {
 
         let sponsorInfo = document.createElement('div');
         sponsorInfo.className = 'sponsor-info';
-        sponsorInfo.innerHTML = `本站由 <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img class="sponsor-logo" src="${sponsorLogoUrl}" alt="又拍云"></a> <a target="_blank" rel="noopener" href="${kuocaiHref}"><img class="sponsor-logo sponsor-logo-kuocai" src="${kuocaiLogoUrl}" alt="括彩云" height="24"></a> 提供 CDN 加速/云存储服务`;
+        sponsorInfo.innerHTML = `本站由 <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img class="sponsor-logo" src="${sponsorLogoUrl}" alt="又拍云"></a> <a target="_blank" rel="noopener" href="${kuocaiHref}"><img class="sponsor-logo" src="${kuocaiLogoUrl}" alt="括彩云"></a> 提供 CDN 加速/云存储服务`;
         footer.insertBefore(sponsorInfo, footer.firstChild);
     }
 

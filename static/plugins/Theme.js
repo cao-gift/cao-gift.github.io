@@ -1,5 +1,5 @@
 (function defineSiteRuntimeConfig() {
-    const assetVersion = '20260728-2';
+    const assetVersion = '20260728-3';
     const defaults = {
         assetVersion,
         mobileBreakpoint: 720,
