@@ -397,6 +397,16 @@ function applyThemeRuntime() {
             color-scheme: light;
         }
 
+        html.site-page-home {
+            --site-line: rgba(255, 255, 255, 0.25);
+            --site-glass-bg:
+                linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.035) 44%, rgba(45, 52, 64, 0.12)),
+                rgba(255, 255, 255, 0.055);
+            --site-list-bg:
+                linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.055)),
+                rgba(255, 255, 255, 0.11);
+        }
+
         html[data-color-mode="dark"] {
             --site-ink: rgba(241, 245, 249, 0.94);
             --site-muted: rgba(203, 213, 225, 0.78);
@@ -508,6 +518,10 @@ function applyThemeRuntime() {
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0));
             pointer-events: none;
             z-index: -1;
+        }
+
+        html.site-page-home #glassShell::before {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0));
         }
 
         #header {
