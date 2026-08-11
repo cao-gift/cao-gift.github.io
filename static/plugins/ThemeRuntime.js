@@ -796,7 +796,9 @@ function applyThemeRuntime() {
             padding: 0;
         }
 
-        .markdown-body img {
+        .markdown-body img:not(.esa-img-captcha-avatar) {
+            height: auto;
+            max-width: 100%;
             box-shadow: var(--site-shadow-md);
         }
 
