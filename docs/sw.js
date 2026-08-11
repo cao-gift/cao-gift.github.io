@@ -1,8 +1,8 @@
-const SHELL_CACHE_NAME = "gmeek-6a4e2a72d0f2";
+const SHELL_CACHE_NAME = "gmeek-2fadc6d27f5d";
 const RUNTIME_CACHE_NAME = 'gmeek-runtime-v1';
 const CACHE_PREFIX = 'gmeek-';
 const RUNTIME_CACHE_LIMIT = 60;
-const PRECACHE_URLS = ["/", "/fonts/lxgw-wenkai-screen-subset.css?v=20260717-1", "/fonts/lxgwwenkaiscreen-subset-118.woff2", "/img/avatar.webp", "/index.html", "/manifest.webmanifest", "/plugins/Theme.min.js?v=20260728-3", "/plugins/ThemeRuntime.min.js?v=20260728-3", "/plugins/primer.css?v=20260717-1"];
+const PRECACHE_URLS = ["/", "/fonts/lxgw-wenkai-screen-subset.css?v=20260717-1", "/fonts/lxgwwenkaiscreen-subset-118.woff2", "/img/avatar.webp", "/index.html", "/manifest.webmanifest", "/plugins/Theme.min.js?v=20260811-1", "/plugins/ThemeRuntime.min.js?v=20260811-1", "/plugins/primer.css?v=20260717-1"];
 const HOME_URL = "/";
 
 async function trimRuntimeCache() {
