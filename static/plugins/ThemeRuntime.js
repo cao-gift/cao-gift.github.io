@@ -1,5 +1,8 @@
 (function themeRuntimeBoot() {
 function applyThemeRuntime() {
+    // 重复执行守卫：脚本被多次引入时只应用一次
+    if (window.__siteThemeRuntimeApplied) return;
+    window.__siteThemeRuntimeApplied = true;
     let currentUrl = window.location.pathname;
     //let currentHost = window.location.hostname;
 
@@ -87,6 +90,8 @@ function applyThemeRuntime() {
         const sameOriginHome = new URL('/', window.location.origin).href;
         homeButton.href = sameOriginHome;
         homeButton.addEventListener('click', function (event) {
+            // 修饰键/非左键点击交给浏览器默认行为（新标签页打开等）
+            if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
             event.preventDefault();
             window.location.href = sameOriginHome;
         });
@@ -101,12 +106,12 @@ function applyThemeRuntime() {
 
                 const sameOriginUrl = new URL(originalUrl.pathname + originalUrl.search + originalUrl.hash, window.location.origin).href;
                 link.href = sameOriginUrl;
-                link.removeAttribute('target');
-                link.removeAttribute('rel');
 
                 if (link.dataset.sameOriginNavReady === '1') return;
                 link.dataset.sameOriginNavReady = '1';
                 link.addEventListener('click', function (event) {
+                    // 修饰键/非左键点击交给浏览器默认行为（新标签页打开等）
+                    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
                     event.preventDefault();
                     window.location.href = sameOriginUrl;
                 });
@@ -1292,6 +1297,13 @@ function applyThemeRuntime() {
 
     function optimizeArticleImages() {
         document.querySelectorAll('.markdown-body img').forEach(function (img, index) {
+            // 先设置懒加载/解码属性，再写入 src，避免请求先于属性生效
+            if (!img.hasAttribute('alt')) img.setAttribute('alt', '');
+            if (!img.hasAttribute('loading')) img.setAttribute('loading', index === 0 ? 'eager' : 'lazy');
+            if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+            try {
+                img.fetchPriority = index === 0 ? 'high' : 'low';
+            } catch (e) {}
             const canonicalSrc = img.getAttribute('data-canonical-src');
             if (canonicalSrc) {
                 const parentLink = img.closest('a[href]');
@@ -1300,12 +1312,6 @@ function applyThemeRuntime() {
                     img.src = canonicalSrc;
                 }
             }
-            if (!img.hasAttribute('alt')) img.setAttribute('alt', '');
-            if (!img.hasAttribute('loading')) img.setAttribute('loading', index === 0 ? 'eager' : 'lazy');
-            if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
-            try {
-                img.fetchPriority = index === 0 ? 'high' : 'low';
-            } catch (e) {}
         });
     }
 
@@ -1320,7 +1326,13 @@ function applyThemeRuntime() {
     function accessibleTextColor(backgroundColor) {
         const channels = String(backgroundColor).match(/[\d.]+/g);
         if (!channels || channels.length < 3) return '#111827';
-        const backgroundLuminance = relativeLuminance(channels.slice(0, 3).map(Number));
+        const rgba = channels.slice(0, 4).map(Number);
+        // 半透明背景色先按 alpha 叠加到白色页面底上，再计算对比度
+        const alpha = rgba.length > 3 ? Math.max(0, Math.min(1, rgba[3])) : 1;
+        const composited = rgba.slice(0, 3).map(function (channel) {
+            return channel * alpha + 255 * (1 - alpha);
+        });
+        const backgroundLuminance = relativeLuminance(composited);
         const darkLuminance = relativeLuminance([17, 24, 39]);
         const darkContrast = (backgroundLuminance + 0.05) / (darkLuminance + 0.05);
         const lightContrast = 1.05 / (backgroundLuminance + 0.05);
@@ -1416,6 +1428,8 @@ function applyThemeRuntime() {
             if (node && node.nodeType === 1) {
                 const el = node;
                 if (outsideShellIds.has(el.id)) continue;
+                // 声明式排除：插件元素可用 data-outside-shell 标记自己不入壳
+                if (el.hasAttribute && el.hasAttribute('data-outside-shell')) continue;
                 if (el.matches('.toc, .toc-icon, .lb-lightbox-overlay')) continue;
             }
             shell.appendChild(node);

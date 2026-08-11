@@ -1,5 +1,5 @@
 (function defineSiteRuntimeConfig() {
-    const assetVersion = '20260728-3';
+    const assetVersion = '20260811-1';
     const defaults = {
         assetVersion,
         mobileBreakpoint: 720,
@@ -180,10 +180,12 @@
         : '/plugins/Theme.js';
     const runtime = document.createElement('script');
     runtime.id = 'site-theme-runtime';
-    const runtimeName = /\.min\.js$/i.test(new URL(themeSrc).pathname)
+    // themeSrc 可能是 "/plugins/Theme.js" 这类纯路径，必须带 base 解析
+    const themeUrl = new URL(themeSrc, window.location.href);
+    const runtimeName = /\.min\.js$/i.test(themeUrl.pathname)
         ? 'ThemeRuntime.min.js'
         : 'ThemeRuntime.js';
-    const runtimeUrl = new URL(runtimeName, themeSrc);
+    const runtimeUrl = new URL(runtimeName, themeUrl.href);
     runtimeUrl.searchParams.set('v', window.SiteRuntimeConfig.assetVersion);
     runtime.src = runtimeUrl.href;
     runtime.async = true;

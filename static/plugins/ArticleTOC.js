@@ -195,7 +195,6 @@
         const headings = Array.from(content.querySelectorAll('h1, h2, h3, h4, h5, h6'));
         if (!headings.length) return;
 
-        window.__siteArticleTOCReady = true;
         ensureStyle();
         assignHeadingIds(headings);
 
@@ -346,6 +345,8 @@
         }
 
         measureHeadings();
+        // 就绪标志放到 DOM 构建完成之后，避免其他脚本过早认为目录可用
+        window.__siteArticleTOCReady = true;
     }
 
     if (document.readyState === 'loading') {

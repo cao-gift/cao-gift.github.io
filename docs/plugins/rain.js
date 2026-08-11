@@ -1,87 +1,95 @@
+(function () {
+    'use strict';
 
-const rainstyle = document.createElement('style');
-rainstyle.type = 'text/css';
-rainstyle.innerHTML = `
-    * {
-        padding: 0;
-        margin: 0;
-    }
-    .raincontent {
-        width: 100%;
-        height: 100%;
-    }
-    #rainBox {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        pointer-events: none;
-    }
-    .rain {
-        position: absolute;
-        width: 2px;
-        height: 50px;
-        background: linear-gradient(rgba(255,255,255,.3),rgba(255,255,255,.6));
-    }
-`;
-document.head.appendChild(rainstyle);
+    // 重复执行守卫
+    if (window.__siteRainEffectLoaded) return;
+    window.__siteRainEffectLoaded = true;
 
-// 创建结构
-const raincontent = document.createElement('div');
-raincontent.classList.add('raincontent');
-const rainBox = document.createElement('div');
-rainBox.id = 'rainBox';
-raincontent.appendChild(rainBox);
-document.body.appendChild(raincontent);
+    // 尊重系统“减少动态效果”设置
+    try {
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    } catch (e) {}
 
-// 获取rainBox元素
-const box = document.getElementById('rainBox');
+    if (!document.body) return;
 
-// 定义box的高度和宽度
-let boxHeight = box.clientHeight;
-let boxWidth = box.clientWidth;
+    const MAX_DROPS = 90;          // 同屏雨滴上限，避免无限堆积
+    const SPAWN_INTERVAL_MS = 80;  // 生成间隔
 
-// 窗口加载时更新box的高度和宽度
-window.onload = function () {
-    boxHeight = box.clientHeight;
-    boxWidth = box.clientWidth;
-};
-
-// 窗口大小变化时更新box的高度和宽度
-window.onresize = function () {
-    boxHeight = box.clientHeight;
-    boxWidth = box.clientWidth;
-};
-
-// 每隔50毫秒添加一个新的雨点
-setInterval(() => {
-    // 创建一个新的div元素表示雨点
-    const rain = document.createElement('div');
-
-    // 添加类名'rain'到雨点元素
-    rain.classList.add('rain');
-
-    // 设置雨点的初始位置
-    rain.style.top = '0px';
-    rain.style.left = Math.random() * boxWidth + 'px';
-
-    // 设置雨点的随机透明度
-    rain.style.opacity = Math.random();
-
-    // 将雨点元素添加到rainBox中
-    box.appendChild(rain);
-
-    // 每隔20毫秒更新雨点的位置，使其下落
-    let race = 1;
-    const timer = setInterval(() => {
-        // 如果雨点到达底部，则清除定时器并移除雨点
-        if (parseInt(rain.style.top) > boxHeight) {
-            clearInterval(timer);
-            box.removeChild(rain);
+    // 样式只作用于雨效果自身的元素，不做任何全局重置
+    const style = document.createElement('style');
+    style.id = 'site-rain-style';
+    style.textContent = `
+        #rainBox {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
         }
-        // 增加雨点的下落速度
-        race++;
-        rain.style.top = parseInt(rain.style.top) + race + 'px';
-    }, 20);
-}, 50);
+        .rain-drop {
+            position: absolute;
+            top: -60px;
+            width: 2px;
+            height: 50px;
+            background: linear-gradient(rgba(255, 255, 255, .3), rgba(255, 255, 255, .6));
+            animation-name: site-rain-fall;
+            animation-timing-function: linear;
+            animation-fill-mode: forwards;
+            will-change: transform;
+        }
+        @keyframes site-rain-fall {
+            to {
+                transform: translate3d(0, calc(100vh + 120px), 0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    const box = document.createElement('div');
+    box.id = 'rainBox';
+    box.setAttribute('aria-hidden', 'true');
+    // 声明不参与 ThemeRuntime 玻璃外壳包裹，避免被 backdrop-filter 容器吞并
+    box.setAttribute('data-outside-shell', '');
+    document.body.appendChild(box);
+
+    let dropCount = 0;
+    let spawnTimer = 0;
+
+    function spawnDrop() {
+        if (dropCount >= MAX_DROPS) return;
+        const drop = document.createElement('div');
+        drop.className = 'rain-drop';
+        drop.style.left = (Math.random() * 100).toFixed(2) + '%';
+        drop.style.opacity = (0.25 + Math.random() * 0.75).toFixed(2);
+        drop.style.animationDuration = (0.9 + Math.random() * 1.4).toFixed(2) + 's';
+        drop.addEventListener('animationend', function () {
+            dropCount -= 1;
+            drop.remove();
+        }, { once: true });
+        box.appendChild(drop);
+        dropCount += 1;
+    }
+
+    function startRain() {
+        if (spawnTimer || document.hidden) return;
+        spawnTimer = setInterval(spawnDrop, SPAWN_INTERVAL_MS);
+    }
+
+    function stopRain() {
+        if (!spawnTimer) return;
+        clearInterval(spawnTimer);
+        spawnTimer = 0;
+    }
+
+    // 页面切到后台时停止生成（CSS 动画在后台标签页本身也会暂停）
+    document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+            stopRain();
+        } else {
+            startRain();
+        }
+    });
+    window.addEventListener('pagehide', stopRain);
+    window.addEventListener('pageshow', startRain);
+
+    startRain();
+})();

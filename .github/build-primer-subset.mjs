@@ -45,12 +45,20 @@ try {
     }
 
     const generated = path.join(outputDir, path.basename(sourcePath));
+    // 校验 PurgeCSS 产物非空且体积合理，避免把空文件覆盖线上 primer.css
+    const bytes = await readFile(generated).catch(() => {
+        throw new Error(`PurgeCSS 未生成预期文件：${generated}`);
+    });
+    if (!bytes.length || bytes.length < 1024) {
+        throw new Error(`PurgeCSS 输出异常（为空或过小）：${bytes.length} bytes`);
+    }
+
     const sourceTarget = path.join(root, 'static', 'plugins', 'primer.css');
     const docsTarget = path.join(root, 'docs', 'plugins', 'primer.css');
+    await mkdir(path.dirname(docsTarget), { recursive: true });
     await copyFile(generated, sourceTarget);
     await copyFile(generated, docsTarget);
 
-    const bytes = await readFile(generated);
     console.log(`Primer subset built: ${source.length} -> ${bytes.length} bytes`);
 } finally {
     await rm(tempDir, { recursive: true, force: true });

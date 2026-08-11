@@ -83,12 +83,24 @@
 
   let allowVerifyAt = 0;
   let initStarted = false;
+  let initFailed = false;
+  let sdkError = false;
   let ready = false;
   let observer = null;
   let pendingParam = null;
   let internalUpdate = false;
   let lockScheduled = false;
   let imgLazyObserver = null;
+  let fallbackUsed = false;
+  let fallbackButton = null;
+  let watchdogTimer = 0;
+  let preloadScheduled = false;
+  let loadedStateScheduled = false;
+
+  // SDK 加载/初始化超时：超时后进入可重试、可降级的失败态
+  const SDK_LOAD_TIMEOUT_MS = 9000;
+  // 看门狗：锁图后长时间无法完成验证时提供“直接显示图片”逃生通道
+  const FALLBACK_WATCHDOG_MS = 20000;
 
   function now() {
     return Date.now();
@@ -289,6 +301,28 @@
         background: rgba(255, 255, 255, 0.72);
         transform: none;
       }
+      #esa-img-captcha-fallback {
+        min-height: 40px;
+        padding: 9px 15px;
+        border-radius: 12px;
+        border: 1px solid rgba(220, 38, 38, 0.24);
+        background: rgba(254, 226, 226, 0.66);
+        color: #991b1b;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 650;
+        transition: background 0.16s ease, transform 0.16s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #esa-img-captcha-fallback:hover {
+        background: rgba(254, 226, 226, 0.92);
+        transform: translateY(-1px);
+      }
+      #esa-img-captcha-fallback[hidden] {
+        display: none !important;
+      }
       #esa-img-captcha-debug {
         flex: 0 0 auto;
         max-width: 100%;
@@ -441,7 +475,8 @@
           justify-self: stretch;
         }
         #esa-img-captcha-button,
-        #esa-img-captcha-skip {
+        #esa-img-captcha-skip,
+        #esa-img-captcha-fallback {
           width: 100%;
           justify-content: center;
         }
@@ -507,8 +542,17 @@
 
     // popup 模式需要用户手势点击触发；这里不做异步“模拟点击”
     btn.addEventListener('click', function () {
-      if (btn.disabled) return;
-      // 不在这里跳转，只由验证码 success 回调统一“解锁并加载图片”
+      if (btn.disabled || pendingParam || fallbackUsed) return;
+      // 组件尚未就绪（延迟加载未完成或曾失败）：由点击触发加载/重试
+      if (!ready) {
+        if (initFailed) {
+          initFailed = false;
+          sdkError = false;
+        }
+        ensureCaptchaReady().catch(function () {});
+        return;
+      }
+      // 就绪后由验证码 SDK 绑定的点击逻辑负责弹出验证，不在这里跳转
     });
 
     const skip = document.createElement('button');
@@ -577,6 +621,7 @@
   }
 
   function applyVerifiedState() {
+    hideFallbackButton();
     setBannerState('success');
     setTitle('图片验证已通过');
     setDesc('验证通过，图片按需显示');
@@ -588,7 +633,7 @@
 
   function refreshLoadedState() {
     const body = getMarkdownBody();
-    if (!body || !pendingParam) return;
+    if (!body || (!pendingParam && !fallbackUsed)) return;
     const pendingLazyCount = body.querySelectorAll('img[data-esa-final-src], img[data-esa-final-srcset]').length;
     const loadingCount = Array.from(body.querySelectorAll('img'))
       .filter(isProbablyRealImage)
@@ -620,6 +665,21 @@
     setButtonState(true, '已验证');
     setSkipState('已完成', true);
     setSkipVisible(false);
+  }
+
+  // rAF 合流：多张图片的 load/error 事件只触发一次全量统计
+  function scheduleRefreshLoadedState() {
+    if (loadedStateScheduled) return;
+    loadedStateScheduled = true;
+    const run = function () {
+      loadedStateScheduled = false;
+      refreshLoadedState();
+    };
+    if ('requestAnimationFrame' in window) {
+      window.requestAnimationFrame(run);
+    } else {
+      setTimeout(run, 50);
+    }
   }
 
   function setDebug(text) {
@@ -765,7 +825,7 @@
 
   function startLazyLoadFor(imgs) {
     if (!imgs || imgs.length === 0) {
-      refreshLoadedState();
+      scheduleRefreshLoadedState();
       return;
     }
     disconnectLazyObserver();
@@ -785,10 +845,10 @@
       img.removeAttribute('data-esa-final-src');
       img.removeAttribute('data-esa-final-srcset');
       try {
-        img.addEventListener('load', refreshLoadedState, { once: true });
-        img.addEventListener('error', refreshLoadedState, { once: true });
+        img.addEventListener('load', scheduleRefreshLoadedState, { once: true });
+        img.addEventListener('error', scheduleRefreshLoadedState, { once: true });
       } catch (e) {}
-      refreshLoadedState();
+      scheduleRefreshLoadedState();
     };
 
     if (!('IntersectionObserver' in window)) {
@@ -831,7 +891,7 @@
     }
     // 开始懒加载（视口内图片会很快触发加载）
     startLazyLoadFor(lazyList);
-    refreshLoadedState();
+    scheduleRefreshLoadedState();
   }
 
   function disconnectObserver() {
@@ -903,6 +963,8 @@
         resolve();
       };
       s.onerror = function () {
+        // 清除缓存的失败 Promise，允许重试时重新注入脚本
+        window.__ESAAIImageCaptchaAliyunPromise = null;
         reject(new Error('AliyunCaptcha.js 加载失败'));
       };
       document.head.appendChild(s);
@@ -914,38 +976,60 @@
     return new Promise((r) => setTimeout(r, ms));
   }
 
+  function withTimeout(promise, ms, message) {
+    return new Promise(function (resolve, reject) {
+      const timer = setTimeout(function () {
+        reject(new Error(message));
+      }, ms);
+      promise.then(
+        function (value) {
+          clearTimeout(timer);
+          resolve(value);
+        },
+        function (error) {
+          clearTimeout(timer);
+          reject(error);
+        }
+      );
+    });
+  }
+
   async function ensureCaptchaReady() {
     if (ready) return;
+    if (initFailed) throw new Error('验证组件初始化失败，请重试');
     if (initStarted) {
-      while (!ready) {
+      // 等待首个调用者的结果；失败时立即退出，避免死循环
+      while (!ready && !initFailed) {
         // eslint-disable-next-line no-await-in-loop
         await sleep(50);
       }
+      if (initFailed) throw new Error('验证组件初始化失败');
       return;
     }
     initStarted = true;
 
-    setBannerState('loading');
-    setTitle('本页图片需验证后查看');
-    setSkipVisible(true);
-    setSkipState('暂不查看', true);
+    try {
+      setBannerState('loading');
+      setTitle('本页图片需验证后查看');
+      setSkipVisible(true);
+      setSkipState('暂不查看', true);
 
-    setDesc('正在加载验证组件');
-    setDebug('加载中');
-    await loadAliyunCaptchaJsOnce();
+      setDesc('正在加载验证组件');
+      setDebug('加载中');
+      await withTimeout(loadAliyunCaptchaJsOnce(), SDK_LOAD_TIMEOUT_MS, 'AliyunCaptcha.js 加载超时');
 
-    if (!window.initAliyunCaptcha) throw new Error('initAliyunCaptcha 不存在');
+      if (!window.initAliyunCaptcha) throw new Error('initAliyunCaptcha 不存在');
 
-    // 确保 element 容器在 init 之前就存在
-    ensureCaptchaDomScaffold();
-    if (!document.getElementById('esa-img-captcha-element')) {
-      throw new Error('esa-img-captcha-element 不存在（DOM 未就绪或被移除）');
-    }
+      // 确保 element 容器在 init 之前就存在
+      ensureCaptchaDomScaffold();
+      if (!document.getElementById('esa-img-captcha-element')) {
+        throw new Error('esa-img-captcha-element 不存在（DOM 未就绪或被移除）');
+      }
 
-    setDesc('正在初始化验证');
-    setTitle('本页图片需验证后查看');
-    setDebug('初始化中');
-    window.initAliyunCaptcha({
+      setDesc('正在初始化验证');
+      setTitle('本页图片需验证后查看');
+      setDebug('初始化中');
+      window.initAliyunCaptcha({
       SceneId: cfg.sceneId,
       mode: 'popup',
       element: '#esa-img-captcha-element',
@@ -956,6 +1040,11 @@
       success: function (captchaVerifyParam) {
         pendingParam = captchaVerifyParam;
         writeReuse(captchaVerifyParam);
+        if (watchdogTimer) {
+          clearTimeout(watchdogTimer);
+          watchdogTimer = 0;
+        }
+        hideFallbackButton();
         disconnectObserver();
         disconnectLazyObserver();
         clearEarlyImageLock();
@@ -977,13 +1066,18 @@
       onError: function (errorInfo) {
         // eslint-disable-next-line no-console
         console.error('[ESAAIImageCaptcha] 初始化错误：', errorInfo);
+        sdkError = true;
+        ready = false;
+        initStarted = false; // 允许重试
+        initFailed = true;   // 让等待者退出轮询
         setBannerState('error');
         setTitle('图片验证暂不可用');
         setSkipVisible(true);
-        setDesc('验证码初始化失败（请检查 ESA 配置/网络/CSP）。');
+        setDesc('验证码初始化失败（请检查 ESA 配置/网络/CSP），可重试或直接显示图片。');
         setDebug('不可用');
-        setButtonState(true, '不可用');
+        setButtonState(false, '重试验证');
         setSkipState('暂不查看', false);
+        ensureFallbackButton();
       },
       onClose: function () {
         // 用户关闭弹窗：不解锁
@@ -1005,7 +1099,9 @@
       setButtonState(true, `${Math.ceil(waitMs / 100) / 10}s 后可用`);
       await sleep(waitMs);
     }
+    if (sdkError) return; // onError 已接管界面，避免覆盖错误态
     ready = true;
+    hideFallbackButton();
     setTitle('本页图片需验证后查看');
     setDesc('验证后显示图片');
     setBannerState('ready');
@@ -1013,6 +1109,11 @@
     setDebug('就绪');
     setButtonState(false, '验证后查看');
     setSkipState('暂不查看', false);
+    } catch (e) {
+      initStarted = false; // 允许重试
+      initFailed = true;   // 让等待者退出轮询
+      throw e;
+    }
   }
 
   function ensureCaptchaDomScaffold() {
@@ -1026,7 +1127,106 @@
     banner.appendChild(holder);
   }
 
-  async function boot() {
+  function showCaptchaUnavailable(message) {
+    setBannerState('error');
+    setTitle('图片验证暂不可用');
+    setSkipVisible(true);
+    setDesc(message);
+    setDebug('不可用');
+    setButtonState(false, '重试验证');
+    setSkipState('暂不查看', false);
+    ensureFallbackButton();
+  }
+
+  function ensureFallbackButton() {
+    const banner = document.getElementById('esa-img-captcha-banner');
+    if (!banner) return;
+    if (fallbackButton && fallbackButton.isConnected) {
+      fallbackButton.hidden = false;
+      return;
+    }
+    const actions = banner.querySelector('.esa-img-captcha-actions');
+    if (!actions) return;
+    fallbackButton = document.createElement('button');
+    fallbackButton.type = 'button';
+    fallbackButton.id = 'esa-img-captcha-fallback';
+    fallbackButton.textContent = '直接显示图片';
+    fallbackButton.addEventListener('click', function () {
+      if (fallbackButton.disabled) return;
+      fallbackShowImages();
+    });
+    actions.appendChild(fallbackButton);
+  }
+
+  function hideFallbackButton() {
+    if (fallbackButton) fallbackButton.hidden = true;
+  }
+
+  // 逃生通道：验证不可用时不携带验证参数直接加载原图
+  // （受 ESA 保护的图片可能仍无法加载，但不再把用户困死在锁图状态）
+  function fallbackShowImages() {
+    if (fallbackUsed || pendingParam) return;
+    fallbackUsed = true;
+    if (watchdogTimer) {
+      clearTimeout(watchdogTimer);
+      watchdogTimer = 0;
+    }
+    disconnectObserver();
+    disconnectLazyObserver();
+    clearEarlyImageLock();
+    const body = getMarkdownBody();
+    if (!body) return;
+    internalUpdate = true;
+    try {
+      document.body.removeAttribute('data-esa-img-locked');
+      const imgs = Array.from(body.querySelectorAll('img[data-esa-img-locked="1"]'));
+      for (const img of imgs) {
+        const orig = getOrig(img);
+        const origSrcset = getOrigSrcset(img);
+        if (orig) img.setAttribute('data-esa-final-src', orig);
+        if (origSrcset) img.setAttribute('data-esa-final-srcset', origSrcset);
+        img.removeAttribute('data-esa-img-locked');
+      }
+      startLazyLoadFor(imgs);
+    } finally {
+      internalUpdate = false;
+    }
+    setBannerState('paused');
+    setTitle('已直接显示图片');
+    setDesc('验证不可用，已直接显示图片；受保护的图片可能无法加载。');
+    setDebug('已降级');
+    setButtonState(true, '已直接显示');
+    setSkipVisible(false);
+    hideFallbackButton();
+    scheduleRefreshLoadedState();
+  }
+
+  // 延迟预载验证码组件：空闲时或用户靠近/聚焦验证横幅时再加载第三方 SDK
+  function scheduleCaptchaPreload() {
+    if (preloadScheduled || ready || initStarted || pendingParam || fallbackUsed) return;
+    preloadScheduled = true;
+    const start = function () {
+      if (ready || initStarted || pendingParam || fallbackUsed) return;
+      ensureCaptchaReady().catch(function (e) {
+        // eslint-disable-next-line no-console
+        console.error('[ESAAIImageCaptcha] 预加载失败：', e);
+        showCaptchaUnavailable('验证码组件加载失败，可重试或直接显示图片。');
+      });
+    };
+    const banner = document.getElementById('esa-img-captcha-banner');
+    if (banner) {
+      ['pointerenter', 'focusin', 'touchstart'].forEach(function (eventName) {
+        banner.addEventListener(eventName, start, { once: true, passive: true });
+      });
+    }
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(start, { timeout: 3000 });
+    } else {
+      setTimeout(start, 1200);
+    }
+  }
+
+  function boot() {
     const body = getMarkdownBody();
     if (!body) return;
 
@@ -1055,7 +1255,6 @@
       document.body.removeAttribute('data-esa-img-locked');
       applyVerifiedState();
       unlockAndLoadAll(reused);
-      refreshLoadedState();
       try {
         document.documentElement.setAttribute('data-esa-img-plugin', 'reused');
       } catch (e) {}
@@ -1077,20 +1276,15 @@
     }
     observeImageMutations();
 
-    // 预加载验证码组件，用户点击按钮即可弹出
-    try {
-      await ensureCaptchaReady();
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error('[ESAAIImageCaptcha] 启动失败：', e);
-      setBannerState('error');
-      setTitle('图片验证暂不可用');
-      setSkipVisible(true);
-      setDesc('验证码组件加载失败，请稍后刷新重试。');
-      setDebug('不可用');
-      setButtonState(true, '不可用');
-      setSkipState('暂不查看', false);
-    }
+    // 看门狗：长时间无法完成验证时提供“直接显示图片”逃生通道，避免死局
+    watchdogTimer = setTimeout(function () {
+      watchdogTimer = 0;
+      if (pendingParam || fallbackUsed || ready) return;
+      ensureFallbackButton();
+    }, FALLBACK_WATCHDOG_MS);
+
+    // 延迟预载验证码组件（空闲或用户交互时），不再随首屏无条件拉取第三方 SDK
+    scheduleCaptchaPreload();
   }
 
   if (document.readyState === 'loading') {

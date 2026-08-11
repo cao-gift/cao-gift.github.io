@@ -1,4 +1,4 @@
-import { copyFile, mkdir, readdir, readFile } from 'node:fs/promises';
+import { copyFile, mkdir, readdir, readFile, rm } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -26,6 +26,16 @@ const files = (await readdir(sourceDir))
 
 if (!files.length) {
     throw new Error(`没有找到插件 JS：${sourceDir}`);
+}
+
+// 清理 docs/plugins 中源目录已删除的陈旧插件，避免随构建继续分发
+const sourceSet = new Set(files);
+const existingTargets = (await readdir(targetDir)).filter((name) => name.endsWith('.js'));
+for (const name of existingTargets) {
+    if (!sourceSet.has(name)) {
+        await rm(path.join(targetDir, name), { force: true });
+        console.log(`已删除陈旧插件：docs/plugins/${name}`);
+    }
 }
 
 function checkSyntax(filePath) {

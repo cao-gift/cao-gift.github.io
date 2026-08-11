@@ -510,7 +510,27 @@
     }
 
     getImageSource(img) {
-      return (img && (img.currentSrc || img.getAttribute('src'))) || '';
+      if (!img) return '';
+      // 优先取验证锁定前的原图地址：currentSrc 可能仍是占位图或带验证参数
+      const source = img.getAttribute('data-esa-orig-src')
+        || img.getAttribute('data-canonical-src')
+        || img.currentSrc
+        || img.getAttribute('src')
+        || '';
+      return this.stripVerifyParam(source);
+    }
+
+    stripVerifyParam(src) {
+      if (!src) return '';
+      try {
+        const url = new URL(src, window.location.href);
+        if (url.searchParams.has('captcha_verify_param')) {
+          url.searchParams.delete('captcha_verify_param');
+        }
+        return url.toString();
+      } catch (e) {
+        return src;
+      }
     }
 
     handleImageClick(event) {
