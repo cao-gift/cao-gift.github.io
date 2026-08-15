@@ -26,6 +26,7 @@
   "showPostSource": 0,
   "needComment": 1,
   "twikooEnvId": "https://twikoo.freeblock.cn",
+  "twikooCDN": "https://cdn.jsdelivr.net/npm/twikoo@1.7.19/dist/twikoo.min.js",
   "draftLabel": "草稿",
   "readingWordsPerMinute": 400,
   "relatedPostsNum": 3,
