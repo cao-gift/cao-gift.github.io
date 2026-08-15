@@ -60,7 +60,6 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 .relatedPosts{margin-top:32px;}
 .relatedPosts h2{font-size:20px;margin-bottom:12px;}
 .relatedPosts ul{display:grid;gap:8px;list-style:none;}
-#cmButton{height:48px;margin-top:48px;}
 #comments{margin-top:64px;}
 .g-emoji{font-size:24px;}
 @media (max-width: 600px) {
@@ -119,7 +118,6 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
 
 
-<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
 <div class="comments" id="comments"></div>
 
 </main>
@@ -239,44 +237,23 @@ document.getElementById("pathHome").setAttribute("d",IconList["home"]);
 document.getElementById("pathArchive").setAttribute("d",IconList["archive"]);
 
 
-function loadCommentsFailed(){
-    cmButton=document.getElementById("cmButton");
-    cmButton.innerHTML="评论";
-    cmButton.disabled=false;
-}
-function openComments(){
-    cm=document.getElementById("comments");
-    cmButton=document.getElementById("cmButton");
-    cmButton.disabled=true;
-    cmButton.innerHTML="loading";
-    span=document.createElement("span");
-    span.setAttribute("class","AnimatedEllipsis");
-    cmButton.appendChild(span);
-
-    
-    script=document.createElement("script");
-    script.setAttribute("src","https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.min.js");
-    script.onload=function(){
-        if(window.twikoo){
-            twikoo.init({
-                envId: "https://twikoo.freeblock.cn",
-                el: "#comments",
-                lang: "zh-CN"
-            });
-            document.getElementById("cmButton").style.display="none";
-        }else{
-            loadCommentsFailed();
-        }
-    };
-    script.onerror=function(){
-        // eslint-disable-next-line no-console
-        console.error("[Gmeek] Twikoo 脚本加载失败，请重试");
-        loadCommentsFailed();
-    };
-    document.head.appendChild(script);
-    
-}
-
+const commentScript=document.createElement("script");
+commentScript.setAttribute("src","https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.min.js");
+commentScript.onload=function(){
+    if(!window.twikoo){
+        console.error("[Gmeek] Twikoo 初始化失败");
+        return;
+    }
+    twikoo.init({
+        envId: "https://twikoo.freeblock.cn",
+        el: "#comments",
+        lang: "zh-CN"
+    });
+};
+commentScript.onerror=function(){
+    console.error("[Gmeek] Twikoo 脚本加载失败，请刷新页面重试");
+};
+document.head.appendChild(commentScript);
 
 
 </script>
