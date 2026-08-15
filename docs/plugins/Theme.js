@@ -1,5 +1,5 @@
 (function defineSiteRuntimeConfig() {
-    const assetVersion = '20260811-2';
+    const assetVersion = '20260815-1';
     const defaults = {
         assetVersion,
         mobileBreakpoint: 720,
@@ -13,20 +13,12 @@
             mobileImageSmallMaxWidth: 480,
             desktopVideo: '/img/电脑1.mp4',
             mobileVideo: '/img/手机2.mp4'
-        },
-        esa: {
-            prefix: 'esa-pgrds6as5i',
-            sceneId: '1nux88n8',
-            region: 'cn',
-            reuseMs: 80000,
-            minDelayMs: 1000
         }
     };
     const current = window.SiteRuntimeConfig || {};
 
     window.SiteRuntimeConfig = Object.assign({}, defaults, current, {
-        background: Object.assign({}, defaults.background, current.background || {}),
-        esa: Object.assign({}, defaults.esa, current.esa || {})
+        background: Object.assign({}, defaults.background, current.background || {})
     });
 })();
 
@@ -35,13 +27,11 @@
     window.__siteEarlyBootReady = true;
 
     const config = window.SiteRuntimeConfig;
-    const path = window.location.pathname;
     const mobileBreakpoint = config.mobileBreakpoint;
     const bgImageDesktop = config.background.desktopImage;
     const bgImageMobile = window.innerWidth <= config.background.mobileImageSmallMaxWidth
         ? config.background.mobileImageSmall
         : config.background.mobileImageLarge;
-    const tinyPixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
 
     function appendEarlyStyle() {
         if (document.getElementById('site-early-theme-style')) return;
@@ -70,12 +60,6 @@
                 background: transparent;
                 overflow-x: hidden;
             }
-            html[data-site-early-img-lock="1"] .markdown-body img {
-                visibility: hidden !important;
-            }
-            html[data-site-early-img-lock="1"] .esa-img-captcha-banner img {
-                visibility: visible !important;
-            }
             @media (max-width: ${mobileBreakpoint}px), (hover: none) and (pointer: coarse) {
                 body {
                     padding-left: calc(clamp(10px, 3.2vw, 14px) + env(safe-area-inset-left));
@@ -88,87 +72,7 @@
         (document.head || document.documentElement).appendChild(style);
     }
 
-    function hasRecentImageVerifyReuse() {
-        try {
-            const esa = config.esa;
-            const raw = sessionStorage.getItem(`esa_img_verified:${esa.sceneId}:${path}`);
-            if (!raw) return false;
-            const parsed = JSON.parse(raw);
-            return !!(parsed && parsed.param && parsed.at && Date.now() - parsed.at <= esa.reuseMs);
-        } catch (e) {
-            return false;
-        }
-    }
-
-    function lockImageEarly(img) {
-        if (!img || img.nodeType !== 1 || img.tagName !== 'IMG') return;
-        if (!img.closest || !img.closest('.markdown-body')) return;
-        if (img.closest('#esa-img-captcha-banner')) return;
-
-        const canonicalSrc = img.getAttribute('data-canonical-src');
-        const currentSrc = img.getAttribute('src') || '';
-        const src = canonicalSrc || currentSrc;
-        const srcset = img.getAttribute('srcset') || '';
-        const alreadyLocked = img.getAttribute('data-esa-img-locked') === '1';
-        if (!src || (alreadyLocked && currentSrc === tinyPixel && !srcset)) return;
-
-        const parentLink = img.closest('a[href]');
-        if (parentLink && canonicalSrc) parentLink.href = canonicalSrc;
-        if (src !== tinyPixel) img.setAttribute('data-esa-orig-src', src);
-        if (srcset && !img.getAttribute('data-esa-orig-srcset')) img.setAttribute('data-esa-orig-srcset', srcset);
-        img.setAttribute('src', tinyPixel);
-        img.removeAttribute('srcset');
-        img.setAttribute('data-esa-img-locked', '1');
-        try {
-            const isPriority = document.querySelector('.markdown-body img') === img;
-            img.loading = isPriority ? 'eager' : 'lazy';
-            img.decoding = 'async';
-            img.fetchPriority = isPriority ? 'high' : 'low';
-        } catch (e) {}
-    }
-
-    function startEarlyArticleImageLock() {
-        if (!path.includes('/post/') || hasRecentImageVerifyReuse() || !('MutationObserver' in window)) return;
-        document.documentElement.setAttribute('data-site-early-img-lock', '1');
-
-        const scanNode = function (node) {
-            if (!node || node.nodeType !== 1) return;
-            if (node.tagName === 'IMG') lockImageEarly(node);
-            if (node.querySelectorAll) node.querySelectorAll('.markdown-body img').forEach(lockImageEarly);
-        };
-
-        const observer = new MutationObserver(function (mutations) {
-            if (document.documentElement.getAttribute('data-site-early-img-lock') !== '1') return;
-            mutations.forEach(function (mutation) {
-                if (mutation.type === 'childList') {
-                    mutation.addedNodes.forEach(scanNode);
-                } else if (mutation.type === 'attributes') {
-                    lockImageEarly(mutation.target);
-                }
-            });
-        });
-
-        observer.observe(document.documentElement, {
-            childList: true,
-            subtree: true,
-            attributes: true,
-            attributeFilter: ['src', 'srcset', 'data-canonical-src']
-        });
-
-        const stop = function () {
-            setTimeout(function () {
-                try { observer.disconnect(); } catch (e) {}
-            }, 8000);
-        };
-        if (document.readyState === 'complete') {
-            stop();
-        } else {
-            window.addEventListener('load', stop, { once: true });
-        }
-    }
-
     appendEarlyStyle();
-    startEarlyArticleImageLock();
 })();
 
 (function loadThemeRuntime() {

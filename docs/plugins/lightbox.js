@@ -501,8 +501,7 @@
 
     isPreviewableImage(img) {
       if (!img || !img.closest || !img.closest('.markdown-body')) return false;
-      if (img.closest('#esa-img-captcha-banner, .lb-lightbox-overlay')) return false;
-      if (img.getAttribute('data-esa-img-locked') === '1') return false;
+      if (img.closest('.lb-lightbox-overlay')) return false;
 
       const src = this.getImageSource(img);
       if (!src || src.startsWith('data:image/gif;base64,R0lGODlhAQABA')) return false;
@@ -512,22 +511,17 @@
     getImageSource(img) {
       if (!img) return '';
       // 优先取验证锁定前的原图地址：currentSrc 可能仍是占位图或带验证参数
-      const source = img.getAttribute('data-esa-orig-src')
-        || img.getAttribute('data-canonical-src')
+      const source = img.getAttribute('data-canonical-src')
         || img.currentSrc
         || img.getAttribute('src')
         || '';
-      return this.stripVerifyParam(source);
+      return this.normalizeImageSource(source);
     }
 
-    stripVerifyParam(src) {
+    normalizeImageSource(src) {
       if (!src) return '';
       try {
-        const url = new URL(src, window.location.href);
-        if (url.searchParams.has('captcha_verify_param')) {
-          url.searchParams.delete('captcha_verify_param');
-        }
-        return url.toString();
+        return new URL(src, window.location.href).toString();
       } catch (e) {
         return src;
       }

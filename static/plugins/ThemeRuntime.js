@@ -44,17 +44,6 @@ function applyThemeRuntime() {
         return new URL(relPath, siteRoot).href;
     }
 
-    function loadScriptOnce(id, src) {
-        try {
-            if (document.getElementById(id)) return;
-            const s = document.createElement('script');
-            s.id = id;
-            s.src = src;
-            s.async = true;
-            document.head.appendChild(s);
-        } catch (e) {}
-    }
-
     function prefersReducedMotion() {
         try {
             return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -215,7 +204,6 @@ function applyThemeRuntime() {
         .SideNav,
         .subnav-search-input,
         .sponsor-info,
-        .esa-img-captcha-card,
         .article-toc,
         #articleTOC {
             font-family: var(--site-font-ui) !important;
@@ -865,7 +853,7 @@ function applyThemeRuntime() {
             padding: 0;
         }
 
-        .markdown-body img:not(.esa-img-captcha-avatar) {
+        .markdown-body img {
             height: auto;
             max-width: 100%;
             box-shadow: var(--site-shadow-md);
@@ -1423,9 +1411,7 @@ function applyThemeRuntime() {
             if (canonicalSrc) {
                 const parentLink = img.closest('a[href]');
                 if (parentLink) parentLink.href = canonicalSrc;
-                if (!img.getAttribute('data-esa-img-locked')) {
-                    img.src = canonicalSrc;
-                }
+                img.src = canonicalSrc;
             }
         });
     }
@@ -2054,31 +2040,6 @@ function applyThemeRuntime() {
         optimizeArticleImages();
         runWhenIdle([ensureBackToTopButton, improveExternalLinks, insertSponsorInfo]);
 
-        // ESA AI 验证码：仅保护“文章正文图片”，验证成功才加载（本篇一次即可）
-        if (currentUrl.includes('/post/')) {
-            window.ESAAIImageCaptchaConfig = Object.assign(
-                {},
-                siteConfig.esa || {},
-                window.ESAAIImageCaptchaConfig || {}
-            );
-            // 注意：这里用相对路径，兼容站点部署在子路径（例如 /docs/）的情况
-            const esaImgPluginUrl = absUrl('../plugins/ESAAIImageCaptcha.js');
-            loadScriptOnce('esa-ai-image-captcha', esaImgPluginUrl);
-
-            // 可视化排障：1.5s 内没看到插件标记，直接在正文顶部提示“脚本未加载/路径错误”
-            setTimeout(function () {
-                try {
-                    const flag = document.documentElement.getAttribute('data-esa-img-plugin');
-                    if (flag) return;
-                    const md = document.querySelector('.markdown-body');
-                    if (!md) return;
-                    const warn = document.createElement('div');
-                    warn.style.cssText = 'border:1px solid rgba(220,38,38,.35);background:rgba(254,226,226,.8);border-radius:12px;padding:10px 12px;margin:10px 0 16px;color:#7f1d1d;font-size:13px;';
-                    warn.innerHTML = 'ESA图片验证插件未加载成功。请检查脚本路径是否可访问：<br><code style="word-break:break-all;">' + esaImgPluginUrl + '</code>';
-                    md.insertBefore(warn, md.firstChild);
-                } catch (e) {}
-            }, 1500);
-        }
     } 
 
 
