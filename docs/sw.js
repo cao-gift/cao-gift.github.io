@@ -1,4 +1,4 @@
-const SHELL_CACHE_NAME = "gmeek-53ad68db8803";
+const SHELL_CACHE_NAME = "gmeek-6d599c15d3d2";
 const RUNTIME_CACHE_NAME = 'gmeek-runtime-v1';
 const CACHE_PREFIX = 'gmeek-';
 const RUNTIME_CACHE_LIMIT = 60;
