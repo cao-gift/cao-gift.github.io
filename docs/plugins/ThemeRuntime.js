@@ -71,6 +71,7 @@ function applyThemeRuntime() {
         root.classList.toggle('site-page-article', currentUrl.includes('/post/'));
         root.classList.toggle('site-page-single', currentUrl.includes('/link.html') || currentUrl.includes('/about.html'));
         root.classList.toggle('site-page-tag', currentUrl.includes('/tag'));
+        root.classList.toggle('site-page-archive', currentUrl.includes('/archive.html'));
     }
 
     function normalizeHomeButton() {
@@ -113,58 +114,6 @@ function applyThemeRuntime() {
     const bgImageMobileUrl = absUrl(THEME_BG_IMAGE_MOBILE);
     const bgVideoMobileUrl = absUrl(THEME_BG_VIDEO_MOBILE);
     const sponsorLogoUrl = absUrl('../img/logo.png');
-
-    function addHeadLinkOnce(id, attrs) {
-        try {
-            if (document.getElementById(id)) return;
-            const link = document.createElement('link');
-            link.id = id;
-            Object.keys(attrs).forEach(function (key) {
-                if (key in link) {
-                    link[key] = attrs[key];
-                } else {
-                    link.setAttribute(key, attrs[key]);
-                }
-            });
-            document.head.appendChild(link);
-        } catch (e) {}
-    }
-
-    function ensureHeadPerformanceHints() {
-        const bgImageUrl = isMobileViewport() ? bgImageMobileUrl : bgImageDesktopUrl;
-
-        addHeadLinkOnce('site-bg-preload', {
-            rel: 'preload',
-            as: 'image',
-            href: bgImageUrl,
-            fetchPriority: 'high'
-        });
-        addHeadLinkOnce('site-avatar-preload', {
-            rel: 'preload',
-            as: 'image',
-            href: absUrl('../img/avatar.webp'),
-            fetchPriority: 'high'
-        });
-        addHeadLinkOnce('site-reading-font-preload', {
-            rel: 'preload',
-            as: 'font',
-            href: absUrl('../fonts/lxgwwenkaiscreen-subset-118.woff2'),
-            type: 'font/woff2',
-            crossOrigin: 'anonymous'
-        });
-        addHeadLinkOnce('site-upyun-dns-prefetch', {
-            rel: 'dns-prefetch',
-            href: 'https://www.upyun.com'
-        });
-        addHeadLinkOnce('site-kuocai-dns-prefetch', {
-            rel: 'dns-prefetch',
-            href: 'https://jg.kuocai.net'
-        });
-        addHeadLinkOnce('site-kuocai-league-dns-prefetch', {
-            rel: 'dns-prefetch',
-            href: 'https://yun.kuocai.net'
-        });
-    }
 
     function ensureSiteTypography() {
         const fontStylesheet = absUrl(`../fonts/lxgw-wenkai-screen-subset.css?v=${siteConfig.assetVersion || '20260717-1'}`);
@@ -552,6 +501,19 @@ function applyThemeRuntime() {
             gap: 8px;
         }
 
+        #header .site-navigation {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        #header .site-navigation > .circle {
+            margin: 0 !important;
+        }
+
         #header .title-right a.btn,
         #header .title-right button,
         #header a.btn.circle {
@@ -577,6 +539,26 @@ function applyThemeRuntime() {
             background: var(--site-control-bg-hover) !important;
             box-shadow: var(--site-shadow-md);
             transform: translateY(-2px);
+        }
+
+        #header .site-navigation > [aria-current="page"] {
+            position: relative;
+            box-shadow:
+                inset 0 0 0 2px var(--site-accent),
+                var(--site-shadow-sm) !important;
+            transform: translateY(-1px);
+        }
+
+        #header .site-navigation > [aria-current="page"]::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 4px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--site-accent);
+            transform: translateX(-50%);
         }
 
         #content > div:first-child:not(.markdown-body) {
@@ -735,7 +717,7 @@ function applyThemeRuntime() {
             float: none !important;
         }
 
-        .site-page-tag #header .title-right > .circle {
+        .site-page-tag #header .site-navigation > .circle {
             flex: 0 0 var(--site-control-size);
             margin: 0 !important;
         }
@@ -1018,15 +1000,34 @@ function applyThemeRuntime() {
             }
 
             .listLabels {
+                width: 100%;
+                min-width: 0;
+                display: flex !important;
+                align-items: center;
+                gap: 6px;
+                margin-left: 0;
+                overflow: hidden;
+            }
+
+            .listLabels > .Label:not(.LabelName):not(.LabelTime) {
+                display: none !important;
+            }
+
+            .listLabels .LabelName {
+                max-width: min(58vw, 220px);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .listLabels .LabelName ~ .LabelName {
                 display: none !important;
             }
 
             .LabelTime {
-                display: none !important;
-            }
-
-            .listLabels .LabelName:not(:first-child) {
-                display: none !important;
+                display: inline-flex !important;
+                flex: 0 0 auto;
+                margin-left: auto;
             }
 
             .Label {
@@ -1097,7 +1098,8 @@ function applyThemeRuntime() {
 
             .site-page-article #header,
             .site-page-single #header,
-            .site-page-tag #header {
+            .site-page-tag #header,
+            .site-page-archive #header {
                 min-width: 0 !important;
                 display: grid !important;
                 grid-template-columns: minmax(0, 1fr);
@@ -1105,13 +1107,15 @@ function applyThemeRuntime() {
             }
 
             .site-page-article body,
-            .site-page-single body {
+            .site-page-single body,
+            .site-page-archive body {
                 padding-left: calc(14px + env(safe-area-inset-left)) !important;
                 padding-right: calc(14px + env(safe-area-inset-right)) !important;
             }
 
             .site-page-article #glassShell,
-            .site-page-single #glassShell {
+            .site-page-single #glassShell,
+            .site-page-archive #glassShell {
                 width: 100% !important;
                 max-width: 100% !important;
                 margin-left: auto !important;
@@ -1137,12 +1141,18 @@ function applyThemeRuntime() {
 
             .site-page-article #header .title-right,
             .site-page-single #header .title-right,
-            .site-page-tag #header .title-right {
+            .site-page-tag #header .title-right,
+            .site-page-archive #header .title-right {
                 width: 100%;
                 max-width: 100%;
                 margin: 0 !important;
                 justify-content: center;
                 flex-wrap: wrap;
+            }
+
+            #header .title-right .site-navigation {
+                width: 100%;
+                justify-content: center;
             }
 
             #header .title-right a.btn,
@@ -1263,6 +1273,10 @@ function applyThemeRuntime() {
                 min-width: 0;
             }
 
+            .site-page-tag #header .title-right .site-navigation {
+                flex: 1 0 100%;
+            }
+
             .site-page-tag #header .tagTitle {
                 min-width: 0;
                 width: 100%;
@@ -1323,7 +1337,7 @@ function applyThemeRuntime() {
 
             .site-page-tag #header .title-right {
                 display: grid;
-                grid-template-columns: minmax(260px, 360px) repeat(3, var(--site-control-size));
+                grid-template-columns: minmax(260px, 360px) auto;
                 width: 100%;
                 max-width: 100%;
                 margin: 0 !important;
@@ -1337,8 +1351,9 @@ function applyThemeRuntime() {
                 margin: 0 !important;
             }
 
-            .site-page-tag #header .title-right > .circle {
-                margin: 0 !important;
+            .site-page-tag #header .title-right > .site-navigation {
+                justify-content: end;
+                flex-wrap: nowrap;
             }
         }
 
@@ -1472,7 +1487,6 @@ function applyThemeRuntime() {
 
     markCurrentPageClass();
     ensureSiteTypography();
-    ensureHeadPerformanceHints();
     runWhenIdle([normalizeHomeButton, normalizeHeaderLocalNavLinks, watchAccessibleLabelColors]);
 
     function isMobileViewport() {
@@ -1785,98 +1799,9 @@ function applyThemeRuntime() {
             opacity: 0.9;
         }
 
-        html {    
-            background: url('${bgImageDesktopUrl}') no-repeat center center fixed;
-            background-size: cover;
-        }
+        ${sharedPageShellCss('1.35')}
 
         @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
-            html {
-                background-image: url('${bgImageMobileUrl}');
-                background-attachment: scroll;
-            }
-        }
-
-        /* 背景视频 */
-        #bgVideo {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            object-fit: cover;
-            background: #000;
-            opacity: 0;
-            transition: opacity 0.6s ease;
-            pointer-events: none; /* 避免悬浮出现任何控件/交互 */
-        }
-
-        #bgVideo.is-ready {
-            opacity: 1;
-        }
-
-        /* 背景遮罩（简洁 + 强玻璃拟态基础） */
-        #bgOverlay {
-            position: fixed;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            background:
-                radial-gradient(1100px 650px at 18% 8%, rgba(255, 255, 255, 0.16), transparent 60%),
-                radial-gradient(900px 600px at 82% 0%, rgba(99, 102, 241, 0.12), transparent 55%),
-                linear-gradient(180deg, rgba(0, 0, 0, 0.48), rgba(0, 0, 0, 0.18));
-        }
-
-        body {
-            box-sizing: border-box;
-            min-height: 100vh;
-            margin: 0;
-            padding: 28px 16px;
-            width: 100%;
-            max-width: none;
-            font-size: 16px;
-            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-            line-height: 1.35;
-            color: rgba(15, 23, 42, 0.92);
-            background: transparent;
-            overflow-x: hidden;
-            /* 用 margin: 0 auto 居中容器，避免 fixed 元素参与 flex 布局导致偏移 */
-        }
-
-        /* 强玻璃拟态容器（避免影响 fixed 背景） */
-        #glassShell {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 44px;
-            background: rgba(255, 255, 255, 0.14);
-            border: 1px solid rgba(255, 255, 255, 0.26);
-            border-radius: 18px;
-            box-shadow:
-                0 28px 90px rgba(0, 0, 0, 0.36),
-                inset 0 1px 0 rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(20px) saturate(1.35);
-            -webkit-backdrop-filter: blur(20px) saturate(1.35);
-        }
-
-        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
-            body {
-                /* 不同手机高度差异大：用流体间距 + 安全区 */
-                padding-left: calc(clamp(10px, 3.2vw, 14px) + env(safe-area-inset-left));
-                padding-right: calc(clamp(10px, 3.2vw, 14px) + env(safe-area-inset-right));
-                padding-top: calc(clamp(10px, 2.2vh, 14px) + env(safe-area-inset-top));
-                padding-bottom: calc(clamp(10px, 2.2vh, 14px) + env(safe-area-inset-bottom));
-                font-size: 15px;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
-                touch-action: pan-y;
-            }
-            #glassShell {
-                padding: clamp(14px, 3.8vw, 18px);
-                border-radius: 16px;
-            }
             /* 手机端：图标下移居中，整体更紧凑 */
             #header {
                 height: auto;
@@ -2041,6 +1966,128 @@ function applyThemeRuntime() {
         runWhenIdle([ensureBackToTopButton, improveExternalLinks, insertSponsorInfo]);
 
     } 
+
+
+    // 归档页主题--------------------------------------------------------------------
+
+    else if (currentUrl.includes('/archive.html')) {
+        console.log('应用归档页主题');
+        const style = document.createElement('style');
+        style.innerHTML = `
+        ${sharedPageShellCss('1.45')}
+
+        .archiveTitle {
+            position: relative;
+            padding-left: 16px;
+            color: var(--site-ink);
+            line-height: 1.08;
+        }
+
+        .archiveTitle::before,
+        .archiveYear::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            border-radius: 999px;
+            background: linear-gradient(180deg, var(--site-accent), var(--site-accent-2));
+            box-shadow: 0 6px 16px rgba(37, 111, 130, 0.22);
+        }
+
+        .archiveTitle::before {
+            top: 0.12em;
+            width: 5px;
+            height: 0.76em;
+        }
+
+        .archiveYear {
+            position: relative;
+            margin: 32px 0 12px;
+            padding-left: 15px;
+            color: var(--site-ink);
+            font-size: 24px;
+            line-height: 1.2;
+        }
+
+        .archiveYear::before {
+            top: 0.16em;
+            width: 4px;
+            height: 0.72em;
+        }
+
+        .archiveList {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: var(--site-list-bg);
+            border: 1px solid var(--site-line);
+            border-radius: var(--site-radius-lg);
+            box-shadow: var(--site-shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+        }
+
+        .archiveList li {
+            min-height: 54px;
+            box-sizing: border-box;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--site-line);
+            transition: background-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .archiveList li:last-child {
+            border-bottom: 0;
+        }
+
+        .archiveList li:hover,
+        .archiveList li:focus-within {
+            background: var(--site-item-hover-bg);
+            box-shadow: inset 4px 0 0 rgba(37, 111, 130, 0.58);
+        }
+
+        .archivePost {
+            color: var(--site-ink);
+            font-weight: 650;
+            text-decoration: none;
+        }
+
+        .archivePost:hover {
+            color: var(--site-link-hover);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .archiveDate,
+        .archiveMeta {
+            color: var(--site-muted);
+            font-variant-numeric: tabular-nums;
+        }
+
+        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
+            .archiveTitle {
+                font-size: 30px;
+            }
+
+            .archiveYear {
+                margin-top: 26px;
+                font-size: 22px;
+            }
+
+            .archiveList li {
+                grid-template-columns: 80px minmax(0, 1fr);
+                gap: 10px;
+                padding: 12px;
+            }
+
+            .archiveMeta {
+                display: none;
+            }
+        }
+        `;
+        document.head.appendChild(style);
+        ensureBackgroundVideo();
+        ensureBackgroundOverlay();
+        ensureGlassShell();
+        ensureGlobalPolishStyle();
+        runWhenIdle([ensureBackToTopButton, insertSponsorInfo]);
+    }
 
 
     // 搜索页主题--------------------------------------------------------------------
