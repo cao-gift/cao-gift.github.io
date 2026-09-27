@@ -189,11 +189,12 @@
 
     function initArticleTOC() {
         if (window.__siteArticleTOCReady) return;
+        if (/\/(?:link|about)\.html$/.test(window.location.pathname)) return;
 
         const content = document.querySelector('.markdown-body');
         if (!content) return;
         const headings = Array.from(content.querySelectorAll('h1, h2, h3, h4, h5, h6'));
-        if (!headings.length) return;
+        if (headings.length < 2) return;
 
         ensureStyle();
         assignHeadingIds(headings);

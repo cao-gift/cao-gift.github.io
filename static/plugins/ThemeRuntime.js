@@ -74,6 +74,114 @@ function applyThemeRuntime() {
         root.classList.toggle('site-page-archive', currentUrl.includes('/archive.html'));
     }
 
+    function normalizeArticleHeadingLevels() {
+        const article = document.getElementById('postBody');
+        if (!article) return;
+        let previousLevel = 1;
+        Array.from(article.querySelectorAll('h1,h2,h3,h4,h5,h6')).forEach(function (heading) {
+            const originalLevel = Number(heading.tagName.slice(1));
+            const nextLevel = Math.min(originalLevel, previousLevel + 1);
+            previousLevel = nextLevel;
+            if (nextLevel === originalLevel) return;
+            const replacement = document.createElement(`h${nextLevel}`);
+            Array.from(heading.attributes).forEach(function (attribute) {
+                replacement.setAttribute(attribute.name, attribute.value);
+            });
+            while (heading.firstChild) replacement.appendChild(heading.firstChild);
+            heading.replaceWith(replacement);
+        });
+    }
+
+    function enhanceSinglePageLinks() {
+        if (!document.documentElement.classList.contains('site-page-single')) return;
+        const article = document.getElementById('postBody');
+        if (!article) return;
+        article.querySelectorAll('li > a[href]').forEach(function (link) {
+            link.classList.add('single-page-card-link');
+            const item = link.closest('li');
+            if (item) item.classList.add('single-page-link-item');
+        });
+    }
+
+    function manageMobileFloatingControls() {
+        const comments = document.getElementById('comments');
+        let ticking = false;
+        function update() {
+            ticking = false;
+            const hide = !!(isMobileViewport() && comments && comments.getBoundingClientRect().top < window.innerHeight * 0.88);
+            document.querySelectorAll('.toc-icon, #siteBackTop').forEach(function (control) {
+                control.classList.toggle('is-content-obscuring', hide);
+            });
+        }
+        function schedule() {
+            if (ticking) return;
+            ticking = true;
+            window.requestAnimationFrame(update);
+        }
+        update();
+        document.addEventListener('scroll', schedule, { passive: true });
+        window.addEventListener('resize', schedule, { passive: true });
+    }
+
+    function enhanceListDates() {
+        document.querySelectorAll('.LabelTime').forEach(function (label) {
+            const match = label.textContent.trim().match(/^(?:\d{4}-)?(\d{2}-\d{2})$/);
+            if (match) label.dataset.shortDate = match[1];
+        });
+    }
+
+    function ensureMobileImprovementsStyle() {
+        if (document.getElementById('site-mobile-improvements')) return;
+        const style = document.createElement('style');
+        style.id = 'site-mobile-improvements';
+        style.textContent = `
+        .listLead,.listMain{min-width:0}
+        .listMain{display:grid;gap:4px}
+        .listExcerpt{overflow:hidden;color:var(--site-muted);font-size:13px;font-weight:450;line-height:1.45;text-overflow:ellipsis;white-space:nowrap}
+        .SideNav-item{border-bottom-color:color-mix(in srgb,var(--site-line) 58%,transparent)!important}
+        .Label{border-color:rgba(255,255,255,.46)!important;box-shadow:0 2px 7px rgba(15,23,42,.10)!important}
+        #taglabel .Label,.LabelName{filter:saturate(.82)}
+        #taglabel .Label[aria-pressed="true"]{filter:saturate(1.08);box-shadow:0 0 0 3px color-mix(in srgb,var(--site-accent) 24%,transparent)!important}
+        .site-page-article #glassShell,.site-page-single #glassShell{background:color-mix(in srgb,var(--site-panel-strong) 82%,transparent)!important}
+        .postMeta{align-items:center;color:var(--site-muted)!important}
+        .postMetaPrimary{color:var(--site-ink);font-weight:650}
+        .postMetaReading{padding:3px 9px;border-radius:var(--site-radius-pill);background:var(--site-panel)}
+        #comments :where(input,textarea,button,.tk-input,.tk-submit,.el-input__inner){min-height:var(--site-control-size);box-sizing:border-box;font-size:16px}
+        .twikoo-load-button{min-width:150px;min-height:var(--site-control-size);display:block;margin:0 auto;border-radius:var(--site-radius-pill)!important}
+        .twikoo-load-status{color:var(--site-muted);text-align:center}
+        .single-page-link-item{margin-block:6px}
+        .single-page-card-link{min-height:var(--site-control-size);display:inline-flex;align-items:center;padding:5px 10px;margin:-5px -10px;border:0!important;border-radius:10px}
+        .single-page-card-link:hover,.single-page-card-link:focus-visible{background:var(--site-item-hover-bg)}
+        #footer1,#footer2,.sponsor-info{margin-block:2px!important}
+        #siteBackTop,.toc-icon{color:#f7fbff!important;background:rgba(29,78,96,.86)!important;border-color:rgba(255,255,255,.72)!important;box-shadow:0 8px 24px rgba(8,31,42,.28)!important}
+        .archiveList{position:relative;border-color:color-mix(in srgb,var(--site-line) 72%,transparent)!important}
+        .archiveList li{position:relative;border-bottom-color:color-mix(in srgb,var(--site-line) 54%,transparent)!important}
+        @media (min-width:721px){.listExcerpt{display:block}}
+        @media (max-width:${MOBILE_BREAKPOINT_PX}px),(hover:none) and (pointer:coarse){
+            .listTitle{display:-webkit-box;overflow:hidden;line-height:1.35;white-space:normal!important;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+            .listExcerpt{display:-webkit-box;overflow:hidden;white-space:normal;-webkit-box-orient:vertical;-webkit-line-clamp:1}
+            .site-page-article .postMeta{gap:5px 10px;margin:-2px 0 16px;font-size:13px;line-height:1.45}
+            .site-page-article .postMetaSecondary{font-size:12.5px}
+            #footer{margin-top:24px!important;font-size:12px!important;line-height:1.45!important}
+            #footer .sponsor-info{display:none!important}
+            .toc-icon.is-content-obscuring,#siteBackTop.is-content-obscuring{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+            .archiveList::before{content:"";position:absolute;top:18px;bottom:18px;left:11px;width:2px;background:color-mix(in srgb,var(--site-accent) 38%,transparent)}
+            .archiveList li{grid-template-columns:70px minmax(0,1fr)!important;gap:10px!important;min-height:58px;padding:10px 12px 10px 20px!important}
+            .archiveList li::before{content:"";position:absolute;left:7px;top:50%;width:8px;height:8px;border:2px solid var(--site-panel-strong);border-radius:50%;background:var(--site-accent);transform:translateY(-50%)}
+            .archivePost{min-height:44px;display:-webkit-box;align-items:center;overflow:hidden;white-space:normal!important;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+        }
+        @media (max-width:380px){
+            .site-page-home #buttonHome{display:none!important}
+            .site-page-home #header .avatar{width:78px!important;height:78px!important}
+            .site-page-home #header .blogTitle{font-size:30px!important}
+            .site-page-home #header .title-right{margin-top:2px!important}
+            .site-page-home #content>div:first-child:not(.markdown-body){margin-bottom:10px!important;font-size:14px;line-height:1.45}
+            :is(.site-page-home,.site-page-tag) .LabelTime{font-size:0!important}
+            :is(.site-page-home,.site-page-tag) .LabelTime::after{content:attr(data-short-date);font-size:12px}
+        }`;
+        document.head.appendChild(style);
+    }
+
     function normalizeHomeButton() {
         const homeButton = document.getElementById('buttonHome');
         if (!homeButton) return;
@@ -1481,13 +1589,19 @@ function applyThemeRuntime() {
                     }
                 });
             });
+            enhanceListDates();
         });
+        enhanceListDates();
         observer.observe(content, { childList: true, subtree: true });
     }
 
     markCurrentPageClass();
+    normalizeArticleHeadingLevels();
+    enhanceSinglePageLinks();
+    enhanceListDates();
     ensureSiteTypography();
-    runWhenIdle([normalizeHomeButton, normalizeHeaderLocalNavLinks, watchAccessibleLabelColors]);
+    ensureMobileImprovementsStyle();
+    runWhenIdle([normalizeHomeButton, normalizeHeaderLocalNavLinks, watchAccessibleLabelColors, manageMobileFloatingControls]);
 
     function isMobileViewport() {
         try {
