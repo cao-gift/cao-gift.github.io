@@ -52,6 +52,8 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 .SideNav-item .Label{color: #fff;margin-left:4px;}
 .d-flex{min-width:0;}
 .listTitle{overflow:hidden;white-space:nowrap;text-overflow: ellipsis;max-width: 100%;}
+.listMain{min-width:0;display:grid;gap:4px;}
+.listExcerpt{overflow:hidden;color:var(--fgColor-muted,var(--color-fg-muted));font-size:13px;line-height:1.45;text-overflow:ellipsis;white-space:nowrap;}
 .listLabels{white-space:nowrap;display:flex;}
 .listLabels object{max-height:16px;max-width:24px;}
 
@@ -109,59 +111,74 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <div style="margin-bottom: 16px;">一位热爱探索互联网的大学生</div>
 <nav class="SideNav border" aria-label="文章列表">
 <a class="SideNav-item d-flex flex-items-center flex-justify-between" href="post/18.html">
-    <div class="d-flex flex-items-center">
+    <div class="d-flex flex-items-center listLead">
         <svg class="SideNav-icon octicon" style="width:16px;height:16px"><path class="svgTop1" d=""></path>
         </svg>
-        <span class="listTitle">Markdown介绍及基本语法</span>
+        <span class="listMain">
+            <span class="listTitle">Markdown介绍及基本语法</span>
+            <span class="listExcerpt">[!NOTE] Markdown 是一种轻量级标记语言，它允许人们使用易读易写的纯文本格式编写文档，然后转换成结构化的HTML代码。</span>
+        </span>
     </div>
     <div class="listLabels">
         
         <span class="Label LabelName" style="background-color:#FBCA04">知识</span>
-        <span class="Label LabelTime" style="background-color:#bc4c00">2024-07-16</span>
+        <span class="Label LabelTime" data-short-date="07-16" style="background-color:#bc4c00">2024-07-16</span>
     </div>
 </a><a class="SideNav-item d-flex flex-items-center flex-justify-between" href="post/36.html">
-    <div class="d-flex flex-items-center">
+    <div class="d-flex flex-items-center listLead">
         <svg class="SideNav-icon octicon" style="width:16px;height:16px"><path class="svgTop0" d=""></path>
         </svg>
-        <span class="listTitle">Gmeek博客静态托管平台部署</span>
+        <span class="listMain">
+            <span class="listTitle">Gmeek博客静态托管平台部署</span>
+            <span class="listExcerpt">备案域名建议部署到EdgeOne Pages（选择全球加速区，有中国大陆节点），未备案域名优先选择Netlify或者Vercel。</span>
+        </span>
     </div>
     <div class="listLabels">
         
         <span class="Label LabelName" style="background-color:#7057ff">建站</span>
-        <span class="Label LabelTime" style="background-color:#0969da">2025-07-31</span>
+        <span class="Label LabelTime" data-short-date="07-31" style="background-color:#0969da">2025-07-31</span>
     </div>
 </a><a class="SideNav-item d-flex flex-items-center flex-justify-between" href="post/35.html">
-    <div class="d-flex flex-items-center">
+    <div class="d-flex flex-items-center listLead">
         <svg class="SideNav-icon octicon" style="width:16px;height:16px"><path class="svgTop0" d=""></path>
         </svg>
-        <span class="listTitle">windows电脑的免费5%性能提升</span>
+        <span class="listMain">
+            <span class="listTitle">windows电脑的免费5%性能提升</span>
+            <span class="listExcerpt">原理： 关闭VBS，大部分新windows电脑都是跑在hyperv虚拟机上的，但是如果关闭了其实可以提升性能，理论上性能低一些的设备效果更显著 应微软要求，笔记本预装Win11 镜像出货的机型会默认打开“Virtualization-based Security（VBS）基于虚拟化的安全性”（以下简称VBS）功能，此功能打开可能会导致部分游戏性能下降卡顿等情况。</span>
+        </span>
     </div>
     <div class="listLabels">
         
         <span class="Label LabelName" style="background-color:#FBCA04">知识</span>
-        <span class="Label LabelTime" style="background-color:#0969da">2025-07-30</span>
+        <span class="Label LabelTime" data-short-date="07-30" style="background-color:#0969da">2025-07-30</span>
     </div>
 </a><a class="SideNav-item d-flex flex-items-center flex-justify-between" href="post/20.html">
-    <div class="d-flex flex-items-center">
+    <div class="d-flex flex-items-center listLead">
         <svg class="SideNav-icon octicon" style="width:16px;height:16px"><path class="svgTop0" d=""></path>
         </svg>
-        <span class="listTitle">驾考科目一笔记【图片，推荐】</span>
+        <span class="listMain">
+            <span class="listTitle">驾考科目一笔记【图片，推荐】</span>
+            <span class="listExcerpt">第一节 ① 扣分 ------ 03:20 一分关键词 06:53 三分关键词 09:47 六分关键词 12:32 九分关键词 14:59 十二分关键词 17:04 号牌扣分3 9 12 18:39 9中超速扣分 22:14 7中超远扣分总结 25:03 货车超载1 3 6 ② 罚款 ------ 25:31 200元以下找车相关 27:53 20到200元罚款关键词 31:21 200到500元罚款关键词 32:30 200到2000元罚款关键词 34:37 500到200</span>
+        </span>
     </div>
     <div class="listLabels">
         
         <span class="Label LabelName" style="background-color:#FBCA04">知识</span><span class="Label LabelName" style="background-color:#E77AB1">驾考</span>
-        <span class="Label LabelTime" style="background-color:#bc4c00">2024-07-28</span>
+        <span class="Label LabelTime" data-short-date="07-28" style="background-color:#bc4c00">2024-07-28</span>
     </div>
 </a><a class="SideNav-item d-flex flex-items-center flex-justify-between" href="post/4.html">
-    <div class="d-flex flex-items-center">
+    <div class="d-flex flex-items-center listLead">
         <svg class="SideNav-icon octicon" style="width:16px;height:16px"><path class="svgTop0" d=""></path>
         </svg>
-        <span class="listTitle">世界，你好</span>
+        <span class="listMain">
+            <span class="listTitle">世界，你好</span>
+            <span class="listExcerpt">世界，你好。</span>
+        </span>
     </div>
     <div class="listLabels">
         
         <span class="Label LabelName" style="background-color:#d73a4a">记录</span>
-        <span class="Label LabelTime" style="background-color:#bc4c00">2024-06-23</span>
+        <span class="Label LabelTime" data-short-date="06-23" style="background-color:#bc4c00">2024-06-23</span>
     </div>
 </a>
 </nav>

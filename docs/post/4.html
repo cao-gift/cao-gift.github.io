@@ -57,6 +57,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 #postBody hr{height:2px;}
 .postMeta{display:flex;flex-wrap:wrap;gap:6px 16px;margin:-4px 0 20px;color:var(--fgColor-muted,var(--color-fg-muted));font-size:14px;}
 .postMeta span{white-space:nowrap;}
+.postMeta .postMetaSecondary{color:var(--fgColor-muted,var(--color-fg-muted));}
 .postNavigation{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:32px;}
 .postNavigation a,.relatedPosts a{display:block;padding:12px;border:1px solid var(--borderColor-muted,var(--color-border-muted));border-radius:6px;}
 .postNavigation .nextPost{text-align:right;}
@@ -106,10 +107,10 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
         <main id="content">
 
 <div class="postMeta" aria-label="文章元数据">
-    <span>发布于 <time datetime="2024-06-23T08:16:44Z">2024-06-23</time></span>
-    <span>更新于 <time datetime="2024-07-16T09:04:20Z">2024-07-16</time></span>
-    <span>作者 CJW</span>
-    <span>字数 45 · 阅读时长 1 分钟</span>
+    <span class="postMetaPrimary">发布于 <time datetime="2024-06-23T08:16:44Z">2024-06-23</time></span>
+    <span class="postMetaSecondary">更新于 <time datetime="2024-07-16T09:04:20Z">2024-07-16</time></span>
+    <span class="postMetaSecondary">作者 CJW</span>
+    <span class="postMetaReading">字数 45 · 阅读时长 1 分钟</span>
 </div>
 
 <article class="markdown-body" id="postBody"><p>世界，你好。</p>
@@ -123,7 +124,10 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
 
 
-<div class="comments" id="comments"></div>
+<section class="comments" id="comments" aria-label="评论">
+    <button class="btn twikoo-load-button" id="twikooLoadButton" type="button">加载评论</button>
+    <p class="twikoo-load-status" id="twikooLoadStatus" role="status" aria-live="polite"></p>
+</section>
 
 </main>
         <footer id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://blog.freeblock.cn">星源笔记</a></div>
@@ -245,23 +249,52 @@ if('serviceWorker' in navigator){
 <script>
 
 
-const commentScript=document.createElement("script");
-commentScript.setAttribute("src","https://cdn.jsdelivr.net/npm/twikoo@1.7.19/dist/twikoo.min.js");
-commentScript.onload=function(){
-    if(!window.twikoo){
-        console.error("[Gmeek] Twikoo 初始化失败");
-        return;
-    }
-    twikoo.init({
-        envId: "https://twikoo.freeblock.cn",
-        el: "#comments",
-        lang: "zh-CN"
-    });
-};
-commentScript.onerror=function(){
-    console.error("[Gmeek] Twikoo 脚本加载失败，请刷新页面重试");
-};
-document.head.appendChild(commentScript);
+const comments=document.getElementById('comments');
+const commentButton=document.getElementById('twikooLoadButton');
+const commentStatus=document.getElementById('twikooLoadStatus');
+let commentLoading=false;
+function loadTwikoo(){
+    if(commentLoading || window.__gmeekTwikooLoaded) return;
+    commentLoading=true;
+    commentButton.disabled=true;
+    commentButton.textContent='正在加载评论…';
+    commentStatus.textContent='';
+    const commentScript=document.createElement('script');
+    commentScript.src="https://cdn.jsdelivr.net/npm/twikoo@1.7.19/dist/twikoo.min.js";
+    commentScript.async=true;
+    commentScript.onload=function(){
+        if(!window.twikoo){
+            commentLoading=false;
+            commentButton.disabled=false;
+            commentButton.textContent='重新加载评论';
+            commentStatus.textContent='评论组件初始化失败，请重试。';
+            return;
+        }
+        window.__gmeekTwikooLoaded=true;
+        commentButton.remove();
+        commentStatus.textContent='';
+        twikoo.init({envId:"https://twikoo.freeblock.cn",el:'#comments',lang:'zh-CN'});
+    };
+    commentScript.onerror=function(){
+        commentLoading=false;
+        commentButton.disabled=false;
+        commentButton.textContent='重新加载评论';
+        commentStatus.textContent='评论加载失败，请检查网络后重试。';
+    };
+    document.head.appendChild(commentScript);
+}
+commentButton.addEventListener('click',loadTwikoo);
+if('IntersectionObserver' in window){
+    const commentObserver=new IntersectionObserver(entries=>{
+        if(entries.some(entry=>entry.isIntersecting)){
+            commentObserver.disconnect();
+            loadTwikoo();
+        }
+    },{rootMargin:'480px 0px'});
+    commentObserver.observe(comments);
+}else{
+    window.addEventListener('load',loadTwikoo,{once:true});
+}
 
 
 
