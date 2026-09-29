@@ -223,7 +223,7 @@ function modeSwitch(){
     }
 }
 if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
-console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+console.log("\n %c Gmeek be3e0213fedba5e70a6aeb31006acde482b14c43 https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
 
 if('serviceWorker' in navigator){
     window.addEventListener('load',async()=>{
@@ -269,7 +269,8 @@ if('serviceWorker' in navigator){
         };
         try{
             const serviceWorkerUrl=new URL("https://blog.freeblock.cn/sw.js").pathname;
-            const registration=await navigator.serviceWorker.register(serviceWorkerUrl);
+            const registration=await navigator.serviceWorker.register(serviceWorkerUrl,{updateViaCache:'none'});
+            registration.update().catch(error=>console.warn('[Gmeek PWA] update check failed',error));
             if(registration.waiting&&navigator.serviceWorker.controller)showUpdate(registration.waiting);
             registration.addEventListener('updatefound',()=>{
                 const installing=registration.installing;

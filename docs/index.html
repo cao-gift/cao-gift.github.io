@@ -95,12 +95,12 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     
     
     
-    <a href="https://blog.freeblock.cn/link.html" class="btn btn-invisible circle" title="友情链接" aria-label="友情链接">
-        <svg class="octicon" width="16" height="16" aria-hidden="true"><path data-nav-icon="link" fill-rule="evenodd"></path></svg>
-    </a>
-    
     <a href="https://blog.freeblock.cn/about.html" class="btn btn-invisible circle" title="关于" aria-label="关于">
         <svg class="octicon" width="16" height="16" aria-hidden="true"><path data-nav-icon="about" fill-rule="evenodd"></path></svg>
+    </a>
+    
+    <a href="https://blog.freeblock.cn/link.html" class="btn btn-invisible circle" title="友情链接" aria-label="友情链接">
+        <svg class="octicon" width="16" height="16" aria-hidden="true"><path data-nav-icon="link" fill-rule="evenodd"></path></svg>
     </a>
     
     <a href="https://blog.freeblock.cn/rss.xml" target="_blank" rel="noopener noreferrer" id="buttonRSS" class="btn btn-invisible circle" title="RSS" aria-label="RSS">
@@ -238,7 +238,7 @@ function modeSwitch(){
     }
 }
 if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
-console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+console.log("\n %c Gmeek be3e0213fedba5e70a6aeb31006acde482b14c43 https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
 
 if('serviceWorker' in navigator){
     window.addEventListener('load',async()=>{
@@ -284,7 +284,8 @@ if('serviceWorker' in navigator){
         };
         try{
             const serviceWorkerUrl=new URL("https://blog.freeblock.cn/sw.js").pathname;
-            const registration=await navigator.serviceWorker.register(serviceWorkerUrl);
+            const registration=await navigator.serviceWorker.register(serviceWorkerUrl,{updateViaCache:'none'});
+            registration.update().catch(error=>console.warn('[Gmeek PWA] update check failed',error));
             if(registration.waiting&&navigator.serviceWorker.controller)showUpdate(registration.waiting);
             registration.addEventListener('updatefound',()=>{
                 const installing=registration.installing;

@@ -1,5 +1,5 @@
-const SHELL_CACHE_NAME = "gmeek-bcb32c3f51ea";
-const RUNTIME_CACHE_NAME = 'gmeek-runtime-v1';
+const SHELL_CACHE_NAME = "gmeek-d82de6744028";
+const RUNTIME_CACHE_NAME = SHELL_CACHE_NAME + '-runtime';
 const CACHE_PREFIX = 'gmeek-';
 const RUNTIME_CACHE_LIMIT = 60;
 const PRECACHE_URLS = ["/", "/fonts/lxgw-wenkai-screen-subset.css?v=20260717-1", "/fonts/lxgwwenkaiscreen-subset-118.woff2", "/img/avatar.webp", "/index.html", "/manifest.webmanifest", "/plugins/Theme.min.js?v=20260816-2", "/plugins/ThemeRuntime.min.js?v=20260816-2", "/plugins/primer.css?v=20260717-1"];
@@ -57,14 +57,18 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   if (request.method !== 'GET' || url.origin !== self.location.origin) return;
   event.respondWith((async () => {
-    const cached = await caches.match(request);
-    if (request.mode === 'navigate') {
+    const runtime = await caches.open(RUNTIME_CACHE_NAME);
+    const shell = await caches.open(SHELL_CACHE_NAME);
+    const cached = await runtime.match(request) || await shell.match(request);
+    if (request.mode === 'navigate' || ['script','style'].includes(request.destination) || url.pathname.endsWith('/postList.json')) {
       try {
-        const response = await fetch(request);
+        const response = await fetch(request, {cache: 'no-cache'});
         if (response.ok) event.waitUntil(putRuntime(request, response.clone()));
         return response;
       } catch (error) {
-        return cached || caches.match(HOME_URL);
+        if (cached) return cached;
+        if (request.mode === 'navigate') return await shell.match(HOME_URL) || Response.error();
+        return Response.error();
       }
     }
     if (cached) {
