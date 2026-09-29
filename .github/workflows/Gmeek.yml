@@ -2,6 +2,16 @@ name: 构建博客
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - config.json
+      - static/**
+      - edgeone.json
+      - .github/verify-site.mjs
+      - .github/sync-plugins.mjs
+      - .github/minify-theme.mjs
+      - .github/workflows/Gmeek.yml
   issues:
     types: [opened, edited, closed, deleted, reopened, labeled, unlabeled, pinned, unpinned]
   schedule:
@@ -16,11 +26,16 @@ jobs:
   build:
     name: 生成站点
     runs-on: ubuntu-24.04
-    if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event.repository.owner.id == github.event.sender.id }}
-    permissions: write-all
+    if: ${{ github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event.repository.owner.id == github.event.sender.id }}
+    permissions:
+      contents: write
+      issues: read
+      pages: write
     steps:
       - name: 检出代码
         uses: actions/checkout@v5
+        with:
+          ref: main
 
       - name: 配置 Pages
         id: pages
@@ -64,29 +79,53 @@ jobs:
       - name: 安装依赖
         run: python -m pip install -r .gmeek/requirements.txt
 
+      - name: 配置 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 编译并同步主题
+        run: node .github/sync-plugins.mjs
+
       - name: 生成站点
         env:
           GMEEK_CACHE_DIR: ${{ runner.temp }}/gmeek-cache
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BLOG_REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
           cp -r ./* .gmeek/
           cd .gmeek
-          python Gmeek.py ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} --issue_number '${{ github.event.issue.number }}'
+          python Gmeek.py "$GH_TOKEN" "$BLOG_REPOSITORY" --issue_number "$ISSUE_NUMBER"
           rm -rf "${{ github.workspace }}/docs" "${{ github.workspace }}/backup"
           cp -a docs "${{ github.workspace }}/docs"
           cp -a backup "${{ github.workspace }}/backup"
           cp blogBase.json "${{ github.workspace }}/blogBase.json"
+
+      - name: 校验产物并记录版本
+        env:
+          GMEEK_GENERATOR_SHA: ${{ steps.generator.outputs.ref }}
+        run: node .github/verify-site.mjs --write
           
       - name: 提交更新
         run: |
           git config --local user.email "$(python -c "import json; print(json.load(open('config.json', encoding='utf-8'))['email'])")"
           git config --local user.name "${{ github.repository_owner }}"
-          git add -A
+          git add docs backup blogBase.json README.md static/plugins
           if git diff --cached --quiet; then
             echo "nothing to commit"
           else
             git commit -m '🎉auto update by Gmeek action'
             git push
           fi
+
+      - name: 上传统一发布产物
+        uses: actions/upload-artifact@v6
+        with:
+          name: blog-site
+          path: docs/
+          if-no-files-found: error
+          retention-days: 7
           
       - name: 上传站点
         uses: actions/upload-pages-artifact@v5

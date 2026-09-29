@@ -5,6 +5,7 @@
 !blogBase.json
 !config.json
 !wrangler.jsonc
+!edgeone.json
 
 !.github/
 !.github/**

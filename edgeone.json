@@ -1,0 +1,15 @@
+{
+  "buildCommand": "node .github/verify-site.mjs",
+  "installCommand": "node --version",
+  "outputDirectory": "docs",
+  "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [{ "key": "Cache-Control", "value": "no-store" }]
+    },
+    {
+      "source": "/build.json",
+      "headers": [{ "key": "Cache-Control", "value": "no-store" }]
+    }
+  ]
+}
