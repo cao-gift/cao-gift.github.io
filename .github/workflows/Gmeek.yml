@@ -105,7 +105,9 @@ jobs:
       - name: 校验产物并记录版本
         env:
           GMEEK_GENERATOR_SHA: ${{ steps.generator.outputs.ref }}
-        run: node .github/verify-site.mjs --write
+        run: |
+          node .github/verify-site.mjs --write
+          node docs/verify-release.mjs
           
       - name: 提交更新
         run: |

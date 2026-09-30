@@ -1,5 +1,5 @@
 {
-  "buildCommand": "node ../.github/verify-site.mjs",
+  "buildCommand": "node verify-release.mjs",
   "installCommand": "node --version",
   "outputDirectory": ".",
   "headers": [
