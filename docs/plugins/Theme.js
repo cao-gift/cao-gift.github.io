@@ -1,12 +1,15 @@
 (function defineSiteRuntimeConfig() {
-    const assetVersion = '20260816-2';
+    const assetVersion = '20260930-1';
     const defaults = {
         assetVersion,
         mobileBreakpoint: 720,
         background: {
             desktopMode: 'image',
             mobileMode: 'image',
-            desktopImage: '/img/电脑2.jpg',
+            desktopImage: '/img/电脑2-1920.webp',
+            desktopImageSmall: '/img/电脑2-1280.webp',
+            desktopImageLarge: '/img/电脑2-1920.webp',
+            desktopImageSmallMaxWidth: 1280,
             mobileImage: '/img/手机1-1080.webp',
             mobileImageSmall: '/img/手机1-720.webp',
             mobileImageLarge: '/img/手机1-1080.webp',
@@ -28,7 +31,9 @@
 
     const config = window.SiteRuntimeConfig;
     const mobileBreakpoint = config.mobileBreakpoint;
-    const bgImageDesktop = config.background.desktopImage;
+    const bgImageDesktop = window.innerWidth <= config.background.desktopImageSmallMaxWidth
+        ? config.background.desktopImageSmall
+        : config.background.desktopImageLarge;
     const bgImageMobile = window.innerWidth <= config.background.mobileImageSmallMaxWidth
         ? config.background.mobileImageSmall
         : config.background.mobileImageLarge;

@@ -128,6 +128,15 @@
                 transform: rotate(90deg);
             }
 
+            .article-reading-tools {
+                display: contents;
+            }
+
+            .reading-progress,
+            .reading-progress-value {
+                display: none;
+            }
+
             .toc-end {
                 padding: 10px !important;
                 font-weight: 700;
@@ -142,6 +151,74 @@
             .toc-end.is-visible {
                 opacity: 1;
                 visibility: visible;
+            }
+
+            @media (max-width: 720px), (hover: none) and (pointer: coarse) {
+                .article-reading-tools {
+                    position: sticky;
+                    top: calc(6px + env(safe-area-inset-top));
+                    z-index: 1001;
+                    box-sizing: border-box;
+                    min-height: 44px;
+                    display: flex;
+                    align-items: center;
+                    gap: 9px;
+                    margin: 0 0 12px;
+                    padding: 6px 7px 6px 12px;
+                    color: var(--site-ink, #24292e);
+                    background: color-mix(in srgb, var(--site-panel-strong, rgba(255,255,255,.88)) 92%, transparent);
+                    border: 1px solid var(--site-line, #d0d7de);
+                    border-radius: 999px;
+                    box-shadow: 0 8px 24px rgba(8, 31, 42, 0.16);
+                    backdrop-filter: blur(14px) saturate(1.15);
+                    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+                }
+
+                .reading-progress {
+                    position: relative;
+                    height: 5px;
+                    display: block;
+                    flex: 1 1 auto;
+                    overflow: hidden;
+                    background: color-mix(in srgb, var(--site-muted, #57606a) 22%, transparent);
+                    border-radius: 999px;
+                }
+
+                .reading-progress > span {
+                    width: 0;
+                    height: 100%;
+                    display: block;
+                    background: var(--site-accent, #256f82);
+                    border-radius: inherit;
+                    transition: width 0.12s linear;
+                }
+
+                .reading-progress-value {
+                    min-width: 3ch;
+                    display: block;
+                    color: var(--site-muted, #57606a);
+                    font-size: 12px;
+                    font-variant-numeric: tabular-nums;
+                    text-align: right;
+                }
+
+                .article-reading-tools .toc-icon {
+                    position: static;
+                    flex: 0 0 36px;
+                    width: 36px !important;
+                    height: 36px !important;
+                    margin: 0;
+                    font-size: 20px;
+                    box-shadow: none !important;
+                }
+
+                .toc {
+                    top: calc(62px + env(safe-area-inset-top));
+                    right: calc(12px + env(safe-area-inset-right));
+                    bottom: auto;
+                    width: min(320px, calc(100vw - 24px - env(safe-area-inset-left) - env(safe-area-inset-right)));
+                    max-height: min(68vh, 560px);
+                }
             }
 
             @media (prefers-reduced-motion: reduce) {
@@ -235,7 +312,19 @@
         tocButton.setAttribute('aria-expanded', 'false');
         tocButton.title = '文章目录';
         tocButton.textContent = '☰';
-        document.body.appendChild(tocButton);
+        const readingTools = document.createElement('div');
+        readingTools.className = 'article-reading-tools';
+        readingTools.setAttribute('aria-label', '文章阅读工具');
+        const progress = document.createElement('div');
+        progress.className = 'reading-progress';
+        progress.setAttribute('aria-hidden', 'true');
+        const progressBar = document.createElement('span');
+        progress.appendChild(progressBar);
+        const progressValue = document.createElement('span');
+        progressValue.className = 'reading-progress-value';
+        progressValue.textContent = '0%';
+        readingTools.append(progress, progressValue, tocButton);
+        content.parentNode.insertBefore(readingTools, content);
 
         let headingPositions = [];
         let activeIndex = -1;
@@ -289,6 +378,11 @@
             const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
             backToTop.classList.toggle('is-visible', scrollTop > 20);
             setActiveIndex(findActiveIndex(scrollTop + 24));
+            const contentTop = content.getBoundingClientRect().top + scrollTop;
+            const readableDistance = Math.max(1, content.scrollHeight - window.innerHeight * 0.58);
+            const percent = Math.max(0, Math.min(100, Math.round(((scrollTop - contentTop) / readableDistance) * 100)));
+            progressBar.style.width = `${percent}%`;
+            progressValue.textContent = `${percent}%`;
         }
 
         function measureHeadings() {
