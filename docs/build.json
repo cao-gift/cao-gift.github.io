@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "buildId": "eb10542fb3d6f945669c",
-  "sourceRevision": "319fe89625386c927b524be9555ff568c6c88532",
+  "buildId": "7c08a952010d70e417b9",
+  "sourceRevision": "7f54509f4594034ffb1bc10057d51c187c34a7b1",
   "generatorRevision": "be3e0213fedba5e70a6aeb31006acde482b14c43",
-  "sourceDigest": "f33b2726275e2eb1f55a84ed8ae27d9172ff1bd87d277e8ec63baba2f69007a1",
+  "sourceDigest": "69f2e266df729d01fd32d3c6f512200433ce52a8579d9a41f49205302522a17a",
   "hashMode": "sha256-text-lf",
   "files": {
     "404.html": "0b99b18f8bae8195f40bbb0553077e98c403f02d54d2ed9ae4b5250d2d8ba197",
@@ -11,7 +11,7 @@
     "archive.html": "caa33adca0f08f5f55b669019459c845af1295fb6a744688a0ac7477fb08f5a3",
     "baidu_verify_codeva-H7e9FJxnyW.html": "5a86b58c9eee2b5a3a4fc5746d780a0b5d48d407eb81c37a3f00b80b68a64e26",
     "BingSiteAuth.xml": "1d54fa90fac365f2dcc56bd380b4dff0f009443a4eccb1c7babb933d4e81e474",
-    "edgeone.json": "60f7fadf45d51c33477624b5bdb5c962cf5e5ad943331b21cd8cf3dd86d77ef7",
+    "edgeone.json": "2180bfc6f5e3b2d3d8694b0154623f6e93b1821ec1d6c3bbb24b152f77639e48",
     "fonts/LXGW-WenKai-Screen-LICENSE.txt": "f4264d4d1be71aa1b7578525b7a1eeef4b8f1635e1785ad3af35310954fabfa7",
     "fonts/lxgw-wenkai-screen-subset.css": "3a14b3c9766e6d74c6c08dfdeeb3199141de5d0d9d80270d77173b2db5b7ff66",
     "fonts/lxgwwenkaiscreen-subset-109.woff2": "7c151ca31e0d3985bac61dc74845d2f481e4407ac1f84446dcb0db7967e689c3",
@@ -57,7 +57,8 @@
     "rss.xml": "9d30e65df4d51226b4dccfe3239ea580ae3625e5c0f38c0f01ffea0675c71a6c",
     "sitemap.xml": "7c87ccdd01ec38ca8f8dced8d793546934519f4f055ec633ba14320bca498a81",
     "staticwebapp.config.json": "26ca119c8630d363dce89dedd4bf955c1a615dea11d4a83043dcbe3bc4df9e15",
-    "sw.js": "c6f51d18f4fd3a811bab462cbaf1f84a01157032670f4cb5fba6c475e27d278f",
-    "tag.html": "ac23846f92caae4c5b41acc15c687a80dc1630f85156e5d976d9f42d8207e02d"
+    "sw.js": "70fbcc968257c1baad426e6fc1993f333b24efec0e519d6f6c8a3ba86ccbab80",
+    "tag.html": "ac23846f92caae4c5b41acc15c687a80dc1630f85156e5d976d9f42d8207e02d",
+    "verify-release.mjs": "82642ed4cae8d28f6721ac97e0684aa30dea84d3b049ab6ce4fa1b3ac6f0a804"
   }
 }
