@@ -59,15 +59,14 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
 
 <body>
-    <a class="skip-link" href="#content">跳转到正文</a>
     <div id="bgOverlay" aria-hidden="true"></div>
     <div id="glassShell">
         <header id="header">
-<h1 class="tagTitle"><span>正在加载文章索引…</span></h1>
+<h1 class="tagTitle"><span>Loading</span><span class="AnimatedEllipsis"></span></h1>
 <div class="title-right">
     <form class="subnav-search" role="search" onsubmit="event.preventDefault();searchShow();">
         <label class="sr-only" for="siteSearch">搜索</label>
-        <input id="siteSearch" name="q" type="search" class="form-control subnav-search-input" aria-label="搜索" placeholder="搜索标题、摘要或标签…" autocomplete="off" value="">
+        <input id="siteSearch" name="q" type="search" class="form-control subnav-search-input" aria-label="搜索" placeholder="搜索文章标题或标签" autocomplete="off" value="">
         <button class="btn search-submit" type="submit">搜索</button>
         <svg class="subnav-search-icon octicon octicon-search" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
             <path data-nav-icon="search" fill-rule="evenodd"></path>
@@ -98,8 +97,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <nav class="SideNav" aria-label="搜索结果"></nav>
 <div id="searchStatus" class="searchStatus" role="status" aria-live="polite">正在加载文章索引…</div>
 </main>
-        <footer id="footer"><div class="footer-subscribe"><a class="footer-rss" href="https://blog.freeblock.cn/rss.xml" target="_blank" rel="noopener noreferrer" aria-label="RSS 订阅"><svg class="octicon" width="16" height="16" aria-hidden="true"><path d="M2.002 2.725a.75.75 0 0 1 .797-.699C8.79 2.42 13.58 7.21 13.974 13.201a.75.75 0 0 1-1.497.098 10.502 10.502 0 0 0-9.776-9.776.747.747 0 0 1-.7-.798ZM2.84 7.05h-.002a7.002 7.002 0 0 1 6.113 6.111.75.75 0 0 1-1.49.178 5.503 5.503 0 0 0-4.8-4.8.75.75 0 0 1 .179-1.489ZM2 13a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" fill-rule="evenodd"></path></svg><span>RSS 订阅</span></a></div>
-<div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://blog.freeblock.cn">星源笔记</a></div>
+        <footer id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://blog.freeblock.cn">星源笔记</a></div>
 <div id="footer2"><span id="filingNum"><a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备2024101898号-1</a> • </span>
     <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
 </div>
@@ -300,8 +298,8 @@ function renderIndex(payload){
         button.type='button';
         button.dataset.label=label;
         button.setAttribute('aria-pressed','false');
-        button.style.setProperty('--tag-color',searchState.labelColors[label] || '#57606a');
-        button.append(document.createTextNode((label==='All' ? '全部' : label)+' '));
+        button.style.cssText='background-color:'+(searchState.labelColors[label] || '#57606a')+';padding:4px;';
+        button.append(document.createTextNode('\u00a0\u00a0'+label+' '));
         const count=document.createElement('span');
         count.className='Counter';
         count.textContent=counts[label];
@@ -334,7 +332,7 @@ function applyFilter(value,forceSearch=false){
     pageTitle.textContent=isTag
         ? (label==='All' ? '全部文章' : '标签：'+label)
         : SEARCH_UI.search+'：'+(value || '全部文章');
-    document.title=(isTag && label==='All' ? '全部文章' : (value || SEARCH_UI.search))+' - '+SEARCH_UI.siteTitle;
+    document.title=(value || SEARCH_UI.search)+' - '+SEARCH_UI.siteTitle;
     setStatus(matches ? '' : SEARCH_UI.noResults+(value ? ' “'+value+'”' : ''),matches===0);
 }
 
