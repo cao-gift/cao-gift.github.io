@@ -12,6 +12,23 @@
         }
     }
 
+    function resetUnexpectedInitialScroll() {
+        if (window.location.hash) return;
+        const navigationEntry = window.performance && window.performance.getEntriesByType
+            ? window.performance.getEntriesByType('navigation')[0]
+            : null;
+        if (navigationEntry && navigationEntry.type === 'back_forward') return;
+
+        if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
+        const reset = function () { window.scrollTo(0, 0); };
+        reset();
+        window.requestAnimationFrame(reset);
+        window.addEventListener('load', reset, { once: true });
+        window.addEventListener('pageshow', function (event) {
+            if (!event.persisted) reset();
+        }, { once: true });
+    }
+
     function ensureStyle() {
         if (document.getElementById('article-toc-style')) return;
         const style = document.createElement('style');
@@ -153,7 +170,7 @@
                 visibility: visible;
             }
 
-            @media (max-width: 720px), (hover: none) and (pointer: coarse) {
+            @media (max-width: 720px) {
                 .article-reading-tools {
                     position: sticky;
                     top: calc(6px + env(safe-area-inset-top));
@@ -326,6 +343,21 @@
         readingTools.append(progress, progressValue, tocButton);
         content.parentNode.insertBefore(readingTools, content);
 
+        const mobileLayout = window.matchMedia('(max-width: 720px)');
+        function placeTOCButton() {
+            if (mobileLayout.matches) {
+                if (tocButton.parentNode !== readingTools) readingTools.appendChild(tocButton);
+            } else if (tocButton.parentNode !== document.body) {
+                document.body.appendChild(tocButton);
+            }
+        }
+        placeTOCButton();
+        if (mobileLayout.addEventListener) {
+            mobileLayout.addEventListener('change', placeTOCButton);
+        } else if (mobileLayout.addListener) {
+            mobileLayout.addListener(placeTOCButton);
+        }
+
         let headingPositions = [];
         let activeIndex = -1;
         let scrollTicking = false;
@@ -339,6 +371,12 @@
             tocButton.setAttribute('aria-expanded', open ? 'true' : 'false');
             tocButton.setAttribute('aria-label', open ? '收起文章目录' : '展开文章目录');
         }
+
+        links.forEach((link) => {
+            link.addEventListener('click', function () {
+                setTOCOpen(false);
+            });
+        });
 
         function findActiveIndex(scrollTop) {
             let low = 0;
@@ -443,6 +481,8 @@
         // 就绪标志放到 DOM 构建完成之后，避免其他脚本过早认为目录可用
         window.__siteArticleTOCReady = true;
     }
+
+    resetUnexpectedInitialScroll();
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initArticleTOC, { once: true });

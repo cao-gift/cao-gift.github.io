@@ -49,7 +49,7 @@
                 background: url("${bgImageDesktop}") no-repeat center center fixed;
                 background-size: cover;
             }
-            @media (max-width: ${mobileBreakpoint}px), (hover: none) and (pointer: coarse) {
+            @media (max-width: ${mobileBreakpoint}px) {
                 html {
                     background-image: url("${bgImageMobile}");
                     background-attachment: scroll;
@@ -93,7 +93,7 @@
                 backdrop-filter: blur(20px) saturate(1.35);
                 -webkit-backdrop-filter: blur(20px) saturate(1.35);
             }
-            @media (max-width: ${mobileBreakpoint}px), (hover: none) and (pointer: coarse) {
+            @media (max-width: ${mobileBreakpoint}px) {
                 body {
                     padding-left: calc(clamp(10px, 3.2vw, 14px) + env(safe-area-inset-left));
                     padding-right: calc(clamp(10px, 3.2vw, 14px) + env(safe-area-inset-right));

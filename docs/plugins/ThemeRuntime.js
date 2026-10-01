@@ -255,13 +255,20 @@ function applyThemeRuntime() {
         if (media && media.addEventListener) media.addEventListener('change', update);
     }
 
-    function manageMobileFloatingControls() {
+    function manageFloatingControls() {
         const comments = document.getElementById('comments');
+        const footer = document.getElementById('footer');
         let ticking = false;
         function update() {
             ticking = false;
-            const hide = !!(isMobileViewport() && comments && comments.getBoundingClientRect().top < window.innerHeight * 0.88);
+            const boundaries = [comments, footer]
+                .filter(Boolean)
+                .map(function (element) { return element.getBoundingClientRect().top; });
+            const hide = boundaries.length > 0 && Math.min.apply(Math, boundaries) < window.innerHeight * 0.88;
             document.querySelectorAll('.toc-icon, #siteBackTop').forEach(function (control) {
+                if (hide && control.classList.contains('toc-icon') && control.getAttribute('aria-expanded') === 'true') {
+                    control.click();
+                }
                 control.classList.toggle('is-content-obscuring', hide);
             });
         }
@@ -273,6 +280,23 @@ function applyThemeRuntime() {
         update();
         document.addEventListener('scroll', schedule, { passive: true });
         window.addEventListener('resize', schedule, { passive: true });
+        window.addEventListener('load', schedule, { once: true });
+        window.addEventListener('pageshow', schedule);
+        if ('MutationObserver' in window && document.body) {
+            const observer = new MutationObserver(function (mutations) {
+                const controlAdded = mutations.some(function (mutation) {
+                    return Array.from(mutation.addedNodes).some(function (node) {
+                        return node && node.nodeType === 1 && (
+                            (node.matches && node.matches('.toc-icon, #siteBackTop')) ||
+                            (node.querySelector && node.querySelector('.toc-icon, #siteBackTop'))
+                        );
+                    });
+                });
+                if (controlAdded) schedule();
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+        }
+        window.requestAnimationFrame(schedule);
     }
 
     function enhanceListDates() {
@@ -280,6 +304,11 @@ function applyThemeRuntime() {
             const match = label.textContent.trim().match(/^(?:\d{4}-)?(\d{2}-\d{2})$/);
             if (match) label.dataset.shortDate = match[1];
         });
+    }
+
+    function localizeCommentLoader() {
+        const button = document.getElementById('twikooLoadButton');
+        if (button && button.textContent.trim() === '加载评论') button.textContent = '评论';
     }
 
     function enhanceArchiveCounts() {
@@ -330,10 +359,11 @@ function applyThemeRuntime() {
         .footer-rss{min-height:36px;display:inline-flex!important;align-items:center;gap:7px;padding:0 12px;border:1px solid color-mix(in srgb,var(--site-line) 82%,transparent);border-radius:999px;background:var(--site-panel);text-decoration:none!important}
         #footer1,#footer2,.sponsor-info{margin-block:2px!important}
         #siteBackTop,.toc-icon{color:#f7fbff!important;background:rgba(29,78,96,.86)!important;border-color:rgba(255,255,255,.72)!important;box-shadow:0 8px 24px rgba(8,31,42,.28)!important}
+        .toc-icon.is-content-obscuring,#siteBackTop.is-content-obscuring{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
         .archiveList{position:relative;border-color:color-mix(in srgb,var(--site-line) 72%,transparent)!important}
         .archiveList li{position:relative;border-bottom-color:color-mix(in srgb,var(--site-line) 54%,transparent)!important}
         @media (min-width:721px){.listExcerpt{display:block}}
-        @media (max-width:${MOBILE_BREAKPOINT_PX}px),(hover:none) and (pointer:coarse){
+        @media (max-width:${MOBILE_BREAKPOINT_PX}px){
             .friend-link-list,.about-info-grid{grid-template-columns:minmax(0,1fr)}
             .about-contact-card{grid-column:auto}
             .listTitle{display:-webkit-box;overflow:hidden;line-height:1.35;white-space:normal!important;-webkit-box-orient:vertical;-webkit-line-clamp:2}
@@ -342,7 +372,6 @@ function applyThemeRuntime() {
             .site-page-article .postMetaSecondary{font-size:12.5px}
             #footer{margin-top:24px!important;font-size:12px!important;line-height:1.45!important}
             #footer .sponsor-info{display:none!important}
-            .toc-icon.is-content-obscuring,#siteBackTop.is-content-obscuring{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
             .archiveList::before{content:"";position:absolute;top:18px;bottom:18px;left:11px;width:2px;background:color-mix(in srgb,var(--site-accent) 38%,transparent)}
             .archiveList li{grid-template-columns:88px minmax(0,1fr)!important;gap:8px!important;min-height:58px;padding:10px 10px 10px 20px!important}
             .archiveList li::before{content:"";position:absolute;left:7px;top:50%;width:8px;height:8px;border:2px solid var(--site-panel-strong);border-radius:50%;background:var(--site-accent);transform:translateY(-50%)}
@@ -514,7 +543,7 @@ function applyThemeRuntime() {
             line-height: 1.55;
         }
 
-        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
+        @media (max-width: ${MOBILE_BREAKPOINT_PX}px) {
             .markdown-body {
                 font-size: 16px;
                 line-height: 1.76;
@@ -565,7 +594,7 @@ function applyThemeRuntime() {
             object-fit: contain;
         }
 
-        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
+        @media (max-width: ${MOBILE_BREAKPOINT_PX}px) {
             .sponsor-info .sponsor-logo {
                 width: 42px;
                 max-height: 21px;
@@ -1297,7 +1326,7 @@ function applyThemeRuntime() {
             -webkit-backdrop-filter: blur(18px) saturate(1.25);
         }
 
-        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
+        @media (max-width: ${MOBILE_BREAKPOINT_PX}px) {
             #glassShell {
                 width: min(100%, calc(100vw - 28px)) !important;
                 max-width: calc(100vw - 28px) !important;
@@ -1840,6 +1869,7 @@ function applyThemeRuntime() {
     normalizeArticleHeadingLevels();
     enhanceSinglePageLinks();
     enhanceListDates();
+    localizeCommentLoader();
     enhanceArchiveCounts();
     ensureSkipLink();
     ensureImageDimensions();
@@ -1850,15 +1880,13 @@ function applyThemeRuntime() {
     syncThemeColor();
     ensureSiteTypography();
     ensureMobileImprovementsStyle();
-    runWhenIdle([normalizeHomeButton, normalizeHeaderLocalNavLinks, watchAccessibleLabelColors, manageMobileFloatingControls]);
+    manageFloatingControls();
+    runWhenIdle([normalizeHomeButton, normalizeHeaderLocalNavLinks, watchAccessibleLabelColors]);
 
     function isMobileViewport() {
         try {
             if (!window.matchMedia) return false;
-            const byWidth = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT_PX}px)`).matches;
-            // 处理“请求桌面版站点/视口被放大”的手机：用触屏特征兜底
-            const byTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-            return byWidth || byTouch;
+            return window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT_PX}px)`).matches;
         } catch (e) {
             return false;
         }
@@ -1960,7 +1988,7 @@ function applyThemeRuntime() {
             background-size: cover;
         }
 
-        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
+        @media (max-width: ${MOBILE_BREAKPOINT_PX}px) {
             html {
                 background-image: url('${bgImageMobileUrl}');
                 background-attachment: scroll;
@@ -2027,7 +2055,7 @@ function applyThemeRuntime() {
             -webkit-backdrop-filter: blur(20px) saturate(1.35);
         }
 
-        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
+        @media (max-width: ${MOBILE_BREAKPOINT_PX}px) {
             body {
                 padding-left: calc(clamp(10px, 3.2vw, 14px) + env(safe-area-inset-left));
                 padding-right: calc(clamp(10px, 3.2vw, 14px) + env(safe-area-inset-right));
@@ -2164,7 +2192,7 @@ function applyThemeRuntime() {
 
         ${sharedPageShellCss('1.35')}
 
-        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
+        @media (max-width: ${MOBILE_BREAKPOINT_PX}px) {
             /* 手机端：图标下移居中，整体更紧凑 */
             #header {
                 height: auto;
@@ -2466,7 +2494,7 @@ function applyThemeRuntime() {
             white-space: nowrap;
         }
 
-        @media (max-width: ${MOBILE_BREAKPOINT_PX}px), (hover: none) and (pointer: coarse) {
+        @media (max-width: ${MOBILE_BREAKPOINT_PX}px) {
             .archiveTitle {
                 font-size: 30px;
             }
