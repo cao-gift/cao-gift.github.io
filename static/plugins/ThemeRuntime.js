@@ -374,6 +374,20 @@ function applyThemeRuntime() {
         });
     }
 
+    function removeUnusedNavigationControls() {
+        const homeButton = document.getElementById('buttonHome');
+        if (homeButton && document.documentElement.classList.contains('site-page-home')) {
+            homeButton.remove();
+        }
+
+        document.querySelectorAll('#header .site-navigation button').forEach(function (button) {
+            const clickHandler = button.getAttribute('onclick') || '';
+            if (button.querySelector('#themeSwitch') || clickHandler.includes('modeSwitch')) {
+                button.remove();
+            }
+        });
+    }
+
     function normalizeHeaderLocalNavLinks() {
         const localHosts = ['blog.freeblock.cn', 'www.blog.freeblock.cn', 'cao-gift.github.io'];
         document.querySelectorAll('#header .title-right a[href]').forEach(function (link) {
@@ -1822,6 +1836,7 @@ function applyThemeRuntime() {
     }
 
     markCurrentPageClass();
+    removeUnusedNavigationControls();
     normalizeArticleHeadingLevels();
     enhanceSinglePageLinks();
     enhanceListDates();
