@@ -331,6 +331,7 @@ function applyThemeRuntime() {
         style.textContent = `
         .listLead,.listMain{min-width:0}
         .listMain{display:grid;gap:4px}
+        .homeSubtitle{max-width:62ch;color:var(--site-muted);line-height:1.55}
         .listExcerpt{overflow:hidden;color:var(--site-muted);font-size:13px;font-weight:450;line-height:1.45;text-overflow:ellipsis;white-space:nowrap}
         .SideNav-item{border-bottom-color:color-mix(in srgb,var(--site-line) 58%,transparent)!important}
         .Label{border-color:color-mix(in srgb,var(--site-line) 76%,transparent)!important;box-shadow:none!important}
@@ -368,8 +369,12 @@ function applyThemeRuntime() {
             .about-contact-card{grid-column:auto}
             .listTitle{display:-webkit-box;overflow:hidden;line-height:1.35;white-space:normal!important;-webkit-box-orient:vertical;-webkit-line-clamp:2}
             .listExcerpt{display:-webkit-box;overflow:hidden;white-space:normal;-webkit-box-orient:vertical;-webkit-line-clamp:1}
+            .site-page-home #header{padding-bottom:6px!important}
+            .site-page-home .homeSubtitle{margin-bottom:12px!important;font-size:14px;line-height:1.45}
             .site-page-article .postMeta{gap:5px 10px;margin:-2px 0 16px;font-size:13px;line-height:1.45}
             .site-page-article .postMetaSecondary{font-size:12.5px}
+            .site-page-article #postBody{font-size:16px;line-height:1.78}
+            .site-page-article .postNavigation a{min-height:52px;display:flex;align-items:center;box-sizing:border-box}
             #footer{margin-top:24px!important;font-size:12px!important;line-height:1.45!important}
             #footer .sponsor-info{display:none!important}
             .archiveList::before{content:"";position:absolute;top:18px;bottom:18px;left:11px;width:2px;background:color-mix(in srgb,var(--site-accent) 38%,transparent)}
