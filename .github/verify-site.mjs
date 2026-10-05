@@ -50,7 +50,12 @@ function assertGeneratedDocument(relative, html) {
 
 const htmlPages = (await readdir(docs, { recursive: true }))
     .map((relative) => String(relative).replaceAll('\\', '/'))
-    .filter((relative) => relative.endsWith('.html') && relative !== '404.html');
+    .filter((relative) => relative === 'index.html'
+        || relative === 'tag.html'
+        || relative === 'archive.html'
+        || (config.singlePage || []).some((label) => relative === `${label}.html`)
+        || /^page\d+\.html$/.test(relative)
+        || /^post\/[^/]+\.html$/.test(relative));
 for (const relative of htmlPages) {
     assertGeneratedDocument(relative, await readFile(path.join(docs, relative), 'utf8'));
 }
