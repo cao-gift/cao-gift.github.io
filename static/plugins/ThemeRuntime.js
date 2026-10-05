@@ -2109,8 +2109,6 @@ function applyThemeRuntime() {
                 padding-top: calc(clamp(10px, 2.2vh, 14px) + env(safe-area-inset-top));
                 padding-bottom: calc(clamp(10px, 2.2vh, 14px) + env(safe-area-inset-bottom));
                 font-size: 15px;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
             }
             #glassShell {
                 padding: clamp(14px, 3.8vw, 18px);
