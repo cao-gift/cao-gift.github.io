@@ -37,6 +37,39 @@ for (const relative of required) {
         throw new Error(`Missing generated page: ${relative}. Check its open, labelled Issue and rebuild the site.`);
     }
 }
+
+function assertGeneratedDocument(relative, html) {
+    const lower = html.toLowerCase();
+    const headEnd = lower.indexOf('</head>');
+    const bodyEnd = lower.indexOf('</body>');
+    if (headEnd < 0 || bodyEnd < 0 || bodyEnd < headEnd) throw new Error(`Invalid document structure: docs/${relative}`);
+    if (lower.indexOf('<style', headEnd) !== -1) throw new Error(`Style emitted after </head>: docs/${relative}`);
+    if (lower.indexOf('<script', bodyEnd) !== -1) throw new Error(`Script emitted after </body>: docs/${relative}`);
+    if (/\sonsubmit\s*=/i.test(html)) throw new Error(`Inline submit handler found: docs/${relative}`);
+}
+
+const htmlPages = (await readdir(docs, { recursive: true }))
+    .map((relative) => String(relative).replaceAll('\\', '/'))
+    .filter((relative) => relative.endsWith('.html') && relative !== '404.html');
+for (const relative of htmlPages) {
+    assertGeneratedDocument(relative, await readFile(path.join(docs, relative), 'utf8'));
+}
+const indexHtml = await readFile(path.join(docs, 'index.html'), 'utf8');
+if (!indexHtml.includes('class="homeSubtitle"')) throw new Error('Generated homepage is missing the scoped homeSubtitle class.');
+const tagHtml = await readFile(path.join(docs, 'tag.html'), 'utf8');
+if (!tagHtml.includes("addEventListener('hashchange',applyLocationState)")) throw new Error('Generated search page is missing URL/history state synchronization.');
+const postPage = htmlPages.find((relative) => relative.startsWith('post/'));
+if (!postPage) throw new Error('No generated article page found.');
+const postHtml = await readFile(path.join(docs, postPage), 'utf8');
+if (!postHtml.includes('postNavigationLabel') || !postHtml.includes('postNavigationTitle')) {
+    throw new Error(`Generated article navigation is stale: docs/${postPage}`);
+}
+
+const themeSource = await readFile(path.join(root, 'static', 'plugins', 'Theme.js'), 'utf8');
+const assetVersion = themeSource.match(/const assetVersion = '([^']+)'/)?.[1];
+if (!assetVersion) throw new Error('Theme.js is missing its assetVersion.');
+if (!String(config.allHead).includes(`/plugins/Theme.min.js?v=${assetVersion}`)) throw new Error('allHead Theme version differs from Theme.js assetVersion.');
+if (!(config.pwaAssets || []).includes(`/plugins/ThemeRuntime.min.js?v=${assetVersion}`)) throw new Error('PWA ThemeRuntime version differs from Theme.js assetVersion.');
 const sourceAssets = await inventory(path.join(root, 'static'));
 const files = await inventory(docs);
 delete files['build.json'];

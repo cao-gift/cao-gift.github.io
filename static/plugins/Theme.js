@@ -1,5 +1,5 @@
 (function defineSiteRuntimeConfig() {
-    const assetVersion = '20261003-1';
+    const assetVersion = '20261005-1';
     const defaults = {
         assetVersion,
         mobileBreakpoint: 720,
@@ -46,6 +46,7 @@
             html {
                 min-height: 100%;
                 overflow-x: hidden;
+                overflow-x: clip;
                 background: url("${bgImageDesktop}") no-repeat center center fixed;
                 background-size: cover;
             }
@@ -64,6 +65,7 @@
                 max-width: none;
                 background: transparent;
                 overflow-x: hidden;
+                overflow-x: clip;
             }
             #bgOverlay {
                 position: fixed;
@@ -84,6 +86,7 @@
                 margin: 0 auto;
                 padding: 44px;
                 overflow: hidden;
+                overflow: clip;
                 background: rgba(255, 255, 255, 0.14);
                 border: 1px solid rgba(255, 255, 255, 0.26);
                 border-radius: 18px;
