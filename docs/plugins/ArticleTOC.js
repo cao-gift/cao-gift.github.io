@@ -64,6 +64,7 @@
                 visibility: hidden;
                 transform: translateY(20px) scale(0.9);
                 transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+                overscroll-behavior: contain;
             }
 
             .toc.show {
@@ -173,7 +174,7 @@
             @media (max-width: 720px) {
                 .article-reading-tools {
                     position: sticky;
-                    top: calc(6px + env(safe-area-inset-top));
+                    top: calc(8px + env(safe-area-inset-top));
                     z-index: 1001;
                     box-sizing: border-box;
                     min-height: 44px;
@@ -189,6 +190,7 @@
                     box-shadow: 0 8px 24px rgba(8, 31, 42, 0.16);
                     backdrop-filter: blur(14px) saturate(1.15);
                     -webkit-backdrop-filter: blur(14px) saturate(1.15);
+                    touch-action: manipulation;
                 }
 
                 .reading-progress {
@@ -235,6 +237,15 @@
                     bottom: auto;
                     width: min(320px, calc(100vw - 24px - env(safe-area-inset-left) - env(safe-area-inset-right)));
                     max-height: min(68vh, 560px);
+                }
+            }
+
+            @supports not (overflow: clip) {
+                @media (max-width: 720px) {
+                    .article-reading-tools {
+                        position: relative;
+                        top: auto;
+                    }
                 }
             }
 

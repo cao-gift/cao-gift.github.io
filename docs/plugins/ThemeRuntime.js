@@ -340,10 +340,14 @@ function applyThemeRuntime() {
         #taglabel .Label::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--tag-color,#57606a)}
         #taglabel .Label[aria-pressed="true"]{color:var(--site-ink)!important;background:color-mix(in srgb,var(--site-accent) 18%,var(--site-panel-strong))!important;border-color:color-mix(in srgb,var(--site-accent) 58%,transparent)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--site-accent) 16%,transparent)!important}
         .listLabels .LabelName,.listLabels .LabelTime{color:var(--site-muted)!important;background:transparent!important;border-color:color-mix(in srgb,var(--site-muted) 28%,transparent)!important;filter:none}
-        .site-page-article #glassShell,.site-page-single #glassShell{background:color-mix(in srgb,var(--site-panel-strong) 82%,transparent)!important}
+        .site-page-article #glassShell{background:var(--site-reading-panel)!important}
+        .site-page-single #glassShell{background:color-mix(in srgb,var(--site-panel-strong) 92%,transparent)!important}
         .postMeta{align-items:center;color:var(--site-muted)!important}
         .postMetaPrimary{color:var(--site-ink);font-weight:650}
         .postMetaReading{padding:3px 9px;border-radius:var(--site-radius-pill);background:var(--site-panel)}
+        .postNavigation a,.relatedPosts a{color:var(--site-ink)!important;background:var(--site-panel);border-color:var(--site-line)!important;text-decoration:none!important;transition:background-color .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+        .postNavigation a:hover,.postNavigation a:focus-visible,.relatedPosts a:hover,.relatedPosts a:focus-visible{background:var(--site-item-hover-bg);border-color:color-mix(in srgb,var(--site-accent) 54%,var(--site-line))!important;box-shadow:var(--site-shadow-sm);transform:translateY(-1px)}
+        .searchStatus{min-height:24px;margin:14px 8px!important;color:var(--site-muted)!important;font-size:14px!important}
         :where(#comments,#twikoo,.comments,.tk-comments) :where(input,textarea,button,.tk-input,.tk-submit,.el-input__inner,.el-textarea__inner,.el-button){min-height:var(--site-control-size)!important;box-sizing:border-box;font-size:16px}
         .twikoo-load-button{min-width:150px;min-height:var(--site-control-size);display:block;margin:0 auto;border-radius:var(--site-radius-pill)!important}
         .twikoo-load-status{color:var(--site-muted);text-align:center}
@@ -374,7 +378,9 @@ function applyThemeRuntime() {
             .site-page-article .postMeta{gap:5px 10px;margin:-2px 0 16px;font-size:13px;line-height:1.45}
             .site-page-article .postMetaSecondary{font-size:12.5px}
             .site-page-article #postBody{font-size:16px;line-height:1.78}
-            .site-page-article .postNavigation a{min-height:52px;display:flex;align-items:center;box-sizing:border-box}
+            .site-page-article .postNavigation a{min-height:58px;display:flex;align-items:stretch;box-sizing:border-box}
+            .site-page-article .postNavigationLabel{font-size:12px}
+            .site-page-article .postNavigationTitle{font-size:14px}
             #footer{margin-top:24px!important;font-size:12px!important;line-height:1.45!important}
             #footer .sponsor-info{display:none!important}
             .archiveList::before{content:"";position:absolute;top:18px;bottom:18px;left:11px;width:2px;background:color-mix(in srgb,var(--site-accent) 38%,transparent)}
@@ -388,7 +394,7 @@ function applyThemeRuntime() {
             .site-page-home #header .avatar{width:78px!important;height:78px!important}
             .site-page-home #header .blogTitle{font-size:30px!important}
             .site-page-home #header .title-right{margin-top:2px!important}
-            .site-page-home #content>div:first-child:not(.markdown-body){margin-bottom:10px!important;font-size:14px;line-height:1.45}
+            .site-page-home .homeSubtitle{margin-bottom:10px!important;font-size:14px;line-height:1.45}
             :is(.site-page-home,.site-page-tag) .LabelTime{font-size:0!important}
             :is(.site-page-home,.site-page-tag) .LabelTime::after{content:attr(data-short-date);font-size:12px}
         }`;
@@ -453,7 +459,7 @@ function applyThemeRuntime() {
     function ensureSiteTypography() {
         const fontStylesheet = absUrl(`../fonts/lxgw-wenkai-screen-subset.css?v=${siteConfig.assetVersion || '20260717-1'}`);
 
-        if (!document.getElementById('site-font-lxgw-wenkai')) {
+        if (document.documentElement.classList.contains('site-page-article') && !document.getElementById('site-font-lxgw-wenkai')) {
             const fontLink = document.createElement('link');
             fontLink.id = 'site-font-lxgw-wenkai';
             fontLink.rel = 'stylesheet';
@@ -653,6 +659,7 @@ function applyThemeRuntime() {
             --site-line: rgba(255, 255, 255, 0.34);
             --site-panel: rgba(255, 255, 255, 0.18);
             --site-panel-strong: rgba(255, 255, 255, 0.28);
+            --site-reading-panel: rgba(255, 255, 255, 0.88);
             --site-accent: #256f82;
             --site-accent-2: #b86f52;
             --site-accent-3: #6f8f65;
@@ -689,6 +696,7 @@ function applyThemeRuntime() {
             --site-line: rgba(226, 232, 240, 0.18);
             --site-panel: rgba(15, 23, 42, 0.46);
             --site-panel-strong: rgba(15, 23, 42, 0.64);
+            --site-reading-panel: rgba(15, 23, 42, 0.88);
             --site-accent: #7dd3fc;
             --site-accent-2: #fdba74;
             --site-accent-3: #a7d78b;
@@ -719,6 +727,7 @@ function applyThemeRuntime() {
                 --site-line: rgba(226, 232, 240, 0.18);
                 --site-panel: rgba(15, 23, 42, 0.46);
                 --site-panel-strong: rgba(15, 23, 42, 0.64);
+                --site-reading-panel: rgba(15, 23, 42, 0.88);
                 --site-accent: #7dd3fc;
                 --site-accent-2: #fdba74;
                 --site-accent-3: #a7d78b;
@@ -762,11 +771,17 @@ function applyThemeRuntime() {
         html {
             scroll-behavior: smooth;
             overflow-x: hidden;
+            overflow-x: clip;
         }
 
         body {
             color: var(--site-ink);
             overflow-x: hidden;
+            overflow-x: clip;
+        }
+
+        :where(a,button,input,select,textarea,[role="button"]) {
+            touch-action: manipulation;
         }
 
         .skip-link {
@@ -806,6 +821,7 @@ function applyThemeRuntime() {
         #glassShell {
             box-sizing: border-box;
             overflow: hidden;
+            overflow: clip;
             background: var(--site-glass-bg) !important;
             border-color: var(--site-line) !important;
             border-radius: var(--site-radius-lg) !important;
@@ -929,7 +945,7 @@ function applyThemeRuntime() {
             transform: translateX(-50%);
         }
 
-        #content > div:first-child:not(.markdown-body) {
+        .site-page-home .homeSubtitle {
             color: var(--site-ink);
             font-size: 17px;
             line-height: 1.65;
@@ -1295,6 +1311,7 @@ function applyThemeRuntime() {
             transition: opacity 0.18s ease, visibility 0.18s ease, transform 0.18s ease, background-color 0.18s ease;
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         #siteBackTop.is-visible {
@@ -1344,6 +1361,7 @@ function applyThemeRuntime() {
                 width: 100%;
                 max-width: 100vw;
                 overflow-x: hidden !important;
+                overflow-x: clip !important;
             }
 
             html,
@@ -1353,9 +1371,10 @@ function applyThemeRuntime() {
             .markdown-body {
                 max-width: 100vw;
                 overflow-x: hidden;
+                overflow-x: clip;
             }
 
-            #content > div:first-child:not(.markdown-body) {
+            .site-page-home .homeSubtitle {
                 font-size: 15.5px;
                 margin-bottom: 14px !important;
             }
@@ -1512,6 +1531,7 @@ function applyThemeRuntime() {
                 max-width: 100%;
                 box-sizing: border-box;
                 overflow-x: hidden;
+                overflow-x: clip;
             }
 
             .site-page-article #header .title-left,
@@ -1593,6 +1613,15 @@ function applyThemeRuntime() {
 
             .markdown-body pre {
                 max-width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                touch-action: auto;
+            }
+
+            .markdown-body table {
+                display: block;
+                max-width: 100%;
+                overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
             }
 
@@ -1749,6 +1778,18 @@ function applyThemeRuntime() {
                 animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
+            }
+        }
+
+        @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+            #glassShell,.SideNav,.toc,#siteBackTop,.toc-icon {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            #glassShell { background: rgba(245, 248, 250, 0.96) !important; }
+            html[data-color-mode="dark"] #glassShell { background: rgba(15, 23, 42, 0.97) !important; }
+            @media (prefers-color-scheme: dark) {
+                html[data-color-mode="auto"] #glassShell { background: rgba(15, 23, 42, 0.97) !important; }
             }
         }
         `;
@@ -2041,6 +2082,7 @@ function applyThemeRuntime() {
             color: rgba(15, 23, 42, 0.92);
             background: transparent;
             overflow-x: hidden;
+            overflow-x: clip;
         }
 
         #glassShell {
@@ -2069,7 +2111,6 @@ function applyThemeRuntime() {
                 font-size: 15px;
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
-                touch-action: pan-y;
             }
             #glassShell {
                 padding: clamp(14px, 3.8vw, 18px);
@@ -2084,6 +2125,7 @@ function applyThemeRuntime() {
     if (currentUrl == '/' || currentUrl.includes('/index.html') || currentUrl.includes('/page')) {
         console.log('应用主页主题');
         let style = document.createElement("style");
+        style.id = 'site-page-home-style';
         style.innerHTML = `
         .blogTitle {
             display: unset;
@@ -2093,7 +2135,7 @@ function applyThemeRuntime() {
            说明：为避免部分浏览器对 display: contents 的兼容问题，这里配合 JS
            把头像 img 从 h1 里挪到 header 的直接子节点。 */
         #header {
-            height: 230px;
+            height: 198px;
             position: relative;
             display: grid !important;
             grid-template-columns: 1fr auto 1fr;
@@ -2117,15 +2159,15 @@ function applyThemeRuntime() {
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 7px;
             margin: 0;
             min-width: 0;
         }
 
         /* 头像（在 title-left 内） */
         #header .title-left .avatar {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             display: block;
             margin: 0;
             border-radius: 50%;
@@ -2142,7 +2184,7 @@ function applyThemeRuntime() {
             font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
             font-weight: 820 !important;
             letter-spacing: 0;
-            font-size: 40px !important;
+            font-size: 36px !important;
             line-height: 1;
             text-decoration: none;
             color: #f5f0df !important;
@@ -2203,7 +2245,7 @@ function applyThemeRuntime() {
                 height: auto;
                 grid-template-columns: 1fr;
                 grid-template-rows: auto auto auto;
-                padding: 8px 2px 0;
+                padding: 4px 2px 0;
             }
             #header .title-left {
                 grid-column: 1;
@@ -2211,12 +2253,12 @@ function applyThemeRuntime() {
                 gap: 5px;
             }
             #header .title-left .avatar {
-                width: clamp(72px, 20vw, 84px);
-                height: clamp(72px, 20vw, 84px);
+                width: clamp(66px, 18vw, 74px);
+                height: clamp(66px, 18vw, 74px);
                 border-width: 3px;
             }
             #header .title-left a.blogTitle {
-                font-size: clamp(30px, 8vw, 32px) !important;
+                font-size: clamp(28px, 7.5vw, 31px) !important;
                 padding: 1px 10px 8px;
                 background:
                     linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(250, 229, 155, 0.97) 48%, rgba(112, 159, 119, 0.94) 100%);
@@ -2247,7 +2289,7 @@ function applyThemeRuntime() {
                 grid-column: 1;
                 grid-row: 3;
                 justify-self: center;
-                margin-top: 4px !important;
+                margin-top: 2px !important;
             }
 
             #header .site-navigation {
@@ -2261,7 +2303,7 @@ function applyThemeRuntime() {
 
         @media (max-width: 380px) {
             #header .title-left a.blogTitle {
-                font-size: 34px !important;
+                font-size: 29px !important;
             }
         }
 
@@ -2315,6 +2357,7 @@ function applyThemeRuntime() {
         console.log('文章页主题');
 
         let style = document.createElement("style");
+        style.id = 'site-page-article-style';
         style.innerHTML = `
         ${sharedPageShellCss('1.55')}
 
@@ -2377,6 +2420,7 @@ function applyThemeRuntime() {
     else if (currentUrl.includes('/archive.html')) {
         console.log('应用归档页主题');
         const style = document.createElement('style');
+        style.id = 'site-page-archive-style';
         style.innerHTML = `
         ${sharedPageShellCss('1.45')}
 
@@ -2534,6 +2578,7 @@ function applyThemeRuntime() {
     else if (currentUrl.includes('/tag')) {
         console.log('应用搜索页主题');
         let style = document.createElement("style");
+        style.id = 'site-page-tag-style';
         style.innerHTML = `
         ${sharedPageShellCss('1.35')}
         
