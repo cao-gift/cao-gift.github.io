@@ -1288,6 +1288,74 @@ function applyThemeRuntime() {
             font-weight: 600;
         }
 
+        .site-page-article #footer {
+            width: 100%;
+            max-width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px 16px;
+            margin-top: 40px !important;
+            padding: 20px 0 4px;
+            color: var(--site-muted);
+            font-size: 12.5px;
+            line-height: 1.55;
+            border-top: 1px solid color-mix(in srgb, var(--site-muted) 24%, transparent);
+            text-shadow: none;
+        }
+
+        .site-page-article #footer a {
+            min-height: 32px;
+            color: var(--site-link);
+            font-weight: 650;
+            text-shadow: none;
+        }
+
+        .site-page-article #footer a:hover,
+        .site-page-article #footer a:focus-visible {
+            color: var(--site-link-hover);
+        }
+
+        .site-page-article #footer .sponsor-info {
+            order: 1;
+            flex: 1 0 100%;
+            margin: 0 0 2px !important;
+            color: var(--site-muted) !important;
+            font-size: 12px;
+            font-weight: 500;
+            text-shadow: none;
+        }
+
+        .site-page-article #footer .footer-subscribe {
+            order: 2;
+            margin: 0;
+        }
+
+        .site-page-article #footer .footer-rss {
+            min-height: 34px;
+            color: var(--site-ink) !important;
+            background: color-mix(in srgb, var(--site-panel) 72%, transparent);
+            border-color: color-mix(in srgb, var(--site-muted) 24%, transparent);
+            box-shadow: none;
+        }
+
+        .site-page-article #footer .footer-rss:hover,
+        .site-page-article #footer .footer-rss:focus-visible {
+            color: var(--site-link-hover) !important;
+            background: var(--site-panel);
+        }
+
+        .site-page-article #footer1 { order: 3; }
+        .site-page-article #footer2 {
+            order: 4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0 4px;
+        }
+
         #siteBackTop {
             position: fixed;
             right: calc(22px + env(safe-area-inset-right));
@@ -1476,6 +1544,26 @@ function applyThemeRuntime() {
             #footer2 > span {
                 display: block;
                 max-width: 100%;
+            }
+
+            .site-page-article #footer {
+                width: 100%;
+                max-width: 100%;
+                gap: 5px 10px;
+                margin-top: 30px !important;
+                padding: 16px 0 2px;
+                font-size: 12px !important;
+            }
+
+            .site-page-article #footer .footer-subscribe,
+            .site-page-article #footer1,
+            .site-page-article #footer2 {
+                flex: 1 0 100%;
+            }
+
+            .site-page-article #footer2 {
+                flex-direction: row;
+                gap: 0 3px;
             }
 
             #siteBackTop {
