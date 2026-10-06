@@ -1,8 +1,8 @@
-const SHELL_CACHE_NAME = "gmeek-9862b46f8a34";
+const SHELL_CACHE_NAME = "gmeek-16b4fbff0cff";
 const RUNTIME_CACHE_NAME = SHELL_CACHE_NAME + '-runtime';
 const CACHE_PREFIX = 'gmeek-';
 const RUNTIME_CACHE_LIMIT = 60;
-const PRECACHE_URLS = ["/", "/img/avatar.webp", "/index.html", "/manifest.webmanifest", "/plugins/Theme.min.js?v=20261005-2", "/plugins/ThemeRuntime.min.js?v=20261005-2", "/plugins/primer.css?v=20260717-1"];
+const PRECACHE_URLS = ["/", "/img/avatar.webp", "/index.html", "/manifest.webmanifest", "/plugins/Theme.min.js?v=20261006-1", "/plugins/ThemeRuntime.min.js?v=20261006-1", "/plugins/primer.css?v=20260717-1"];
 const HOME_URL = "/";
 
 async function trimRuntimeCache() {
