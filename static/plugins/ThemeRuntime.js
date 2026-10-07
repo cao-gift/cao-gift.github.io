@@ -146,11 +146,12 @@ function applyThemeRuntime() {
         document.querySelectorAll('#buttonRSS, .footer-subscribe, .footer-rss').forEach(function (control) {
             control.remove();
         });
-        organizeArticleFooter();
+        organizeFooterRows();
     }
 
-    function organizeArticleFooter() {
-        if (!document.documentElement.classList.contains('site-page-article')) return;
+    function organizeFooterRows() {
+        const root = document.documentElement;
+        if (!root.classList.contains('site-page-article') && !root.classList.contains('site-page-home')) return;
         const footer = document.getElementById('footer');
         if (!footer) return;
 
@@ -634,7 +635,7 @@ function applyThemeRuntime() {
         sponsorInfo.className = 'sponsor-info';
         sponsorInfo.innerHTML = `本站由 <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img class="sponsor-logo" src="${sponsorLogoUrl}" alt="又拍云"></a> <a target="_blank" rel="noopener" href="${kuocaiHref}"><img class="sponsor-logo" src="${kuocaiLogoUrl}" alt="括彩云"></a> 提供 CDN 加速/云存储服务`;
         footer.insertBefore(sponsorInfo, footer.firstChild);
-        organizeArticleFooter();
+        organizeFooterRows();
     }
 
     function ensureGlobalPolishStyle() {
@@ -1298,6 +1299,8 @@ function applyThemeRuntime() {
             text-shadow: none;
         }
 
+        .site-page-home #footer .footer-service-row,
+        .site-page-home #footer .footer-meta-row,
         .site-page-article #footer .footer-service-row,
         .site-page-article #footer .footer-meta-row {
             display: flex;
@@ -1306,11 +1309,13 @@ function applyThemeRuntime() {
             flex-wrap: wrap;
         }
 
+        .site-page-home #footer .footer-service-row,
         .site-page-article #footer .footer-service-row {
             gap: 6px 12px;
             margin-bottom: 4px;
         }
 
+        .site-page-home #footer .footer-meta-row,
         .site-page-article #footer .footer-meta-row {
             gap: 0 10px;
         }
@@ -1541,15 +1546,19 @@ function applyThemeRuntime() {
                 font-size: 12px !important;
             }
 
+            .site-page-home #footer .footer-service-row,
             .site-page-article #footer .footer-service-row {
                 margin-bottom: 5px;
             }
 
+            .site-page-home #footer .footer-meta-row,
             .site-page-article #footer .footer-meta-row {
                 flex-direction: column;
                 gap: 1px;
             }
 
+            .site-page-home #footer .footer-meta-row #footer1,
+            .site-page-home #footer .footer-meta-row #footer2,
             .site-page-article #footer .footer-meta-row #footer1,
             .site-page-article #footer .footer-meta-row #footer2 {
                 width: 100%;
