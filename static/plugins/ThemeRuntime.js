@@ -142,30 +142,38 @@ function applyThemeRuntime() {
         avatar.setAttribute('fetchpriority', 'high');
     }
 
-    function moveRssToFooter() {
+    function removeRssControls() {
+        document.querySelectorAll('#buttonRSS, .footer-subscribe, .footer-rss').forEach(function (control) {
+            control.remove();
+        });
+        organizeArticleFooter();
+    }
+
+    function organizeArticleFooter() {
+        if (!document.documentElement.classList.contains('site-page-article')) return;
         const footer = document.getElementById('footer');
         if (!footer) return;
-        const headerRss = document.getElementById('buttonRSS');
-        let footerLink = footer.querySelector('.footer-rss');
-        if (!footerLink) {
-            const container = document.createElement('div');
-            container.className = 'footer-subscribe';
-            footerLink = document.createElement('a');
-            footerLink.className = 'footer-rss';
-            footerLink.href = new URL('/rss.xml', window.location.origin).href;
-            footerLink.target = '_blank';
-            footerLink.rel = 'noopener noreferrer';
-            footerLink.setAttribute('aria-label', 'RSS 订阅');
-            footerLink.innerHTML = '<svg class="octicon" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd"></path></svg><span>RSS 订阅</span>';
-            const path = footerLink.querySelector('path');
-            if (path) {
-                const rssPath = 'M2.002 2.725a.75.75 0 0 1 .797-.699C8.79 2.42 13.58 7.21 13.974 13.201a.75.75 0 0 1-1.497.098 10.502 10.502 0 0 0-9.776-9.776.747.747 0 0 1-.7-.798ZM2.84 7.05h-.002a7.002 7.002 0 0 1 6.113 6.111.75.75 0 0 1-1.49.178 5.503 5.503 0 0 0-4.8-4.8.75.75 0 0 1 .179-1.489ZM2 13a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z';
-                path.setAttribute('d', (window.IconList && window.IconList.rss) || rssPath);
-            }
-            container.appendChild(footerLink);
-            footer.insertBefore(container, footer.firstChild);
+
+        let serviceRow = footer.querySelector('.footer-service-row');
+        if (!serviceRow) {
+            serviceRow = document.createElement('div');
+            serviceRow.className = 'footer-service-row';
+            footer.insertBefore(serviceRow, footer.firstChild);
         }
-        if (headerRss) headerRss.remove();
+
+        let metaRow = footer.querySelector('.footer-meta-row');
+        if (!metaRow) {
+            metaRow = document.createElement('div');
+            metaRow.className = 'footer-meta-row';
+            footer.insertBefore(metaRow, serviceRow.nextSibling);
+        }
+
+        const sponsor = footer.querySelector('.sponsor-info');
+        const copyright = footer.querySelector('#footer1');
+        const details = footer.querySelector('#footer2');
+        if (sponsor) serviceRow.appendChild(sponsor);
+        if (copyright) metaRow.appendChild(copyright);
+        if (details) metaRow.appendChild(details);
     }
 
     function repairAboutPage() {
@@ -360,8 +368,6 @@ function applyThemeRuntime() {
         .about-info-card h2{margin:0 0 10px!important;padding:0!important;border:0!important;font-size:20px!important}
         .about-info-card p{margin:0!important}
         .about-contact-card{grid-column:1/-1}
-        .footer-subscribe{display:flex;justify-content:center;margin:0 0 8px}
-        .footer-rss{min-height:36px;display:inline-flex!important;align-items:center;gap:7px;padding:0 12px;border:1px solid color-mix(in srgb,var(--site-line) 82%,transparent);border-radius:999px;background:var(--site-panel);text-decoration:none!important}
         #footer1,#footer2,.sponsor-info{margin-block:2px!important}
         #siteBackTop,.toc-icon{color:#f7fbff!important;background:rgba(29,78,96,.86)!important;border-color:rgba(255,255,255,.72)!important;box-shadow:0 8px 24px rgba(8,31,42,.28)!important}
         .toc-icon.is-content-obscuring,#siteBackTop.is-content-obscuring{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
@@ -628,6 +634,7 @@ function applyThemeRuntime() {
         sponsorInfo.className = 'sponsor-info';
         sponsorInfo.innerHTML = `本站由 <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img class="sponsor-logo" src="${sponsorLogoUrl}" alt="又拍云"></a> <a target="_blank" rel="noopener" href="${kuocaiHref}"><img class="sponsor-logo" src="${kuocaiLogoUrl}" alt="括彩云"></a> 提供 CDN 加速/云存储服务`;
         footer.insertBefore(sponsorInfo, footer.firstChild);
+        organizeArticleFooter();
     }
 
     function ensureGlobalPolishStyle() {
@@ -1273,16 +1280,6 @@ function applyThemeRuntime() {
             text-underline-offset: 3px;
         }
 
-        #footer .footer-rss {
-            color: rgba(247, 250, 252, 0.94) !important;
-        }
-
-        #footer .footer-rss:hover,
-        #footer .footer-rss:focus-visible {
-            color: #b8ecff !important;
-            background: rgba(255, 255, 255, 0.14);
-        }
-
         .sponsor-info {
             color: rgba(247, 250, 252, 0.82) !important;
             font-weight: 600;
@@ -1291,11 +1288,7 @@ function applyThemeRuntime() {
         .site-page-article #footer {
             width: 100%;
             max-width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 6px 16px;
+            display: block;
             margin-top: 40px !important;
             padding: 20px 0 4px;
             color: var(--site-muted);
@@ -1303,6 +1296,23 @@ function applyThemeRuntime() {
             line-height: 1.55;
             border-top: 1px solid color-mix(in srgb, var(--site-muted) 24%, transparent);
             text-shadow: none;
+        }
+
+        .site-page-article #footer .footer-service-row,
+        .site-page-article #footer .footer-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .site-page-article #footer .footer-service-row {
+            gap: 6px 12px;
+            margin-bottom: 4px;
+        }
+
+        .site-page-article #footer .footer-meta-row {
+            gap: 0 10px;
         }
 
         .site-page-article #footer a {
@@ -1318,37 +1328,14 @@ function applyThemeRuntime() {
         }
 
         .site-page-article #footer .sponsor-info {
-            order: 1;
-            flex: 1 0 100%;
-            margin: 0 0 2px !important;
+            margin: 0 !important;
             color: var(--site-muted) !important;
             font-size: 12px;
             font-weight: 500;
             text-shadow: none;
         }
 
-        .site-page-article #footer .footer-subscribe {
-            order: 2;
-            margin: 0;
-        }
-
-        .site-page-article #footer .footer-rss {
-            min-height: 34px;
-            color: var(--site-ink) !important;
-            background: color-mix(in srgb, var(--site-panel) 72%, transparent);
-            border-color: color-mix(in srgb, var(--site-muted) 24%, transparent);
-            box-shadow: none;
-        }
-
-        .site-page-article #footer .footer-rss:hover,
-        .site-page-article #footer .footer-rss:focus-visible {
-            color: var(--site-link-hover) !important;
-            background: var(--site-panel);
-        }
-
-        .site-page-article #footer1 { order: 3; }
         .site-page-article #footer2 {
-            order: 4;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1549,21 +1536,23 @@ function applyThemeRuntime() {
             .site-page-article #footer {
                 width: 100%;
                 max-width: 100%;
-                gap: 5px 10px;
                 margin-top: 30px !important;
                 padding: 16px 0 2px;
                 font-size: 12px !important;
             }
 
-            .site-page-article #footer .footer-subscribe,
-            .site-page-article #footer1,
-            .site-page-article #footer2 {
-                flex: 1 0 100%;
+            .site-page-article #footer .footer-service-row {
+                margin-bottom: 5px;
             }
 
-            .site-page-article #footer2 {
-                flex-direction: row;
-                gap: 0 3px;
+            .site-page-article #footer .footer-meta-row {
+                flex-direction: column;
+                gap: 1px;
+            }
+
+            .site-page-article #footer .footer-meta-row #footer1,
+            .site-page-article #footer .footer-meta-row #footer2 {
+                width: 100%;
             }
 
             #siteBackTop {
@@ -2007,7 +1996,7 @@ function applyThemeRuntime() {
     enhanceArchiveCounts();
     ensureSkipLink();
     ensureImageDimensions();
-    moveRssToFooter();
+    removeRssControls();
     repairAboutPage();
     localizeTagPage();
     enhanceDocumentLinks();
